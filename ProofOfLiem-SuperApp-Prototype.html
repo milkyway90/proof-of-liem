@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Liêm Super-App · Prototype</title>
+<style>
+  :root{--bg:#ECEAE3;--ink:#16160f;--clay:#D97757;--sky:#3F73A8;--green:#3E9B5F;--red:#C9462F;--gold:#C39A2E;--plum:#7E5FA0;--mut:#807F77;--line:#E9E6DD;--soft:#F6F4EC;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:26px 14px 56px}
+  .cap{font-family:var(--mono);font-size:12px;color:var(--mut);text-align:center;margin-bottom:16px;max-width:400px;line-height:1.6}.cap b{color:var(--ink)}
+  .phone{width:392px;max-width:100%;height:792px;background:#fff;border-radius:42px;box-shadow:0 24px 60px rgba(0,0,0,.18),0 0 0 11px #1c1c1a,0 0 0 13px #2f2f2f;position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#1c1c1a;border-radius:0 0 16px 16px;z-index:50}
+  .status{height:42px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 5px;font-size:12px;font-weight:600;flex-shrink:0}
+  .scrollarea{flex:1;overflow-y:auto;position:relative;background:var(--soft)}
+  .screen{display:none;padding:8px 16px 26px;animation:fade .24s ease}.screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .hi{font-size:13px;color:var(--mut)}.hn{font-size:19px;font-weight:800;letter-spacing:-.3px}
+  .row{display:flex;align-items:center}
+  .av{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#E9A07F,#D97757);margin-left:auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+  /* status card */
+  .liemcard{background:linear-gradient(140deg,#20242f,#39414f);border-radius:20px;padding:16px 18px;color:#fff;margin:12px 0 14px}
+  .liemcard .top{display:flex;align-items:center;gap:12px}
+  .liemcard .sc{font-size:38px;font-weight:800;line-height:1}
+  .liemcard .lv{font-size:11px;background:rgba(255,255,255,.16);padding:3px 9px;border-radius:8px;color:#F2D1B8;font-weight:700}
+  .liemcard .meta{font-size:11px;opacity:.82;margin-top:3px}
+  .liemcard .tok{margin-left:auto;text-align:right}
+  .liemcard .tok .tn{font-size:18px;font-weight:800;color:#F2D1B8}
+  .liemcard .tok .ts{font-size:9.5px;opacity:.8}
+  .prog{height:7px;background:rgba(255,255,255,.18);border-radius:5px;margin-top:13px;overflow:hidden}.prog>i{display:block;height:100%;width:62%;background:var(--clay);border-radius:5px}
+  .progtx{font-size:10.5px;opacity:.85;margin-top:6px}
+  /* generic card */
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:13px}
+  .ch{display:flex;align-items:center;margin-bottom:11px}.ch .t{font-size:14px;font-weight:700}.ch .more{margin-left:auto;font-size:11px;color:var(--clay);font-weight:600;cursor:pointer}
+  .fin{display:flex;gap:10px}.fin .b{flex:1;background:var(--soft);border-radius:12px;padding:11px}
+  .fin .b .l{font-size:10.5px;color:var(--mut)}.fin .b .v{font-size:17px;font-weight:800;margin-top:2px}.fin .b .v.r{color:var(--red)}.fin .b .v.g{color:var(--green)}
+  .auto{font-size:10px;color:var(--green);font-weight:700;margin-top:8px}
+  /* quests */
+  .q{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px dashed var(--line)}.q:last-child{border-bottom:none}
+  .qi{width:32px;height:32px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .qt{font-size:13px;font-weight:600}.qs{font-size:11px;color:var(--mut)}
+  .qr{margin-left:auto;font-size:11px;font-weight:800;color:var(--clay);white-space:nowrap}
+  .qbtn{margin-left:8px;font-size:11px;font-weight:700;background:var(--clay);color:#fff;border:none;border-radius:9px;padding:6px 11px;cursor:pointer;font-family:var(--sans)}
+  .qbtn.done{background:var(--soft);color:var(--green)}
+  /* quick actions */
+  .qa{display:flex;gap:9px;margin-bottom:14px}
+  .qac{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 6px;text-align:center;cursor:pointer}
+  .qac .ic{font-size:20px}.qac .l{font-size:10.5px;font-weight:600;margin-top:5px}
+  /* teaser */
+  .teaser{border:1.5px dashed var(--clay);border-radius:14px;padding:13px 15px;background:#FCF2EC;display:flex;align-items:center;gap:11px}
+  .teaser .lk{font-size:18px}.teaser .tt{font-size:12.5px;font-weight:700}.teaser .ts{font-size:11px;color:var(--mut)}
+  .teaser .go{margin-left:auto;font-size:11px;color:var(--clay);font-weight:700;cursor:pointer}
+  /* transactions */
+  .tx{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}.tx:last-child{border-bottom:none}
+  .txi{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--soft)}
+  .txt{font-size:13px;font-weight:600}.txs{font-size:10.5px;color:var(--mut)}
+  .txa{margin-left:auto;font-weight:700;font-size:13.5px}.txa.r{color:var(--red)}.txa.g{color:var(--green)}
+  .tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;background:#E4F1E8;color:var(--green);margin-left:6px}
+  /* sources */
+  .src{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.src:last-child{border-bottom:none}
+  .srn{font-size:13px;font-weight:600}.srbtn{margin-left:auto;font-size:11px;font-weight:700;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 11px;cursor:pointer;color:var(--sky)}
+  .srok{margin-left:auto;font-size:11px;font-weight:700;color:var(--green)}
+  .srlock{margin-left:auto;font-size:11px;font-weight:700;color:var(--mut)}
+  /* journey */
+  .lvl{position:relative;padding-left:38px;padding-bottom:6px}
+  .lvl:before{content:"";position:absolute;left:14px;top:6px;bottom:-10px;width:2px;background:var(--line)}
+  .lvl:last-child:before{display:none}
+  .lvl .node{position:absolute;left:5px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px}
+  .lvl.done .node{background:var(--green);border-color:var(--green);color:#fff}
+  .lvl.cur .node{background:var(--clay);border-color:var(--clay);color:#fff;box-shadow:0 0 0 4px #FBEDE7}
+  .lvl .lcard{border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:14px;background:#fff}
+  .lvl.cur .lcard{border-color:var(--clay)}
+  .lvl.lock .lcard{background:var(--soft);opacity:.92}
+  .lvl .ln{font-size:14px;font-weight:800}.lvl .lc{font-size:10.5px;color:var(--mut);margin:2px 0 8px}
+  .feat{font-size:11.5px;padding:3px 0;color:var(--ink)}.feat .fk{color:var(--green);font-weight:700}.feat.lk{color:var(--mut)}.feat .lkk{color:var(--mut)}
+  /* community */
+  .actfi{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.actfi:last-child{border-bottom:none}
+  .pf{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
+  .actt{font-size:12.5px}.actt b{font-weight:700}.acts{font-size:10.5px;color:var(--mut)}
+  .lieml{margin-left:auto;font-size:14px}
+  .grouprow{display:flex;gap:10px;margin:2px 0 13px}
+  .gcard{flex:1;border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff;cursor:pointer}
+  .gcard .gi{font-size:20px}.gcard .gt{font-size:12.5px;font-weight:700;margin-top:5px}.gcard .gs{font-size:10.5px;color:var(--mut)}
+  /* token */
+  .tokbig{background:linear-gradient(140deg,#3a2e1a,#5a4424);border-radius:20px;padding:20px;color:#fff;margin-bottom:14px;text-align:center}
+  .tokbig .n{font-size:42px;font-weight:800;color:#F2D7A8}.tokbig .u{font-size:12px;opacity:.85;margin-top:2px}
+  .tokbig .lock{display:inline-block;font-size:10.5px;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:18px;margin-top:11px}
+  .split{display:flex;gap:10px;margin-bottom:13px}
+  .sp{flex:1;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}
+  .sp .l{font-size:10px;color:var(--mut)}.sp .v{font-size:18px;font-weight:800;margin-top:3px}.sp .d{font-size:10px;color:var(--mut);margin-top:3px}
+  .earn{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.earn:last-child{border-bottom:none}
+  .earn .ei{width:30px;height:30px;border-radius:9px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .earn .et{font-size:12.5px;font-weight:600}.earn .ea{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold)}
+  .streak{display:flex;align-items:center;gap:8px;background:#FFF6E6;border:1px solid #F0E2C0;border-radius:12px;padding:11px 14px;margin-bottom:13px}
+  .streak .f{font-size:18px}.streak .st{font-size:13px;font-weight:700}.streak .ss{font-size:10.5px;color:var(--mut)}
+  .note{font-size:11px;color:var(--mut);text-align:center;line-height:1.5;padding:0 6px}
+  /* nav */
+  .nav{display:flex;border-top:1px solid var(--line);background:#fff;flex-shrink:0;padding-bottom:6px}
+  .nav button{flex:1;border:none;background:none;padding:9px 0 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mut);font-family:var(--sans)}
+  .nav button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7}
+  .nav button .nl{font-size:9px;font-weight:600}.nav button.on{color:var(--clay)}
+  /* modal + toast */
+  .modal{position:absolute;inset:0;background:rgba(20,20,19,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:24px}
+  .modal.on{display:flex}
+  .mc{background:#fff;border-radius:20px;padding:22px;width:100%;text-align:center}
+  .mc .lk{font-size:34px}.mc h3{font-size:17px;font-weight:800;margin:8px 0 4px}.mc p{font-size:13px;color:var(--mut);line-height:1.5}
+  .mc .cond{background:var(--soft);border-radius:12px;padding:12px;margin:13px 0;font-size:12px;text-align:left}
+  .mc .cond .ci{display:flex;justify-content:space-between;padding:4px 0}.mc .cond .ci .ok{color:var(--green);font-weight:700}.mc .cond .ci .no{color:var(--clay);font-weight:700}
+  .mc button{width:100%;background:var(--clay);color:#fff;border:none;border-radius:12px;padding:12px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-top:4px}
+  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12.5px;padding:11px 16px;border-radius:12px;opacity:0;transition:all .3s;z-index:70;max-width:310px;text-align:center}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+  <div class="cap">Prototype · <b>Liêm Super-App</b> (GenZ + Gig). Bấm 5 tab dưới + thử tab <b>Hành trình</b> để xem cơ chế <b>mở khóa theo cấp độ</b>, và <b>Ví Liêm</b> cho token kiểu Pi. <i>Dữ liệu mô phỏng.</i></div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+    <div class="scrollarea">
+
+      <!-- HOME -->
+      <div class="screen on" id="s-home">
+        <div class="row"><div><div class="hi">Chào buổi sáng,</div><div class="hn">Minh 👋</div></div><div class="av">M</div></div>
+        <div class="liemcard">
+          <div class="top">
+            <div><div class="sc">720</div><div class="meta">Điểm Liêm · uy tín của bạn</div></div>
+            <div style="margin-left:10px"><span class="lv">Lv2 · Bạc</span></div>
+            <div class="tok"><div class="tn">1.240</div><div class="ts">🔒 LIÊM token</div></div>
+          </div>
+          <div class="prog"><i></i></div>
+          <div class="progtx">Còn 180đ &amp; 4 nhiệm vụ để lên <b>Lv3 · Liêm cao</b> → mở ref việc làm, miniapp Zalo…</div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Tài chính tháng 6</span><span class="more" onclick="tab(1)">Chi tiết ›</span></div>
+          <div class="fin"><div class="b"><div class="l">Chi tiêu</div><div class="v r">8,2tr</div></div><div class="b"><div class="l">Thu nhập</div><div class="v g">12,5tr</div></div><div class="b"><div class="l">Tiết kiệm</div><div class="v">4,3tr</div></div></div>
+          <div class="auto">● Tự động ghi nhận từ chuyển khoản &amp; bill — bạn không phải nhập tay</div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Nhiệm vụ hôm nay</span><span class="more" onclick="tab(2)">Tất cả ›</span></div>
+          <div class="q"><span class="qi">🧾</span><div><div class="qt">Ghi nhận 1 giao dịch</div><div class="qs">Quét bill hoặc đọc chuyển khoản</div></div><span class="qr">+5đ +10🪙</span><button class="qbtn" onclick="toast('+5 điểm Liêm · +10 token')">Làm</button></div>
+          <div class="q"><span class="qi">🔗</span><div><div class="qt">Kết nối ví MoMo</div><div class="qs">Để chấm điểm chính xác hơn</div></div><span class="qr">+50đ +80🪙</span><button class="qbtn" onclick="toast('Đang kết nối MoMo… (demo)')">Làm</button></div>
+          <div class="q"><span class="qi">👥</span><div><div class="qt">Mời 1 người bạn thật</div><div class="qs">Bạn xác minh = không phải bot</div></div><span class="qr">+30đ +50🪙</span><button class="qbtn done">✓ Xong</button></div>
+        </div>
+        <div class="qa">
+          <div class="qac" onclick="tab(1)"><div class="ic">🧾</div><div class="l">Quét bill</div></div>
+          <div class="qac" onclick="toast('Đang đọc chuyển khoản trên màn hình… (demo)')"><div class="ic">📲</div><div class="l">Đọc CK</div></div>
+          <div class="qac" onclick="toast('Mở Lá chắn chống lừa đảo (demo)')"><div class="ic">🛡️</div><div class="l">Check scam</div></div>
+        </div>
+        <div class="teaser"><span class="lk">🔒</span><div><div class="tt">Sắp mở khóa: Theo dõi crypto/chứng khoán</div><div class="ts">Cần thêm 1 nguồn kết nối</div></div><span class="go" onclick="tab(2)">Xem ›</span></div>
+      </div>
+
+      <!-- MONEY -->
+      <div class="screen" id="s-money">
+        <div class="hn" style="margin:4px 0 12px">Chi tiêu &amp; Tài chính</div>
+        <div class="card">
+          <div class="ch"><span class="t">Tự động ghi nhận</span></div>
+          <div class="qa" style="margin:0">
+            <div class="qac" onclick="toast('Bật: đọc chuyển khoản hiện trên màn hình → auto-fill')"><div class="ic">📲</div><div class="l">Đọc chuyển khoản</div></div>
+            <div class="qac" onclick="toast('Mở camera quét bill → OCR → auto-fill')"><div class="ic">📷</div><div class="l">Quét bill OCR</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Giao dịch gần đây</span></div>
+          <div class="tx"><span class="txi">⚡</span><div><div class="txt">Trả tiền điện EVN <span class="tag">tự động</span></div><div class="txs">Hôm nay · đúng hạn → +điểm Liêm</div></div><span class="txa r">−850k</span></div>
+          <div class="tx"><span class="txi">🛍️</span><div><div class="txt">Mua Shopee <span class="tag">OCR bill</span></div><div class="txs">Hôm qua · đã giao</div></div><span class="txa r">−320k</span></div>
+          <div class="tx"><span class="txi">💸</span><div><div class="txt">Nhận lương <span class="tag">tự động</span></div><div class="txs">01/06 · thu nhập ổn định</div></div><span class="txa g">+12,5tr</span></div>
+          <div class="tx"><span class="txi">🏠</span><div><div class="txt">Tiền thuê nhà <span class="tag">tự động</span></div><div class="txs">03/06 · đúng hạn 14 tháng</div></div><span class="txa r">−3,5tr</span></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Nguồn kết nối (để chấm điểm)</span></div>
+          <div class="src"><span class="txi">📱</span><span class="srn">Ví MoMo</span><span class="srok">✓ Đã kết nối</span></div>
+          <div class="src"><span class="txi">🏦</span><span class="srn">Vietcombank</span><span class="srok">✓ Đã kết nối</span></div>
+          <div class="src"><span class="txi">🛒</span><span class="srn">Shopee (seller)</span><span class="srbtn" onclick="toast('Kết nối Shopee qua zkTLS (demo)')">Kết nối</span></div>
+          <div class="src"><span class="txi">🎵</span><span class="srn">TikTok</span><span class="srbtn" onclick="toast('Kết nối TikTok (demo)')">Kết nối</span></div>
+          <div class="src"><span class="txi">📊</span><span class="srn">CIC (lịch sử tín dụng)</span><span class="srlock">🔒 Lv2</span></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Tài chính nâng cao</span><span class="more">Lv2 ›</span></div>
+          <div class="src"><span class="txi">🏦</span><span class="srn">Lãi tiết kiệm</span><span class="srok">4,3tr · 5,6%/năm</span></div>
+          <div class="src"><span class="txi">📈</span><span class="srn">Chứng khoán · Vàng</span><span class="srbtn" onclick="toast('Theo dõi danh mục (demo)')">Theo dõi</span></div>
+          <div class="src"><span class="txi">🪙</span><span class="srn">Crypto watch</span><span class="srbtn" onclick="toast('Theo dõi giá crypto (demo)')">Theo dõi</span></div>
+          <div class="src"><span class="txi">🤝</span><span class="srn">Quản lý hụi/họ</span><span class="srlock" onclick="locked('Quản lý hụi/họ','Lv2 · Ổn định','200đ + 2 tuần + 10 nhiệm vụ')" style="cursor:pointer">🔒 Xem</span></div>
+        </div>
+      </div>
+
+      <!-- JOURNEY -->
+      <div class="screen" id="s-journey">
+        <div class="hn" style="margin:4px 0 3px">Hành trình Liêm</div>
+        <div class="muted" style="font-size:12.5px;color:var(--mut);margin-bottom:14px">Mỗi cấp độ mở thêm tính năng. Lên cấp bằng <b>điểm Liêm + nhiệm vụ + thời gian</b>.</div>
+        <div class="lvl done"><span class="node">✓</span><div class="lcard"><div class="ln">Lv0 · Tân binh</div><div class="lc">Đã đạt · ngày 1</div>
+          <div class="feat"><span class="fk">✓</span> Quản lý chi tiêu · OCR bill · đọc chuyển khoản</div>
+          <div class="feat"><span class="fk">✓</span> Lá chắn chống lừa đảo · nhiệm vụ onboarding</div></div></div>
+        <div class="lvl done"><span class="node">✓</span><div class="lcard"><div class="ln">Lv1 · Đã xác thực</div><div class="lc">Đã đạt · proof-of-human + 1 nguồn</div>
+          <div class="feat"><span class="fk">✓</span> Xác thực người thật · kết nối ví/bank/social</div>
+          <div class="feat"><span class="fk">✓</span> Chấm điểm hoạt động quá khứ + hiện tại</div>
+          <div class="feat"><span class="fk">✓</span> Chia sẻ activity với người thân (Locket-style)</div></div></div>
+        <div class="lvl cur"><span class="node">◉</span><div class="lcard"><div class="ln">Lv2 · Ổn định <span style="font-size:10px;color:var(--clay)">— bạn đang ở đây</span></div><div class="lc">200đ + 2 tuần + 10 nhiệm vụ</div>
+          <div class="feat"><span class="fk">✓</span> Lãi tiết kiệm · chứng khoán/vàng/crypto</div>
+          <div class="feat"><span class="fk">✓</span> Quản lý hụi/họ · mua chung/gom đơn</div>
+          <div class="feat"><span class="fk">✓</span> Affiliate mời bạn mua · token tăng tốc</div></div></div>
+        <div class="lvl lock"><span class="node">🔒</span><div class="lcard" onclick="locked('Lv3 · Liêm cao','Lv3','500đ + 1 tháng + 5 nguồn verify')" style="cursor:pointer"><div class="ln">Lv3 · Liêm cao</div><div class="lc">🔒 Cần 500đ + 1 tháng + 5 nguồn · còn thiếu 180đ</div>
+          <div class="feat lk"><span class="lkk">🔒</span> Ref nghề nghiệp · giới thiệu tuyển dụng</div>
+          <div class="feat lk"><span class="lkk">🔒</span> Hộ chiếu portable · verify-request 2 chiều</div>
+          <div class="feat lk"><span class="lkk">🔒</span> Miniapp Zalo/Telegram · gig nâng cao</div></div></div>
+        <div class="lvl lock"><span class="node">🔒</span><div class="lcard" onclick="locked('Lv4 · Elite','Lv4','Top uy tín + chứng minh dài hạn')" style="cursor:pointer"><div class="ln">Lv4 · Elite</div><div class="lc">🔒 Top uy tín · dài hạn</div>
+          <div class="feat lk"><span class="lkk">🔒</span> Token quy đổi / lên sàn (khi có giấy phép)</div>
+          <div class="feat lk"><span class="lkk">🔒</span> Mở khóa vay · BNPL · bảo hiểm (qua đối tác)</div>
+          <div class="feat lk"><span class="lkk">🔒</span> Làm trung gian uy tín (midman)</div></div></div>
+      </div>
+
+      <!-- COMMUNITY -->
+      <div class="screen" id="s-comm">
+        <div class="hn" style="margin:4px 0 12px">Cộng đồng Liêm</div>
+        <div class="card">
+          <div class="ch"><span class="t">Hoạt động bạn bè · người thân</span><span class="more">như Locket</span></div>
+          <div class="actfi"><span class="pf" style="background:#5E84AE">L</span><div><div class="actt"><b>Lan</b> vừa trả tiền điện đúng hạn</div><div class="acts">2 phút trước · chuỗi 8 tháng sạch</div></div><span class="lieml">🟢</span></div>
+          <div class="actfi"><span class="pf" style="background:#6E8A4E">T</span><div><div class="actt"><b>Tuấn</b> hoàn thành nhiệm vụ tuần</div><div class="acts">15 phút trước · +120 token</div></div><span class="lieml">🔥</span></div>
+          <div class="actfi"><span class="pf" style="background:#8A6BA8">H</span><div><div class="actt"><b>Cô Hồng</b>: giao dịch sạch thứ 35</div><div class="acts">1 giờ trước · seller uy tín</div></div><span class="lieml">⭐</span></div>
+          <div class="actfi"><span class="pf" style="background:#C39A2E">P</span><div><div class="actt"><b>Phát</b> đóng hụi đúng kỳ</div><div class="acts">3 giờ trước · dây hụi 12 người</div></div><span class="lieml">🤝</span></div>
+        </div>
+        <div class="muted" style="font-size:11px;color:var(--mut);margin:-4px 0 12px;padding:0 2px">Chia sẻ <b>hoạt động chứng minh mình Liêm</b> — không phải ảnh tự sướng.</div>
+        <div class="ch" style="padding:0 2px"><span class="t" style="font-size:13px">Nhóm &amp; tiết kiệm chung</span></div>
+        <div class="grouprow">
+          <div class="gcard" onclick="toast('Mở nhóm Mua chung (demo)')"><div class="gi">🛒</div><div class="gt">Mua chung</div><div class="gs">gom đơn · giá sỉ</div></div>
+          <div class="gcard" onclick="toast('Mở Gom đơn (demo)')"><div class="gi">📦</div><div class="gt">Gom đơn ship</div><div class="gs">chia phí ship</div></div>
+        </div>
+        <div class="card">
+          <div class="ch"><span class="t">Mời &amp; giới thiệu</span></div>
+          <div class="q"><span class="qi">👥</span><div><div class="qt">Mời bạn thật</div><div class="qs">cả hai +điểm +token</div></div><button class="qbtn" onclick="toast('Đã tạo link mời (affiliate) qua Zalo')">Mời</button></div>
+          <div class="q"><span class="qi">🛍️</span><div><div class="qt">Affiliate mời mua</div><div class="qs">bạn mua → bạn nhận hoàn tiền</div></div><button class="qbtn" onclick="toast('Đã tạo link affiliate (demo)')">Chia sẻ</button></div>
+          <div class="q"><span class="qi">💼</span><div><div class="qt">Giới thiệu việc làm</div><div class="qs">🔒 mở ở Lv3</div></div><button class="qbtn" style="background:var(--soft);color:var(--mut)" onclick="locked('Ref tuyển dụng','Lv3','500đ + 1 tháng + 5 nguồn')">🔒</button></div>
+        </div>
+      </div>
+
+      <!-- TOKEN -->
+      <div class="screen" id="s-token">
+        <div class="hn" style="margin:4px 0 12px">Ví Liêm</div>
+        <div class="tokbig"><div class="n">1.240</div><div class="u">LIÊM token đã tích lũy</div><div class="lock">🔒 Đang khóa — mở khi listing (như Pi)</div></div>
+        <div class="split">
+          <div class="sp"><div class="l">ĐIỂM LIÊM</div><div class="v">720</div><div class="d">uy tín · không bán được</div></div>
+          <div class="sp"><div class="l">TOKEN LIÊM</div><div class="v" style="color:var(--gold)">1.240</div><div class="d">thưởng · quy đổi sau</div></div>
+        </div>
+        <div class="streak"><span class="f">🔥</span><div><div class="st">Chuỗi 12 ngày</div><div class="ss">Mỗi ngày dùng app + ghi nhận activity → token tăng</div></div></div>
+        <div class="card">
+          <div class="ch"><span class="t">Cách kiếm token (Activity-to-earn)</span></div>
+          <div class="earn"><span class="ei">✅</span><span class="et">Hoàn thành nhiệm vụ hệ thống</span><span class="ea">+10–80</span></div>
+          <div class="earn"><span class="ei">🧾</span><span class="et">Ghi nhận activity thật (bill, giao dịch)</span><span class="ea">+5–20</span></div>
+          <div class="earn"><span class="ei">🔥</span><span class="et">Streak hàng ngày</span><span class="ea">+5</span></div>
+          <div class="earn"><span class="ei">👥</span><span class="et">Mời người thật (đã verify)</span><span class="ea">+50</span></div>
+          <div class="earn"><span class="ei">🔗</span><span class="et">Kết nối &amp; xác minh nguồn data</span><span class="ea">+80</span></div>
+        </div>
+        <div class="note">Token kiếm từ <b>hoạt động thật + nhiệm vụ</b> — không phải tap vô nghĩa. Bot/farmer bị verify lọc; điểm Liêm (uy tín) tách khỏi token nên không mua bán được.</div>
+      </div>
+
+    </div>
+    <div class="nav">
+      <button class="on" onclick="tab(0,this)"><svg viewBox="0 0 24 24"><path d="M4 11 L12 4 L20 11"/><path d="M6 10v9h12v-9"/></svg><span class="nl">Trang chủ</span></button>
+      <button onclick="tab(1,this)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14.5h2"/></svg><span class="nl">Chi tiêu</span></button>
+      <button onclick="tab(2,this)"><svg viewBox="0 0 24 24"><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nl">Hành trình</span></button>
+      <button onclick="tab(3,this)"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 19c0-3 4-4 6-4s6 1 6 4M15.5 19c0-2 2.5-2.7 4-2.7"/></svg><span class="nl">Cộng đồng</span></button>
+      <button onclick="tab(4,this)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><circle cx="16" cy="12" r="2"/></svg><span class="nl">Ví Liêm</span></button>
+    </div>
+    <div class="modal" id="modal" onclick="if(event.target.id==='modal')cls()">
+      <div class="mc"><div class="lk">🔒</div><h3 id="mt">Tính năng đang khóa</h3><p id="mp">Mở khóa khi bạn lên cấp.</p>
+        <div class="cond" id="mcond"></div>
+        <button onclick="tab(2);cls()">Xem hành trình lên cấp</button></div>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+<script>
+  var ids=['s-home','s-money','s-journey','s-comm','s-token'];
+  var btns=document.querySelectorAll('.nav button');
+  function tab(i,btn){document.querySelectorAll('.screen').forEach(function(s,k){s.classList.toggle('on',ids[i]===s.id);});btns.forEach(function(b){b.classList.remove('on');});(btn||btns[i]).classList.add('on');document.querySelector('.scrollarea').scrollTop=0;}
+  function locked(name,lv,cond){document.getElementById('mt').textContent=name+' · '+lv;document.getElementById('mp').textContent='Tính năng này mở khi bạn đạt '+lv+'.';
+    document.getElementById('mcond').innerHTML='<div class="ci"><span>Điều kiện</span><span class="no">'+cond+'</span></div><div class="ci"><span>Hiện tại</span><span>Lv2 · 720đ · 18 ngày</span></div><div class="ci"><span>Còn thiếu</span><span class="no">~180đ &amp; 2 nguồn</span></div>';
+    document.getElementById('modal').classList.add('on');}
+  function cls(){document.getElementById('modal').classList.remove('on');}
+  var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on');},2100);}
+</script>
+</body>
+</html>

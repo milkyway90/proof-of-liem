@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proof-of-Liêm · Hồ sơ tổng hợp</title>
+<script>(function(){try{var t=localStorage.getItem('liem-theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();</script>
+<style>
+  :root{--ivory:#FAF9F5;--paper:#fff;--slate:#141413;--clay:#D97757;--sky:#5E84AE;--olive:#6E8A4E;--plum:#8A6BA8;--gold:#B58F2E;--rust:#B04A3F;--gray-300:#D9D7CD;--gray-500:#8A8980;--gray-700:#3D3D3A;--line:#E2E0D6;--soft:#F4F2EA;--hl:rgba(217,119,87,.08);--serif:ui-serif,Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  html.dark{--ivory:#131310;--paper:#1B1B16;--slate:#F5F3EC;--clay:#E08A6C;--sky:#86A6C8;--olive:#9CB07C;--plum:#B79BD0;--gold:#D6BC52;--rust:#E07A6C;--gray-300:#3A3A33;--gray-500:#9A988F;--gray-700:#D0CEC5;--line:#2C2C25;--soft:#1F1F18;--hl:rgba(224,138,108,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+  body{background:var(--ivory);color:var(--gray-700);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;padding:0 24px 140px;transition:background .3s,color .3s}
+  .page{max-width:1080px;margin:0 auto;padding-top:58px;display:grid;grid-template-columns:188px minmax(0,1fr);gap:56px}
+  @media(max-width:900px){.page{grid-template-columns:1fr;gap:20px}nav.toc{position:static;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:8px}}
+  nav.toc{position:sticky;top:30px;align-self:start;font-size:13px;max-height:calc(100vh - 60px);overflow:auto}
+  nav.toc .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-500);margin-bottom:14px}
+  nav.toc a{display:block;padding:6px 0 6px 13px;border-left:2px solid var(--line);color:var(--gray-500);text-decoration:none;line-height:1.35;transition:color .15s,border-color .15s}
+  nav.toc a:hover,nav.toc a.on{color:var(--clay);border-left-color:var(--clay)}
+  nav.toc a .n{font-family:var(--mono);font-size:10px;color:var(--gray-300);margin-right:7px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin-bottom:16px}
+  h1{font-family:var(--serif);font-weight:500;font-size:42px;color:var(--slate);letter-spacing:-.02em;line-height:1.08;margin-bottom:18px}
+  .sub{font-size:18px;line-height:1.6;max-width:600px;margin-bottom:8px;color:var(--gray-700)}
+  section{padding:46px 0 8px;scroll-margin-top:20px}
+  section+section{border-top:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:11px;color:var(--clay);letter-spacing:.08em;margin-bottom:8px}
+  h2{font-family:var(--serif);font-weight:500;font-size:28px;color:var(--slate);letter-spacing:-.015em;margin-bottom:8px;line-height:1.2}
+  h3{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--slate);margin:26px 0 8px}
+  .lead{font-size:16px;max-width:620px;color:var(--gray-700);margin-bottom:18px}
+  p{margin-bottom:12px;max-width:620px}
+  strong{color:var(--slate);font-weight:600}em{color:var(--clay);font-style:normal;font-weight:500}
+  a{color:var(--sky);text-decoration:none;border-bottom:1px solid transparent}a:hover{border-bottom-color:var(--sky)}
+  ul{margin:2px 0 16px;padding-left:0;list-style:none;max-width:620px}
+  ul li{padding-left:20px;position:relative;margin-bottom:7px}
+  ul li:before{content:"→";position:absolute;left:0;color:var(--clay)}
+  .toggle{position:fixed;top:15px;right:18px;z-index:40;border:1.5px solid var(--line);background:var(--paper);color:var(--gray-700);border-radius:9px;font-family:var(--mono);font-size:11px;padding:7px 11px;cursor:pointer;display:flex;gap:6px}
+  .toggle:hover{background:var(--soft)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 8px}
+  @media(max-width:640px){.stats{grid-template-columns:1fr}}
+  .stat .n{font-family:var(--serif);font-size:32px;font-weight:500;color:var(--clay);line-height:1}
+  .stat .l{font-size:13px;color:var(--gray-500);margin-top:8px;line-height:1.45}
+  .tldr{border:1.5px solid var(--line);border-left:3px solid var(--clay);border-radius:12px;background:var(--paper);padding:18px 20px;margin:18px 0;max-width:680px}
+  .tldr .q{font-family:var(--serif);font-size:19px;line-height:1.5;color:var(--slate)}
+  .tldr.s{border-left-color:var(--sky)}
+  .pitch{border:1.5px solid var(--clay);border-radius:16px;background:var(--hl);padding:24px 26px;margin:18px 0;max-width:700px}
+  .pitch .tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--clay);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .pitch .tag:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--clay)}
+  .pitch p{font-family:var(--serif);font-size:20px;line-height:1.55;color:var(--slate);max-width:none;margin:0}
+  .pitch p em{color:var(--clay)}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0;max-width:720px}
+  @media(max-width:640px){.three{grid-template-columns:1fr}}
+  .mini{border:1.5px solid var(--line);border-radius:13px;background:var(--paper);padding:16px 18px}
+  .mini .h{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay);margin-bottom:8px}
+  .mini p{font-size:13.5px;margin:0;max-width:none}
+  figure{margin:18px 0 0;border:1.5px solid var(--line);border-radius:16px;background:var(--paper);padding:24px 22px 16px;overflow:hidden}
+  figure svg{display:block;width:100%;height:auto}
+  figcaption{font-size:12.5px;color:var(--gray-500);margin-top:14px;line-height:1.5;max-width:700px}
+  .figlabel{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin-bottom:14px}
+  .ic{width:54px;height:54px;border-radius:14px;border:1.5px solid var(--line);background:var(--soft);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .ic svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .ic.i-clay{color:var(--clay)}.ic.i-sky{color:var(--sky)}.ic.i-plum{color:var(--plum)}.ic.i-olive{color:var(--olive)}
+  .tech{border:1.5px solid var(--line);border-radius:16px;background:var(--paper);padding:20px 22px;margin:14px 0}
+  .tech .hd{display:flex;align-items:flex-start;gap:16px}
+  .nm2{font-family:var(--serif);font-size:21px;color:var(--slate);font-weight:500;display:flex;align-items:center;gap:9px;flex-wrap:wrap;line-height:1.2}
+  .one2{font-size:14.5px;color:var(--gray-700);margin-top:7px;line-height:1.55;max-width:none}
+  .badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .pill{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:5px;border:1px solid var(--line);letter-spacing:.02em;vertical-align:middle;white-space:nowrap}
+  .pill.ai{color:var(--sky);border-color:var(--sky)}.pill.bc{color:var(--plum);border-color:var(--plum)}.pill.bd{color:var(--olive);border-color:var(--olive)}
+  .fm{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:5px;border:1px solid var(--line);color:var(--gray-700)}
+  .aud{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:5px;border:1px solid var(--line)}
+  .aud.b2c{color:var(--sky);border-color:var(--sky)}.aud.b2b{color:var(--olive);border-color:var(--olive)}
+  .pg{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--paper);border-radius:6px;padding:2px 8px}
+  .pg0{background:var(--clay)}.pg1{background:var(--sky)}.pg2{background:var(--olive)}.pg3{background:var(--plum)}
+  details{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  details summary{list-style:none;cursor:pointer;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--gray-500);display:flex;align-items:center;gap:8px}
+  details summary::-webkit-details-marker{display:none}
+  details summary:before{content:"+";font-size:14px;color:var(--clay);font-weight:600;width:14px}
+  details[open] summary:before{content:"–"}
+  details summary:hover{color:var(--clay)}
+  .dd{font-size:13.5px;line-height:1.65;margin-top:12px;color:var(--gray-700)}
+  .dd b{color:var(--slate)}
+  .dd .row{margin-bottom:11px}
+  .dd .t{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--clay);margin-bottom:3px}
+  .die{color:var(--rust);font-weight:600}.live{color:var(--olive);font-weight:600}.legal{color:var(--rust)}
+  /* interactive tabs (pipeline + roadmap) */
+  .tabnode{cursor:pointer}
+  .tabnode rect{pointer-events:all;transition:stroke-width .15s}
+  .tabnode:hover rect{stroke-width:2.6}
+  .tabnode.active rect{stroke-width:3.2}
+  .tabnode:focus{outline:none}
+  .tabnode:focus-visible rect{stroke-width:3.2}
+  .plhint{text-align:center;font-family:var(--mono);font-size:10px;color:var(--gray-500);margin-top:10px}
+  .tabpanel{display:none;border:1.5px solid var(--line);border-radius:16px;background:var(--paper);padding:20px 22px;margin-top:14px}
+  .tabpanel.show{display:block;animation:plf .22s ease}
+  @keyframes plf{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+  .tabpanel .hd{display:flex;align-items:flex-start;gap:16px}
+  .tabpanel .dd{border-top:1px solid var(--line);padding-top:13px;margin-top:14px}
+  .tabpanel .tech{margin:0 0 12px;background:var(--soft)}.tabpanel .tech:last-child{margin-bottom:0}
+  table.gx{border-collapse:collapse;width:100%;margin:10px 0;font-size:12px}
+  table.gx th,table.gx td{text-align:left;padding:8px 9px;border-bottom:1px solid var(--line);vertical-align:middle;line-height:1.45}
+  table.gx th{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-500);font-weight:500}
+  table.gx tbody tr:hover{background:var(--soft)}
+  table.gx td.c{text-align:center}
+  .mx .sig{font-weight:600;color:var(--slate)}
+  .ev{font-family:var(--mono);font-size:9px;color:var(--gray-500)}
+  .w3{color:var(--olive);letter-spacing:1.5px;font-size:12px}.w2{color:var(--gold);letter-spacing:1.5px;font-size:12px}.w1{color:var(--gray-300);letter-spacing:1.5px;font-size:12px}.w0{color:var(--gray-300)}
+  .evb{font-family:var(--mono);font-size:9px;font-weight:600;padding:1px 5px;border-radius:4px;border:1px solid var(--line);margin-right:2px}
+  .evb.a{color:var(--clay);border-color:var(--clay)}.evb.b{color:var(--sky);border-color:var(--sky)}.evb.c{color:var(--gold);border-color:var(--gold)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px}
+  .chip{font-family:var(--mono);font-size:10.5px;border:1px solid var(--line);border-radius:20px;padding:6px 13px;color:var(--gray-700);background:var(--paper)}
+  .evb.p{color:var(--plum);border-color:var(--plum)}
+  .acc{margin:10px 0 4px}
+  .acc details{border:1.5px solid var(--line);border-radius:12px;background:var(--paper);margin:0 0 8px;padding:0}
+  .acc details summary{padding:13px 16px;font-family:var(--sans);font-size:14.5px;font-weight:600;color:var(--slate);text-transform:none;letter-spacing:0}
+  .acc details[open] summary{border-bottom:1px solid var(--line)}
+  .acc .gn{font-family:var(--mono);font-size:9.5px;color:var(--gray-500);font-weight:400;margin-left:auto}
+  .acc details ul{margin:0;padding:12px 18px 6px;max-width:none}
+  .acc details ul li{font-size:13px;margin-bottom:7px}
+  .sigtabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+  .sigtab{font-family:var(--sans);font-size:13px;border:1.5px solid var(--line);background:var(--paper);color:var(--gray-700);border-radius:9px;padding:8px 14px;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+  .sigtab:hover{border-color:var(--clay);color:var(--clay)}
+  .sigtab.active{background:var(--clay);color:var(--ivory);border-color:var(--clay)}
+  .sigtab:focus-visible{outline:2px solid var(--clay);outline-offset:2px}
+  td.pt{text-align:center;font-family:var(--mono);font-weight:600;color:var(--slate)}
+  .ptot{font-family:var(--mono);font-size:11px;color:var(--gray-500);margin-top:8px;text-align:right}
+  .b{fill:var(--paper);stroke:var(--gray-300);stroke-width:1.5}.bs{fill:var(--soft);stroke:var(--gray-300);stroke-width:1.5}.bc2{fill:var(--hl);stroke:var(--clay);stroke-width:1.6}
+  .tt{fill:var(--slate);font-family:var(--sans);font-weight:600}.ts{fill:var(--gray-500);font-family:var(--sans)}.tm{fill:var(--gray-500);font-family:var(--mono)}
+  .cc{fill:var(--clay)}.cs{fill:var(--sky)}.co{fill:var(--olive)}.cp{fill:var(--plum)}
+  .ln{stroke:var(--gray-300);stroke-width:1.5;fill:none}.fl{stroke:var(--clay);stroke-width:1.9;fill:none}.fld{stroke:var(--clay);stroke-width:1.6;fill:none;stroke-dasharray:4 4}
+  .kc{fill:none;stroke:var(--clay);stroke-width:1.6}.ks{fill:none;stroke:var(--sky);stroke-width:1.6}.ko{fill:none;stroke:var(--olive);stroke-width:1.6}.kp{fill:none;stroke:var(--plum);stroke-width:1.6}
+  footer{margin-top:50px;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--gray-500);max-width:700px}footer a{color:var(--sky)}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeBtn"><span id="themeIcon">☾</span><span id="themeTxt">Tối</span></button>
+<div class="page">
+  <nav class="toc">
+    <div class="lbl">Mục lục</div>
+    <a href="#tomtat"><span class="n">00</span>Đây là gì</a>
+    <a href="#boicanh"><span class="n">01</span>Bối cảnh</a>
+    <a href="#yt"><span class="n">02</span>Cách chạy</a>
+    <a href="#congnghe"><span class="n">03</span>Công nghệ</a>
+    <a href="#chamdiem"><span class="n">04</span>Chấm điểm</a>
+    <a href="#product"><span class="n">05</span>Sản phẩm</a>
+    <a href="#endgame"><span class="n">06</span>Endgame</a>
+    <a href="#lotrinh"><span class="n">07</span>Lộ trình</a>
+  </nav>
+
+  <main>
+    <div class="eyebrow">Hồ sơ tổng hợp · bản hình · đọc nhẹ</div>
+    <h1>Proof-of-Liêm</h1>
+    <p class="sub">Biến uy tín thật của một người thành <strong>hộ chiếu mang đi được</strong> — chứng minh ở bất cứ đâu, không cần gặp mặt.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">60–70%</div><div class="l">người Việt không có lịch sử tín dụng</div></div>
+      <div class="stat"><div class="n">$744 tr</div><div class="l">mất vì lừa đảo online (VN, 2024)</div></div>
+      <div class="stat"><div class="n">$4,8 tỷ</div><div class="l">đốt mỗi năm vì KOL/influencer giả</div></div>
+    </div>
+
+    <section id="tomtat">
+      <div class="kicker">00 · ĐÂY LÀ GÌ</div>
+      <h2>Giải thích trong 30 giây</h2>
+      <div class="pitch">
+        <div class="tag">Elevator pitch</div>
+        <p>Bạn là tài xế 5 sao, người bán hàng tử tế, hay một KOC review thật — nhưng khi cần vay tiền, thuê nhà hay nhận hợp đồng quảng cáo, <em>không ai chứng minh được bạn đáng tin</em>, vì uy tín của bạn bị kẹt trong từng app. <strong>Proof-of-Liêm</strong> gom mọi bằng chứng đáng tin của bạn thành <em>một "hộ chiếu uy tín"</em> bạn sở hữu và mang đi mọi nơi. Bắt đầu từ giới sáng tạo nội dung — đích đến là mở khóa vay vốn, bảo hiểm cho hàng triệu người bị ngân hàng bỏ quên.</p>
+      </div>
+      <h3>Nói cho thật dễ hiểu</h3>
+      <p>Hình dung một tấm <strong>hộ chiếu</strong> — nhưng thay vì chứng minh bạn là công dân nước nào, nó chứng minh bạn là người <em>đáng tin</em>. Hai cách ví von:</p>
+      <ul>
+        <li>Như <strong>LinkedIn</strong> — nhưng cho <em>sự đáng tin</em>, và được công nghệ xác thực thật (không khai khống được).</li>
+        <li>Như <strong>điểm tín dụng (credit score)</strong> — nhưng do <em>bạn sở hữu</em> và dùng được ở mọi lĩnh vực, không chỉ để vay tiền.</li>
+      </ul>
+      <div class="three">
+        <div class="mini"><div class="h">Cho ai</div><p>Người bị bỏ quên: gig, freelancer, KOC, GenZ, người chưa có lịch sử ngân hàng.</p></div>
+        <div class="mini"><div class="h">Làm gì</div><p>Chứng minh uy tín để được tin, được thuê, được vay, được trả giá cao hơn.</p></div>
+        <div class="mini"><div class="h">Kiếm tiền sao</div><p>Brand / bên cho vay / đối tác trả phí verify. Người dùng dùng miễn phí.</p></div>
+      </div>
+    </section>
+
+    <section id="boicanh">
+      <div class="kicker">01 · BỐI CẢNH</div>
+      <h2>Một khe hở — rất nhiều thị trường</h2>
+      <p class="lead">Mọi nỗi đau đều là một <strong>khe hở niềm tin</strong>: hai người lạ không có cách xác nhận độ tin của nhau.</p>
+      <figure>
+        <div class="figlabel">Khe hở niềm tin</div>
+        <svg viewBox="0 0 880 178" role="img" aria-label="Khe hở niềm tin">
+          <circle cx="118" cy="70" r="30" class="bs"/><text x="118" y="66" text-anchor="middle" class="tt" font-size="11">Người</text><text x="118" y="82" text-anchor="middle" class="ts" font-size="9.5">uy tín thật</text>
+          <line x1="148" y1="70" x2="358" y2="70" class="ln"/>
+          <rect x="358" y="44" width="164" height="52" rx="12" class="bc2" stroke-dasharray="5 4"/><text x="440" y="68" text-anchor="middle" class="cc" font-size="12" font-weight="700">KHE HỞ</text><text x="440" y="85" text-anchor="middle" class="ts" font-size="9.5">"chứng minh sao đây?"</text>
+          <line x1="522" y1="70" x2="732" y2="70" class="ln"/>
+          <circle cx="762" cy="70" r="30" class="bs"/><text x="762" y="66" text-anchor="middle" class="tt" font-size="11">Đối tác</text><text x="762" y="82" text-anchor="middle" class="ts" font-size="9.5">vay/thuê/brand</text>
+          <g class="ts" font-size="10.5" text-anchor="middle">
+            <rect x="40" y="128" width="118" height="30" rx="8" class="bs"/><text x="99" y="147">vay vốn</text>
+            <rect x="172" y="128" width="118" height="30" rx="8" class="bs"/><text x="231" y="147">thuê nhà</text>
+            <rect x="304" y="128" width="118" height="30" rx="8" class="bs"/><text x="363" y="147">tuyển dụng</text>
+            <rect x="436" y="128" width="128" height="30" rx="8" class="bs"/><text x="500" y="147">brand thuê KOL</text>
+            <rect x="578" y="128" width="118" height="30" rx="8" class="bs"/><text x="637" y="147">mua bán P2P</text>
+            <rect x="710" y="128" width="130" height="30" rx="8" class="bs"/><text x="775" y="147">hẹn hò / di cư</text>
+          </g>
+        </svg>
+        <figcaption>Giải được khe hở này = mở khóa nhiều thị trường cùng lúc. Cấp tính nhất ở VN: tín dụng đen (300–1.000%/năm), lừa đảo, KOL giả.</figcaption>
+      </figure>
+    </section>
+
+    <section id="yt">
+      <div class="kicker">02 · CÁCH CHẠY</div>
+      <h2>Hệ thống làm việc — 4 bước</h2>
+      <p class="lead">Gom bằng chứng → xác minh → đóng thành hộ chiếu user sở hữu → dùng mọi nơi.</p>
+      <figure>
+        <div class="figlabel">4 bước</div>
+        <svg viewBox="0 0 900 130" role="img" aria-label="Bốn bước">
+          <rect x="14" y="30" width="190" height="70" rx="13" class="bs"/><text x="109" y="62" text-anchor="middle" class="tt" font-size="12">1 · Thu thập</text><text x="109" y="80" text-anchor="middle" class="ts" font-size="10">rating·bill·social·hụi</text>
+          <path d="M204 65 L 242 65" class="fl"/>
+          <rect x="242" y="30" width="190" height="70" rx="13" class="ks"/><text x="337" y="62" text-anchor="middle" class="cs" font-size="12" font-weight="600">2 · Xác minh</text><text x="337" y="80" text-anchor="middle" class="ts" font-size="10">AI lọc thật/giả</text>
+          <path d="M432 65 L 470 65" class="fl"/>
+          <rect x="470" y="30" width="190" height="70" rx="13" class="bc2"/><text x="565" y="62" text-anchor="middle" class="tt" font-size="12">3 · Hộ chiếu</text><text x="565" y="80" text-anchor="middle" class="ts" font-size="10">user sở hữu · soulbound</text>
+          <path d="M660 65 L 698 65" class="fl"/>
+          <rect x="698" y="30" width="190" height="70" rx="13" class="ko"/><text x="793" y="62" text-anchor="middle" class="co" font-size="12" font-weight="600">4 · Dùng mọi nơi</text><text x="793" y="80" text-anchor="middle" class="ts" font-size="10">xuất proof (ZK)</text>
+        </svg>
+        <figcaption>Khác <a href="https://en.wikipedia.org/wiki/Zhima_Credit">Sesame Credit</a> (một điểm chung → vô nghĩa): mỗi lĩnh vực một công thức, và user — không phải công ty — sở hữu hồ sơ.</figcaption>
+      </figure>
+    </section>
+
+    <section id="congnghe">
+      <div class="kicker">03 · CÔNG NGHỆ</div>
+      <h2>Bấm vào từng mắt xích để xem chi tiết</h2>
+      <p class="lead">Ba trụ <span class="pill ai">AI</span> <span class="pill bc">Blockchain</span> <span class="pill bd">Big Data</span> + mảnh ghép mới <strong>zkTLS</strong>. Dữ liệu đi từ trái sang phải:</p>
+      <figure>
+        <div class="figlabel">Pipeline — chạm vào một ô để mở chi tiết bên dưới</div>
+        <svg viewBox="0 0 1000 132" role="img" aria-label="Pipeline 5 mắt xích bấm được">
+          <g class="tabnode active" data-grp="pipe" data-t="thu-thap" tabindex="0" role="button" aria-label="Thu thập — zkTLS"><rect x="8" y="34" width="180" height="64" rx="13" class="bc2"/><text x="98" y="62" text-anchor="middle" class="tt" font-size="12">① zkTLS</text><text x="98" y="82" text-anchor="middle" class="ts" font-size="9.5">thu thập có proof</text></g>
+          <path d="M188 66 L 214 66" class="fl"/>
+          <g class="tabnode" data-grp="pipe" data-t="xac-minh" tabindex="0" role="button" aria-label="Xác minh — AI"><rect x="214" y="34" width="180" height="64" rx="13" class="ks"/><text x="304" y="62" text-anchor="middle" class="cs" font-size="12" font-weight="600">② AI verify</text><text x="304" y="82" text-anchor="middle" class="ts" font-size="9.5">lọc farmer · thật/giả</text></g>
+          <path d="M394 66 L 420 66" class="fl"/>
+          <g class="tabnode" data-grp="pipe" data-t="luu" tabindex="0" role="button" aria-label="Lưu — Soulbound"><rect x="420" y="34" width="180" height="64" rx="13" class="kp"/><text x="510" y="62" text-anchor="middle" class="cp" font-size="12" font-weight="600">③ Soulbound</text><text x="510" y="82" text-anchor="middle" class="ts" font-size="9.5">lưu · không bán được</text></g>
+          <path d="M600 66 L 626 66" class="fl"/>
+          <g class="tabnode" data-grp="pipe" data-t="rieng-tu" tabindex="0" role="button" aria-label="Riêng tư — ZK"><rect x="626" y="34" width="180" height="64" rx="13" class="ks"/><text x="716" y="62" text-anchor="middle" class="cs" font-size="12" font-weight="600">④ ZK riêng tư</text><text x="716" y="82" text-anchor="middle" class="ts" font-size="9.5">không lộ data thô</text></g>
+          <path d="M806 66 L 832 66" class="fl"/>
+          <g class="tabnode" data-grp="pipe" data-t="cham-diem" tabindex="0" role="button" aria-label="Chấm điểm"><rect x="832" y="34" width="160" height="64" rx="13" class="ko"/><text x="912" y="62" text-anchor="middle" class="co" font-size="12" font-weight="600">⑤ Chấm điểm</text><text x="912" y="82" text-anchor="middle" class="ts" font-size="9.5">đa-domain</text></g>
+        </svg>
+        <div class="plhint">↑ bấm vào từng ô</div>
+      </figure>
+
+      <div class="tabpanel show" data-grp="pipe" id="tab-pipe-thu-thap">
+        <div class="hd"><span class="ic i-clay"><svg viewBox="0 0 24 24"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16 19.6 12 21.5 C8 19.6 4.5 15.8 4.5 11 V5.5 Z"/><path d="M9 11.8 l2.2 2.2 l4 -4.4"/></svg></span>
+        <div><div class="nm2">① Thu thập — zkTLS <span class="pill bc">Blockchain·ZK</span> <span class="pill bd">+ Open-Banking</span></div><div class="one2">Lấy data thật từ bất kỳ web nào, có bằng chứng không giả, không lộ data, không cần API.</div></div></div>
+        <div class="dd">
+          <div class="row"><span class="t">Là gì</span>Một "công chứng viên vô hình" ngồi cạnh lúc bạn đăng nhập web: xác nhận "trang này thật sự gửi cho bạn thông tin X" mà không đọc trộm. Bạn cầm tờ "công chứng" (proof) đi chứng minh nơi khác.</div>
+          <div class="row"><span class="t">Công nghệ</span>zkTLS (chính) + Open-Banking aggregation (bổ trợ nơi có).</div>
+          <div class="row"><span class="t">Ai đang dùng</span><a href="https://www.reclaimprotocol.org">Reclaim</a> (889 nguồn), <a href="https://zkpass.org">zkPass</a>; use case thật <a href="https://blog.chain.link/undercollateralized-lending-teller-deco-poc/">Stormbit/Mansa</a> prove web2 → unlock tín dụng. Open-banking: <a href="https://sacra.com/research/plaid-data-aggregator-business/">Plaid</a>.</div>
+          <div class="row"><span class="t">Thành công · Valuation</span>Đang vào production. <b>zkPass: định giá token $100M</b> (gọi $15M, Animoca dẫn). <b>Plaid: đỉnh $13,4 tỷ → $2,65 tỷ</b> (ngân hàng bắt trả phí data) → <span class="die">bài học:</span> phụ thuộc API ngân hàng bị đánh thuế; <b>zkTLS né được</b>. DECO (Chainlink) mã hoá nặng (475MB, 50s) → chưa chạy → proxy nhẹ thắng.</div>
+          <div class="row"><span class="t">Vận hành</span>
+            <svg viewBox="0 0 900 120" style="margin-top:6px" role="img" aria-label="zkTLS hoạt động">
+              <rect x="6" y="36" width="140" height="48" rx="11" class="bs"/><text x="76" y="58" text-anchor="middle" class="tt" font-size="10.5">Điện thoại</text><text x="76" y="74" text-anchor="middle" class="ts" font-size="9">user đăng nhập</text>
+              <path d="M146 60 L 192 60" class="fl"/><text x="169" y="52" text-anchor="middle" class="tm" font-size="8">TLS</text>
+              <rect x="192" y="36" width="146" height="48" rx="11" class="bs"/><text x="265" y="58" text-anchor="middle" class="tt" font-size="10.5">Web thật</text><text x="265" y="74" text-anchor="middle" class="ts" font-size="9">bank / grab</text>
+              <path d="M338 60 C 384 60 384 96 432 96" class="fld"/>
+              <rect x="432" y="74" width="192" height="42" rx="11" class="ks"/><text x="528" y="93" text-anchor="middle" class="cs" font-size="10.5" font-weight="600">ZK proof tạo trên máy</text><text x="528" y="108" text-anchor="middle" class="ts" font-size="8.5">"rating = 4.9"</text>
+              <path d="M624 95 L 668 95" class="fl"/>
+              <rect x="668" y="74" width="226" height="42" rx="11" class="bc2"/><text x="781" y="93" text-anchor="middle" class="tt" font-size="10.5">Verifier kiểm proof</text><text x="781" y="108" text-anchor="middle" class="ts" font-size="8.5">đúng thật · không thấy data thô</text>
+              <text x="440" y="30" class="ts" font-size="9.5">Chỉ <tspan class="cc" font-family="var(--mono)">proof</tspan> rời máy — sao kê ở lại với user</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="pipe" id="tab-pipe-xac-minh">
+        <div class="hd"><span class="ic i-sky"><svg viewBox="0 0 24 24"><circle cx="6" cy="6.5" r="2.2"/><circle cx="18" cy="6" r="2.2"/><circle cx="12.5" cy="14" r="2.2"/><circle cx="6" cy="18.5" r="2.2"/><path d="M7.8 7.5 L11 12.6 M16 7 L13.7 12.4 M7.6 17 L10.8 15.2"/></svg></span>
+        <div><div class="nm2">② Xác minh — AI <span class="pill ai">AI</span></div><div class="one2">AI lọc thật/giả: chặn farmer/bot, nhận diện follower ảo &amp; deepfake, chứng minh người thật.</div></div></div>
+        <div class="dd">
+          <div class="row"><span class="t">Là gì</span>AI vẽ bản đồ ai-nối-với-ai (cùng máy, IP, dòng tiền) để bắt cả "đàn" account ảo + soi KOL/ảnh/video thật-giả + chứng minh "một người = một hồ sơ".</div>
+          <div class="row"><span class="t">Công nghệ</span>Graph-ML Fraud + AI Authenticity (deepfake) + Proof-of-Personhood.</div>
+          <div class="row"><span class="t">Ai đang dùng</span><a href="https://sift.com">Sift</a>, <a href="https://www.feedzai.com/">Feedzai</a>; <a href="https://hypeauditor.com">HypeAuditor</a>, <a href="https://www.getphyllo.com">Phyllo</a>; <a href="https://human.tech">Human Passport</a>, <a href="https://www.brightid.org">BrightID</a>.</div>
+          <div class="row"><span class="t">Thành công · Valuation</span>Category tỷ đô: <b>Sift ~$1 tỷ</b> (khách Airbnb, DoorDash, McDonald's), <b>Feedzai $2 tỷ</b> (chặn $2 tỷ thiệt hại/năm). <a href="https://world.org">Worldcoin/Tools for Humanity</a> <b>$2,5 tỷ</b> — <span class="die">nhưng bị cấm nhiều nước</span> vì biometric ép → ta tránh biometric bắt buộc.</div>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="pipe" id="tab-pipe-luu">
+        <div class="hd"><span class="ic i-plum"><svg viewBox="0 0 24 24"><rect x="2.5" y="9" width="11" height="6" rx="3"/><rect x="10.5" y="9" width="11" height="6" rx="3"/></svg></span>
+        <div><div class="nm2">③ Lưu &amp; sở hữu — Soulbound + EAS <span class="pill bc">Blockchain</span></div><div class="one2">Mỗi bằng chứng = huy hiệu ký số, không chuyển nhượng → user sở hữu, không sửa, không bán điểm.</div></div></div>
+        <div class="dd">
+          <div class="row"><span class="t">Là gì</span>Tấm "huy hiệu số" đóng dấu vào hồ sơ bạn, không gỡ ra bán cho người khác được — nhờ vậy uy tín không mua bán được.</div>
+          <div class="row"><span class="t">Công nghệ</span>Soulbound credential + Ethereum Attestation Service (EAS).</div>
+          <div class="row"><span class="t">Ai đang dùng</span><a href="https://attest.org">EAS</a> (hạ tầng), <a href="https://human.tech">Human Passport</a> (2M+ user).</div>
+          <div class="row"><span class="t">Thành công · Valuation</span>EAS là <b>hạ tầng mở (public-good, phi lợi nhuận)</b>; Human Passport VC-backed. <span class="die">Bài học:</span> uPort/Civic/Web5 chết vì gắn token + khoá một chain + UX khó → <b>đừng gắn token, bắt đầu hẹp, UX dễ</b>.</div>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="pipe" id="tab-pipe-rieng-tu">
+        <div class="hd"><span class="ic i-sky"><svg viewBox="0 0 24 24"><rect x="4.5" y="11" width="15" height="9.5" rx="2.2"/><path d="M7.5 11 V8 a4.5 4.5 0 0 1 9 0 V11"/><circle cx="12" cy="15.4" r="1.3"/></svg></span>
+        <div><div class="nm2">④ Riêng tư — ZK + on-device <span class="pill ai">AI · Privacy</span></div><div class="one2">Xuất "proof" (vd "điểm ≥ 800") mà không lộ con số/sao kê; tính ngay trên máy user.</div></div></div>
+        <div class="dd">
+          <div class="row"><span class="t">Là gì</span>Chứng minh một điều đúng mà không tiết lộ dữ liệu nền — như nói "tôi đủ 18 tuổi" mà không đưa ngày sinh.</div>
+          <div class="row"><span class="t">Công nghệ</span>Zero-knowledge selective disclosure + on-device / federated learning.</div>
+          <div class="row"><span class="t">Ai đang dùng</span>Google &amp; Apple dùng federated learning trong production (gõ phím, gợi ý) — đã chứng minh ở quy mô tỷ thiết bị.</div>
+          <div class="row"><span class="t">Lằn ranh cứng</span>Chỉ đưa <b>proof / hash</b> lên blockchain — KHÔNG bao giờ đưa dữ liệu cá nhân thô (vi phạm quyền được xoá của PDPL).</div>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="pipe" id="tab-pipe-cham-diem">
+        <div class="hd"><span class="ic i-olive"><svg viewBox="0 0 24 24"><path d="M4 18 A8 8 0 0 1 20 18"/><path d="M12 18 L16.5 11"/><circle cx="12" cy="18" r="1.4"/></svg></span>
+        <div><div class="nm2">⑤ Chấm điểm — đa-domain <span class="pill ai">AI</span> <span class="pill bd">Big Data</span></div><div class="one2">Gộp đa nguồn thành điểm theo TỪNG lĩnh vực — không có "một điểm chung" vạn năng.</div></div></div>
+        <div class="dd">
+          <div class="row"><span class="t">Là gì</span>Mỗi lĩnh vực (creator, gig, tài chính) một công thức riêng, được kiểm chứng với một kết quả thật (vd: trả nợ đúng hạn).</div>
+          <div class="row"><span class="t">Công nghệ</span>ML chấm điểm trên dữ liệu thay thế (alternative data) + đồ thị uy tín.</div>
+          <div class="row"><span class="t">Ai đang dùng</span><a href="https://tala.co">Tala</a>, <a href="https://en.wikipedia.org/wiki/Lenddo">Lenddo</a>, <a href="https://trustingsocial.com">Trusting Social</a> (VN), FinScore.</div>
+          <div class="row"><span class="t">Thành công · Valuation</span>Mô hình đã chứng minh (Tala giải ngân $1 tỷ+). <span class="die">Bài học:</span> <a href="https://en.wikipedia.org/wiki/Zhima_Credit">Sesame Credit</a> trộn rác social → điểm không dự báo được trả nợ → thoái hoá thành điểm khuyến mãi. Phải validate từng domain.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="chamdiem">
+      <div class="kicker">04 · CHẤM ĐIỂM</div>
+      <h2>Data nào đáng giá bao nhiêu — và ở domain nào</h2>
+      <p class="lead">Cùng một dữ liệu có trọng số khác nhau tuỳ lĩnh vực. AI gán trọng số theo 4 yếu tố rồi cộng thành điểm <em>riêng cho từng domain</em>. <strong>Hệ thống mở</strong> — thư viện tín hiệu &amp; domain dưới đây là khởi đầu, thêm mới dễ dàng.</p>
+      <figure>
+        <div class="figlabel">Luồng chấm một tín hiệu</div>
+        <svg viewBox="0 0 1000 200" role="img" aria-label="Luồng chấm điểm một tín hiệu">
+          <rect x="10" y="70" width="184" height="60" rx="13" class="bs"/><text x="102" y="92" text-anchor="middle" class="tt" font-size="11">1 tín hiệu + bằng chứng</text><text x="102" y="110" text-anchor="middle" class="ts" font-size="9">API · zkTLS · ảnh chụp</text>
+          <path d="M194 100 L 228 100" class="fl"/>
+          <rect x="228" y="70" width="190" height="60" rx="13" class="ks"/><text x="323" y="92" text-anchor="middle" class="cs" font-size="11" font-weight="600">AI: thật/giả + hạng</text><text x="323" y="110" text-anchor="middle" class="ts" font-size="9">A / B / C — độ tin cậy</text>
+          <path d="M418 100 L 452 100" class="fl"/>
+          <rect x="452" y="70" width="166" height="60" rx="13" class="bc2"/><text x="535" y="92" text-anchor="middle" class="tt" font-size="11">× trọng số</text><text x="535" y="110" text-anchor="middle" class="ts" font-size="9">theo từng domain</text>
+          <path d="M618 100 C 662 100 662 38 702 38" class="fld"/>
+          <path d="M618 100 L 702 100" class="fld"/>
+          <path d="M618 100 C 662 100 662 162 702 162" class="fld"/>
+          <rect x="702" y="20" width="210" height="36" rx="9" class="ko"/><text x="718" y="42" class="co" font-size="10.5" font-weight="600">Điểm Tài chính ●●●</text>
+          <rect x="702" y="82" width="210" height="36" rx="9" class="ko"/><text x="718" y="104" class="co" font-size="10.5" font-weight="600">Điểm Gig ●●</text>
+          <rect x="702" y="144" width="210" height="36" rx="9" class="ko"/><text x="718" y="166" class="co" font-size="10.5" font-weight="600">Điểm Creator ●</text>
+        </svg>
+        <figcaption>Một tín hiệu (vd "trả nợ đúng hạn") toả ra nhiều domain với trọng số khác nhau — không có "một điểm chung".</figcaption>
+      </figure>
+
+      <h3>Trọng số tính từ 4 yếu tố</h3>
+      <div class="chips"><span class="chip">① Độ tin của nguồn</span><span class="chip">② Độ liên quan domain</span><span class="chip">③ Độ khó nguỵ tạo</span><span class="chip">④ Độ mới (recency)</span></div>
+
+      <h3>3 hạng bằng chứng — theo độ khó giả</h3>
+      <table class="gx">
+        <thead><tr><th style="width:12%">Hạng</th><th style="width:38%">Nguồn bằng chứng</th><th>AI làm gì</th><th style="width:13%">Hệ số tin</th></tr></thead>
+        <tbody>
+          <tr><td><span class="evb a">A</span></td><td>API chính thức · CIC · open-banking</td><td>tin tại nguồn, không cần soi</td><td class="c">×1.0</td></tr>
+          <tr><td><span class="evb b">B</span></td><td>zkTLS từ web/app (rating, sao kê tự pull)</td><td>kiểm proof mật mã — khó giả</td><td class="c">×0.8</td></tr>
+          <tr><td><span class="evb c">C</span></td><td>Ảnh chụp bill / sao kê tự upload</td><td>OCR + soi ảnh chỉnh sửa + đối chiếu chéo → nghi ngờ thì hạ điểm / đòi thêm</td><td class="c">×0.4</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Thư viện tín hiệu uy tín</h3>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:8px;max-width:none">Bấm tab để xem bảng tín hiệu của nhóm. Hạng bằng chứng <span class="evb a">A</span><span class="evb b">B</span><span class="evb c">C</span><span class="evb p">P</span> (P = đánh giá ngang hàng).</p>
+      <div class="sigtabs">
+        <button class="tabnode sigtab active" data-grp="sig" data-t="taichinh">Tài chính &amp; Thanh toán</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="vieclam">Việc làm &amp; Nghề nghiệp</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="gig">Nền tảng / Gig</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="thuongmai">Thương mại / Bán hàng</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="social">Sáng tạo / Social</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="cutru">Cư trú / Pháp lý</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="hanhvi">Hành vi / On-chain</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="webtrust">Web-of-trust</button>
+        <button class="tabnode sigtab" data-grp="sig" data-t="giaoduc">Giáo dục</button>
+      </div>
+      <div class="tabpanel show" data-grp="sig" id="tab-sig-taichinh"><table class="gx mx"><thead><tr><th>Tín hiệu (14)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Lịch sử tín dụng CIC / bureau</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Tỉ lệ trả nợ đúng hạn (vay · thẻ · trả góp)</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Sao kê ngân hàng: dòng tiền &amp; số dư ổn định</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Thu nhập / lương đều đặn</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tiết kiệm đều đặn (dù nhỏ)</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tài sản đầu tư / chứng khoán / crypto</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Trả bill điện / nước / net / cước đúng hạn</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Trả tiền thuê nhà đúng hạn</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">BNPL / trả góp đúng hạn</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Đóng bảo hiểm đều</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Thuế đã nộp</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Hụi / họ (ROSCA) hoàn thành</td><td><span class="evb c">C</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Trả nợ bạn bè / gia đình có evidence</td><td><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Kiều hối gửi đều</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-vieclam"><table class="gx mx"><thead><tr><th>Tín hiệu (9)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Hợp đồng lao động &amp; thâm niên</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">BHXH đóng liên tục</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Lịch sử việc làm (LinkedIn)</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Bằng cấp ký số</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Chứng chỉ hành nghề / giấy phép</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Thư giới thiệu / đánh giá hiệu suất</td><td><span class="evb c">C</span><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Rating freelancer (Upwork JSS · Fiverr)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Kỹ năng verify (GitHub · Stack Overflow · Behance)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Giải thưởng / thành tích</td><td><span class="evb c">C</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-gig"><table class="gx mx"><thead><tr><th>Tín hiệu (6)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Rating + thâm niên tài xế (Grab · Be · Gojek)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ hoàn thành cuốc / đơn</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ huỷ thấp</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Shipper rating</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Host rating (Airbnb · booking)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ phản hồi / đúng giờ</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-thuongmai"><table class="gx mx"><thead><tr><th>Tín hiệu (7)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Tỉ lệ hoàn tất đơn Shopee / Lazada / TikTok Shop</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">GMV / doanh số</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ hoàn hàng / khiếu nại thấp</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Đánh giá người bán (sao · review)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Thâm niên shop</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Giao đúng hạn</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Verified seller badge</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-social"><table class="gx mx"><thead><tr><th>Tín hiệu (7)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Follower thật (TikTok · YT · IG · FB) — chống bot</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Engagement thật (không mua)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tài khoản lâu năm + hoạt động thật</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Verified (tick)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Review trung thực (đã thực dùng sản phẩm)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Không vi phạm cộng đồng</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Brand deal đã hoàn thành tốt</td><td><span class="evb c">C</span><span class="evb p">P</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-cutru"><table class="gx mx"><thead><tr><th>Tín hiệu (5)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Định danh quốc gia (VNeID / eID)</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Cư trú ổn định (thời gian ở một địa chỉ)</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Lý lịch tư pháp (không tiền án)</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Lịch sử thuê nhà (không bị đuổi)</td><td><span class="evb c">C</span><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Giấy tờ hợp lệ (passport · GPLX)</td><td><span class="evb a">A</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-hanhvi"><table class="gx mx"><thead><tr><th>Tín hiệu (6)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">SĐT chính chủ lâu năm</td><td><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Email / domain tuổi đời</td><td><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Thiết bị ổn định (không đổi liên tục)</td><td><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Hành vi nhất quán (anomaly thấp)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Ví on-chain lịch sử tốt (trả nợ DeFi · không bị thanh lý)</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Sao kê ví điện tử (MoMo · ZaloPay)</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-webtrust"><table class="gx mx"><thead><tr><th>Tín hiệu (6)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig"><strong>Đánh giá từ giao dịch hoàn thành với người uy tín cao</strong> — trọng số PageRank; chống farm mạnh</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Bảo lãnh từ người uy tín cao (PageRank)</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Đánh giá ngang hàng từ người từng giao dịch</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Thành viên hội nghề nghiệp</td><td><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Thành viên cộng đồng / tổ chức lâu năm</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Mạng quan hệ đa dạng (chống sybil)</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table></div>
+      <div class="tabpanel" data-grp="sig" id="tab-sig-giaoduc"><table class="gx mx"><thead><tr><th>Tín hiệu (3)</th><th style="width:22%">Bằng chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Bằng cấp / học bạ ký số</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Khóa học hoàn thành (Coursera · Udemy)</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Học phí đóng đúng hạn</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+      </tbody></table></div>
+      <p style="font-size:12.5px;color:var(--gray-500);max-width:none">Nhóm nhạy cảm (tiêu dùng, sức khỏe, lối sống) chỉ dùng <strong>khi có consent rõ ràng</strong> và chỉ ở domain liên quan — tránh rủi ro PDPL.</p>
+
+      <h3>Điểm theo domain — tín hiệu nào, bao nhiêu điểm</h3>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:8px;max-width:none">Mỗi domain một thang <strong>1000đ</strong> với phân bổ riêng (AI học lại theo dữ liệu thật). 18 domain tổng — dưới đây 6 ví dụ chi tiết. <span class="w3">●●●</span> rất nặng · <span class="w2">●●</span> TB · <span class="w1">●</span> nhẹ.</p>
+      <div class="chips">
+        <span class="chip">Tài chính / Vay</span><span class="chip">BNPL</span><span class="chip">Bảo hiểm</span><span class="chip">Thuê nhà / trọ</span><span class="chip">Thuê đồ / xe</span><span class="chip">Tài xế / Gig</span><span class="chip">Seller / TMĐT</span><span class="chip">Creator / KOC</span><span class="chip">Tuyển dụng</span><span class="chip">Giúp việc / Chăm sóc</span><span class="chip">Freelancer / Remote</span><span class="chip">Dating</span><span class="chip">Trung gian P2P</span><span class="chip">Du lịch</span><span class="chip">Di cư / Xuyên biên</span><span class="chip">Sharing economy</span><span class="chip">Cộng đồng / Membership</span><span class="chip">Escrow B2B</span>
+      </div>
+      <div class="sigtabs">
+        <button class="tabnode sigtab active" data-grp="dom" data-t="taichinh">Tài chính / Vay</button>
+        <button class="tabnode sigtab" data-grp="dom" data-t="creator">Creator / KOC</button>
+        <button class="tabnode sigtab" data-grp="dom" data-t="gig">Tài xế / Gig</button>
+        <button class="tabnode sigtab" data-grp="dom" data-t="seller">Seller / TMĐT</button>
+        <button class="tabnode sigtab" data-grp="dom" data-t="thue">Thuê nhà</button>
+        <button class="tabnode sigtab" data-grp="dom" data-t="vieclam">Tuyển dụng</button>
+      </div>
+      <div class="tabpanel show" data-grp="dom" id="tab-dom-taichinh"><table class="gx mx"><thead><tr><th>Tín hiệu</th><th class="c" style="width:15%">Trọng số</th><th class="c" style="width:14%">Điểm tối đa</th><th style="width:15%">B.chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Lịch sử trả nợ (CIC)</td><td class="c"><span class="w3">●●●</span></td><td class="pt">250</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Sao kê / dòng tiền ổn định</td><td class="c"><span class="w3">●●●</span></td><td class="pt">180</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Thu nhập / lương đều</td><td class="c"><span class="w2">●●</span></td><td class="pt">150</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Trả bill đúng hạn</td><td class="c"><span class="w2">●●</span></td><td class="pt">110</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Trả tiền thuê đúng hạn</td><td class="c"><span class="w2">●●</span></td><td class="pt">90</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Tiết kiệm đều</td><td class="c"><span class="w1">●</span></td><td class="pt">70</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Hụi / ROSCA hoàn thành</td><td class="c"><span class="w1">●</span></td><td class="pt">60</td><td><span class="evb c">C</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Đánh giá từ người uy tín cao</td><td class="c"><span class="w1">●</span></td><td class="pt">50</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">BHXH / việc làm ổn định</td><td class="c"><span class="w1">●</span></td><td class="pt">40</td><td><span class="evb a">A</span></td></tr>
+      </tbody></table><div class="ptot">Tổng thang: 1000đ</div></div>
+      <div class="tabpanel" data-grp="dom" id="tab-dom-creator"><table class="gx mx"><thead><tr><th>Tín hiệu</th><th class="c" style="width:15%">Trọng số</th><th class="c" style="width:14%">Điểm tối đa</th><th style="width:15%">B.chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Follower thật (chống bot)</td><td class="c"><span class="w3">●●●</span></td><td class="pt">240</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Engagement thật</td><td class="c"><span class="w3">●●●</span></td><td class="pt">200</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Review trung thực (proof of purchase)</td><td class="c"><span class="w2">●●</span></td><td class="pt">170</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Brand deal hoàn thành tốt</td><td class="c"><span class="w2">●●</span></td><td class="pt">130</td><td><span class="evb c">C</span><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Tài khoản lâu năm + hoạt động thật</td><td class="c"><span class="w2">●●</span></td><td class="pt">110</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Đánh giá từ người uy tín cao</td><td class="c"><span class="w1">●</span></td><td class="pt">80</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Verified (tick)</td><td class="c"><span class="w1">●</span></td><td class="pt">40</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Không vi phạm cộng đồng</td><td class="c"><span class="w1">●</span></td><td class="pt">30</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table><div class="ptot">Tổng thang: 1000đ</div></div>
+      <div class="tabpanel" data-grp="dom" id="tab-dom-gig"><table class="gx mx"><thead><tr><th>Tín hiệu</th><th class="c" style="width:15%">Trọng số</th><th class="c" style="width:14%">Điểm tối đa</th><th style="width:15%">B.chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Rating + thâm niên (Grab/Be)</td><td class="c"><span class="w3">●●●</span></td><td class="pt">270</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ hoàn thành cuốc / đơn</td><td class="c"><span class="w3">●●●</span></td><td class="pt">210</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ huỷ thấp</td><td class="c"><span class="w2">●●</span></td><td class="pt">140</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Đúng giờ / phản hồi</td><td class="c"><span class="w2">●●</span></td><td class="pt">110</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Thu nhập gig đều</td><td class="c"><span class="w1">●</span></td><td class="pt">100</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Lý lịch tư pháp</td><td class="c"><span class="w1">●</span></td><td class="pt">90</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Đánh giá từ người uy tín cao</td><td class="c"><span class="w1">●</span></td><td class="pt">50</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">SĐT / thiết bị ổn định</td><td class="c"><span class="w1">●</span></td><td class="pt">30</td><td><span class="evb c">C</span></td></tr>
+      </tbody></table><div class="ptot">Tổng thang: 1000đ</div></div>
+      <div class="tabpanel" data-grp="dom" id="tab-dom-seller"><table class="gx mx"><thead><tr><th>Tín hiệu</th><th class="c" style="width:15%">Trọng số</th><th class="c" style="width:14%">Điểm tối đa</th><th style="width:15%">B.chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Tỉ lệ hoàn tất đơn</td><td class="c"><span class="w3">●●●</span></td><td class="pt">240</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Đánh giá người bán (sao / review)</td><td class="c"><span class="w3">●●●</span></td><td class="pt">200</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Tỉ lệ hoàn hàng / khiếu nại thấp</td><td class="c"><span class="w2">●●</span></td><td class="pt">170</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">GMV / doanh số</td><td class="c"><span class="w2">●●</span></td><td class="pt">130</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Giao đúng hạn</td><td class="c"><span class="w1">●</span></td><td class="pt">100</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Thâm niên shop</td><td class="c"><span class="w1">●</span></td><td class="pt">90</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Đánh giá từ người uy tín cao</td><td class="c"><span class="w1">●</span></td><td class="pt">70</td><td><span class="evb p">P</span></td></tr>
+      </tbody></table><div class="ptot">Tổng thang: 1000đ</div></div>
+      <div class="tabpanel" data-grp="dom" id="tab-dom-thue"><table class="gx mx"><thead><tr><th>Tín hiệu</th><th class="c" style="width:15%">Trọng số</th><th class="c" style="width:14%">Điểm tối đa</th><th style="width:15%">B.chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Trả tiền thuê đúng hạn (lịch sử)</td><td class="c"><span class="w3">●●●</span></td><td class="pt">280</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Thu nhập ổn định</td><td class="c"><span class="w2">●●</span></td><td class="pt">180</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Trả bill đúng hạn</td><td class="c"><span class="w2">●●</span></td><td class="pt">150</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Lịch sử thuê (không bị đuổi)</td><td class="c"><span class="w2">●●</span></td><td class="pt">130</td><td><span class="evb c">C</span><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Lý lịch tư pháp</td><td class="c"><span class="w1">●</span></td><td class="pt">100</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Cư trú ổn định</td><td class="c"><span class="w1">●</span></td><td class="pt">90</td><td><span class="evb b">B</span><span class="evb c">C</span></td></tr>
+        <tr><td class="sig">Đánh giá từ chủ nhà / người uy tín</td><td class="c"><span class="w1">●</span></td><td class="pt">70</td><td><span class="evb p">P</span></td></tr>
+      </tbody></table><div class="ptot">Tổng thang: 1000đ</div></div>
+      <div class="tabpanel" data-grp="dom" id="tab-dom-vieclam"><table class="gx mx"><thead><tr><th>Tín hiệu</th><th class="c" style="width:15%">Trọng số</th><th class="c" style="width:14%">Điểm tối đa</th><th style="width:15%">B.chứng</th></tr></thead><tbody>
+        <tr><td class="sig">Lịch sử việc làm + thâm niên</td><td class="c"><span class="w3">●●●</span></td><td class="pt">230</td><td><span class="evb a">A</span><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">Bằng cấp / chứng chỉ</td><td class="c"><span class="w2">●●</span></td><td class="pt">180</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Kỹ năng verify (GitHub…)</td><td class="c"><span class="w2">●●</span></td><td class="pt">150</td><td><span class="evb b">B</span></td></tr>
+        <tr><td class="sig">BHXH đóng liên tục</td><td class="c"><span class="w2">●●</span></td><td class="pt">120</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Thư giới thiệu / đánh giá</td><td class="c"><span class="w1">●</span></td><td class="pt">100</td><td><span class="evb c">C</span><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Lý lịch tư pháp</td><td class="c"><span class="w1">●</span></td><td class="pt">90</td><td><span class="evb a">A</span></td></tr>
+        <tr><td class="sig">Đánh giá từ người uy tín cao</td><td class="c"><span class="w1">●</span></td><td class="pt">80</td><td><span class="evb p">P</span></td></tr>
+        <tr><td class="sig">Không vi phạm (gig / social)</td><td class="c"><span class="w1">●</span></td><td class="pt">50</td><td><span class="evb b">B</span></td></tr>
+      </tbody></table><div class="ptot">Tổng thang: 1000đ</div></div>
+
+      <div style="border:1.5px solid var(--clay);border-radius:14px;background:var(--hl);padding:16px 18px;margin-top:16px;max-width:none">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--clay);margin-bottom:8px">AI làm gì trong chấm điểm</div>
+        <p style="margin:0;max-width:none;font-size:13.5px">Phân hạng nguồn (A/B/C) → verify thật/giả (kiểm proof zkTLS · OCR soi ảnh chỉnh sửa · phát hiện follower bot · đối chiếu chéo nhiều nguồn) → gán trọng số theo vector của từng domain → cộng dồn có <em>bão hoà</em> (data thứ 5 cùng loại gần như không thêm) và <em>decay</em> (cũ thì giảm) → graph-ML bắt cụm gian lận. Điểm âm chỉ tính khi có bằng chứng cứng (nợ xấu, phán quyết tòa).</p>
+      </div>
+    </section>
+
+    <section id="product">
+      <div class="kicker">05 · SẢN PHẨM</div>
+      <h2>Hình hài: một nền tảng, ba mặt</h2>
+      <p class="lead">Không phải nhiều app rời. Một nền tảng "Liêm" hiện ra ba hình hài tuỳ đối tượng:</p>
+      <div class="three">
+        <div class="mini"><div class="h">App di động · B2C</div><p><b>Người dùng</b> xây &amp; cầm hộ chiếu, dùng các tính năng (verify, chống lừa đảo, điểm).</p></div>
+        <div class="mini"><div class="h">Web / Cổng · B2B</div><p><b>Brand · bên cho vay · chủ thuê</b> tra cứu &amp; verify uy tín đã xác thực.</p></div>
+        <div class="mini"><div class="h">API / SDK · B2B2X</div><p>Nhúng nút <b>"Verify with Liêm"</b> vào sàn / app khác (như "Đăng nhập với Google").</p></div>
+      </div>
+
+      <h3>Lộ trình tính năng — bấm vào giai đoạn để xem chi tiết</h3>
+      <figure>
+        <div class="figlabel">Bấm vào một giai đoạn để mở tính năng bên dưới</div>
+        <svg viewBox="0 0 1000 250" role="img" aria-label="Lộ trình sản phẩm 4 giai đoạn bấm được">
+          <g class="tabnode active" data-grp="road" data-t="gd0" tabindex="0" role="button" aria-label="Giai đoạn 0"><rect x="10" y="20" width="232" height="214" rx="14" class="kc"/><text x="30" y="46" class="cc" font-size="13" font-weight="700">GĐ0</text><text x="222" y="46" text-anchor="end" class="tm" font-size="9">0–12th</text><text x="30" y="66" class="ts" font-size="10">VIRAL · kéo user</text>
+            <rect x="26" y="80" width="200" height="32" rx="8" class="bs"/><text x="38" y="100" class="ts" font-size="10.5">Verify Creator/KOC</text>
+            <rect x="26" y="118" width="200" height="32" rx="8" class="bs"/><text x="38" y="138" class="ts" font-size="10.5">Lá chắn chống lừa đảo</text>
+            <rect x="26" y="156" width="200" height="32" rx="8" class="bs"/><text x="38" y="176" class="ts" font-size="10.5">Điểm gamified</text>
+            <text x="38" y="212" class="tm" font-size="9">App + Web</text></g>
+          <path d="M242 127 L 262 127" class="fl"/>
+          <g class="tabnode" data-grp="road" data-t="gd1" tabindex="0" role="button" aria-label="Giai đoạn 1"><rect x="262" y="20" width="232" height="214" rx="14" class="ks"/><text x="282" y="46" class="cs" font-size="13" font-weight="700">GĐ1</text><text x="474" y="46" text-anchor="end" class="tm" font-size="9">12–24th</text><text x="282" y="66" class="ts" font-size="10">GIỮ &amp; TIỀN</text>
+            <rect x="278" y="80" width="200" height="32" rx="8" class="bs"/><text x="290" y="100" class="ts" font-size="10.5">Trợ lý AI tài chính</text>
+            <rect x="278" y="118" width="200" height="32" rx="8" class="bs"/><text x="290" y="138" class="ts" font-size="10.5">Marketplace Brand–Creator</text>
+            <text x="290" y="176" class="tm" font-size="9">App + Web (B2B trả tiền)</text></g>
+          <path d="M494 127 L 514 127" class="fl"/>
+          <g class="tabnode" data-grp="road" data-t="gd2" tabindex="0" role="button" aria-label="Giai đoạn 2"><rect x="514" y="20" width="232" height="214" rx="14" class="ko"/><text x="534" y="46" class="co" font-size="13" font-weight="700">GĐ2</text><text x="726" y="46" text-anchor="end" class="tm" font-size="9">2–4y</text><text x="534" y="66" class="ts" font-size="10">MỞ RỘNG</text>
+            <rect x="530" y="80" width="200" height="32" rx="8" class="bs"/><text x="542" y="100" class="ts" font-size="10.5">Hộ chiếu Gig/Freelancer</text>
+            <rect x="530" y="118" width="200" height="32" rx="8" class="bs"/><text x="542" y="138" class="ts" font-size="10.5">Uy tín xuyên biên</text>
+            <rect x="530" y="156" width="200" height="32" rx="8" class="bs"/><text x="542" y="176" class="ts" font-size="10.5">"Verify with Liêm" API</text>
+            <text x="542" y="212" class="tm" font-size="9">App + API (B2B2X)</text></g>
+          <path d="M746 127 L 766 127" class="fl"/>
+          <g class="tabnode" data-grp="road" data-t="gd3" tabindex="0" role="button" aria-label="Giai đoạn 3"><rect x="766" y="20" width="224" height="214" rx="14" class="kp"/><text x="786" y="46" class="cp" font-size="13" font-weight="700">GĐ3</text><text x="980" y="46" text-anchor="end" class="tm" font-size="9">4y+</text><text x="786" y="66" class="ts" font-size="10">ENDGAME</text>
+            <rect x="782" y="80" width="192" height="80" rx="10" class="bc2"/><text x="878" y="104" text-anchor="middle" class="cp" font-size="11" font-weight="600">Cổng Mở Khóa</text><text x="878" y="120" text-anchor="middle" class="cp" font-size="11" font-weight="600">Tài Chính</text><text x="878" y="140" text-anchor="middle" class="ts" font-size="9">vay·bảo hiểm·BNPL</text><text x="878" y="153" text-anchor="middle" class="ts" font-size="9">cầm đồ·ứng lương</text>
+            <text x="786" y="200" class="tm" font-size="9">App + API · qua đối tác</text></g>
+        </svg>
+        <div class="plhint">↑ bấm vào từng giai đoạn</div>
+      </figure>
+
+      <div class="tabpanel show" data-grp="road" id="tab-road-gd0">
+        <div class="ptitle">GĐ0 · 0–12 tháng · mục đích: VIRAL — kéo user, có người trả tiền</div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-clay"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M8.4 12 l2.4 2.4 l4.8 -4.9"/></svg></span>
+          <div><div class="nm2">Verify Creator / KOC</div><div class="badges"><span class="fm">App + Web</span><span class="aud b2b">B2B · brand trả</span></div><div class="one2">Creator chứng minh mình thật — brand sẵn trả tiền (wedge khởi đầu).</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>AI authenticity + zkTLS proof-of-purchase + soulbound</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://hypeauditor.com">HypeAuditor</a>/<a href="https://www.getphyllo.com">Phyllo</a> <span class="live">sống</span> — audit phía brand</div>
+            <div class="row"><span class="t">Thắng bằng</span>creator <b>sở hữu</b> hộ chiếu + đa-domain + VN-first</div>
+            <div class="row"><span class="t">Legal</span>nhẹ (B2B) · consent dữ liệu</div>
+          </div></details>
+        </div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-clay"><svg viewBox="0 0 24 24"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16 19.6 12 21.5 C8 19.6 4.5 15.8 4.5 11 V5.5 Z"/></svg></span>
+          <div><div class="nm2">Lá chắn chống lừa đảo</div><div class="badges"><span class="fm">App</span><span class="aud b2c">B2C · viral</span></div><div class="one2">Tra cứu người lạ trước khi giao dịch. Phễu viral 0đ + tạo data thật.</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>Graph-ML fraud + crowdsource + Verify-Request 2 chiều</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://www.truecaller.com">Truecaller</a>/<a href="https://gogolook.com">Whoscall</a> <span class="live">sống</span></div>
+            <div class="row"><span class="t">Thắng bằng</span>thêm hộ chiếu <b>tích cực</b>, không chỉ blacklist</div>
+            <div class="row"><span class="t">Legal</span><span class="legal">vu khống</span> → bằng chứng + kháng cáo, không public danh tính</div>
+          </div></details>
+        </div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-clay"><svg viewBox="0 0 24 24"><path d="M12 3 l2.5 5.4 l5.9 .6 l-4.4 4 l1.3 5.8 l-5.3 -3 l-5.3 3 l1.3 -5.8 l-4.4 -4 l5.9 -.6 Z"/></svg></span>
+          <div><div class="nm2">Điểm gamified (token-hoá)</div><div class="badges"><span class="fm">App</span><span class="aud b2c">B2C · marketing</span></div><div class="one2">Mồi viral kéo user; rồi dùng verify lọc farmer, giữ điểm thật.</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>token/điểm + Proof-of-Personhood + Graph-ML lọc</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://www.ccn.com/news/crypto/hamster-kombat-fades-hmstr-token-drops/">Hamster</a>/Notcoin <span class="die">sập</span> — farmer + lạm phát</div>
+            <div class="row"><span class="t">Thắng bằng</span>tách "điểm vui" / "điểm thật" + verify lọc farmer</div>
+            <div class="row"><span class="t">Legal</span><span class="legal">chứng khoán</span> → đừng bán token, không hứa lợi nhuận</div>
+          </div></details>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="road" id="tab-road-gd1">
+        <div class="ptitle">GĐ1 · 12–24 tháng · mục đích: GIỮ CHÂN &amp; doanh thu đầu tiên</div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-sky"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="3"/><path d="M3 10 H21 M15.5 14.5 h3"/></svg></span>
+          <div><div class="nm2">Trợ lý AI tài chính</div><div class="badges"><span class="fm">App</span><span class="aud b2c">B2C</span></div><div class="one2">Quản lý tiền miễn phí, dùng hằng ngày — giữ chân + thu data thật.</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>aggregation + zkTLS + đa-domain scoring</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://www.creditkarma.com">Credit Karma</a> <span class="live">exit $8 tỷ</span>; Mint <span class="die">chết</span></div>
+            <div class="row"><span class="t">Thắng bằng</span>lớp uy tín (Credit Karma chỉ là điểm tín dụng Mỹ)</div>
+            <div class="row"><span class="t">Legal</span><span class="legal">PDPL</span> → consent, on-device/ZK, bán outcome</div>
+          </div></details>
+        </div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-sky"><svg viewBox="0 0 24 24"><path d="M7 8 L3 12 L7 16 M17 8 L21 12 L17 16 M9 12 H15"/></svg></span>
+          <div><div class="nm2">Marketplace Brand ⇄ Creator</div><div class="badges"><span class="fm">Web</span><span class="aud b2b">B2B · doanh thu</span></div><div class="one2">Chợ kết nối brand với creator đã verified — dòng tiền thật đầu tiên.</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>matching + AI authenticity + attestation</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://anymindgroup.com">AnyMind</a> / agency <span class="live">sống</span></div>
+            <div class="row"><span class="t">Thắng bằng</span>match dựa trên hộ chiếu verified (không follower ảo)</div>
+            <div class="row"><span class="t">Legal</span>nhẹ — phí dịch vụ B2B</div>
+          </div></details>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="road" id="tab-road-gd2">
+        <div class="ptitle">GĐ2 · 2–4 năm · mục đích: MỞ RỘNG domain + mạng lưới</div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-olive"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12 H21 M12 3 C8 7 8 17 12 21 C16 17 16 7 12 3"/></svg></span>
+          <div><div class="nm2">Hộ chiếu Gig · Xuyên biên · API</div><div class="badges"><span class="fm">App + API</span><span class="aud b2b">B2B2X</span></div><div class="one2">Mang rating xuyên nền tảng; uy tín theo người di cư; API nhúng khắp nơi.</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>zkTLS + soulbound + Verifiable Credentials + EAS/SDK</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://www.deemly.co">deemly</a>/<a href="https://techcrunch.com/2016/01/19/erated/">eRated</a> <span class="die">chết 2016</span> (data-lock); <a href="https://www.novacredit.com">Nova Credit</a> <span class="live">sống</span> (hẹp)</div>
+            <div class="row"><span class="t">Thắng bằng</span>zkTLS gỡ data-lock + có payer; làm cho lao động Việt</div>
+            <div class="row"><span class="t">Legal</span><span class="legal">dữ liệu xuyên biên</span> → user-permissioned + localization</div>
+          </div></details>
+        </div>
+      </div>
+
+      <div class="tabpanel" data-grp="road" id="tab-road-gd3">
+        <div class="ptitle">GĐ3 · 4 năm+ · mục đích: ENDGAME — mở khóa tài chính</div>
+        <div class="tech">
+          <div class="hd"><span class="ic i-plum"><svg viewBox="0 0 24 24"><circle cx="8" cy="14.5" r="4"/><path d="M11 11.7 L20 3.5 M17 4.5 l2.2 2.2 M15.3 6.2 l1.6 1.6"/></svg></span>
+          <div><div class="nm2">Cổng Mở Khóa Tài Chính</div><div class="badges"><span class="fm">App + API</span><span class="aud b2b">qua đối tác</span></div><div class="one2">Vay · tín chấp · bảo hiểm · cầm đồ · BNPL · ứng lương — cho gig/thin-file.</div></div></div>
+          <details><summary>Tech · đối thủ · cạnh tranh · legal</summary><div class="dd">
+            <div class="row"><span class="t">Tech</span>scoring đã validate + zkTLS credit-proof (<a href="https://blog.chain.link/undercollateralized-lending-teller-deco-poc/">Stormbit/Mansa</a>)</div>
+            <div class="row"><span class="t">Đối thủ</span><a href="https://tala.co">Tala</a>/<a href="https://en.wikipedia.org/wiki/Lenddo">Lenddo</a>/<a href="https://trustingsocial.com">Trusting Social</a>/<a href="https://f88.vn">F88</a>/<a href="https://gimo.vn">GIMO</a> <span class="live">sống</span></div>
+            <div class="row"><span class="t">Thắng bằng</span><b>không tự cho vay</b> — lớp trung lập "đủ điều kiện + giảm rủi ro"; user sở hữu hộ chiếu</div>
+            <div class="row"><span class="t">Legal</span><span class="legal">giấy phép cho vay</span> → sandbox <a href="https://www.tilleke.com/insights/new-decree-provides-guidance-for-vietnams-personal-data-protection-law/">NĐ 94/2025</a> + đối tác cấp phép</div>
+          </div></details>
+        </div>
+      </div>
+    </section>
+
+    <section id="endgame">
+      <div class="kicker">06 · ENDGAME</div>
+      <h2>Mở khóa tài chính — không tự xưng chuẩn</h2>
+      <p class="lead">Đích đến không phải "ta thành quyền lực phán xét", mà là <strong>người bị bỏ rơi được tiếp cận tài chính</strong>.</p>
+      <div class="tldr s"><div class="q">Việc của mình: dùng công nghệ chứng minh uy tín <em>minh bạch &amp; kiểm chứng được</em>. Còn nó có thành "chuẩn" hay không — để thị trường tự quyết.</div></div>
+      <ul>
+        <li><strong>An toàn:</strong> không xây social-credit, không tự xưng chuẩn → không thành đối thủ của chính phủ/bureau (bài học <a href="https://en.wikipedia.org/wiki/Zhima_Credit">Sesame bị PBOC chặn</a>).</li>
+        <li><strong>Mình là cây cầu trung lập</strong> (như Plaid / Visa), không tự cho vay — đối tác cấp sản phẩm, mình ăn phí verify / giới thiệu.</li>
+        <li><strong>Vẫn giữ upside:</strong> nếu đủ rộng, thị trường <em>tự</em> coi điểm của mình là tham chiếu — hệ quả, không phải tuyên bố.</li>
+      </ul>
+    </section>
+
+    <section id="lotrinh">
+      <div class="kicker">07 · LỘ TRÌNH</div>
+      <h2>Mỗi giai đoạn phải chứng minh một điều</h2>
+      <p class="lead">Khung theo cột mốc <em>de-risk</em> (để gọi vốn vòng sau), không phải danh sách tính năng.</p>
+      <figure>
+        <div class="figlabel">4 giai đoạn · 4 điều phải chứng minh</div>
+        <svg viewBox="0 0 1000 130" role="img" aria-label="Mỗi giai đoạn chứng minh gì">
+          <rect x="14" y="30" width="232" height="78" rx="12" class="kc"/><text x="34" y="54" class="cc" font-size="12" font-weight="700">GĐ0</text><text x="34" y="76" class="tt" font-size="11">Có người trả tiền</text><text x="34" y="93" class="tt" font-size="11">+ viral thật</text>
+          <path d="M246 69 L 270 69" class="fl"/>
+          <rect x="270" y="30" width="232" height="78" rx="12" class="ks"/><text x="290" y="54" class="cs" font-size="12" font-weight="700">GĐ1</text><text x="290" y="76" class="tt" font-size="11">Giữ chân + doanh</text><text x="290" y="93" class="tt" font-size="11">thu lặp lại</text>
+          <path d="M502 69 L 526 69" class="fl"/>
+          <rect x="526" y="30" width="232" height="78" rx="12" class="ko"/><text x="546" y="54" class="co" font-size="12" font-weight="700">GĐ2</text><text x="546" y="76" class="tt" font-size="11">Portable + mạng</text><text x="546" y="93" class="tt" font-size="11">lưới chấp nhận</text>
+          <path d="M758 69 L 782 69" class="fl"/>
+          <rect x="782" y="30" width="204" height="78" rx="12" class="kp"/><text x="802" y="54" class="cp" font-size="12" font-weight="700">GĐ3</text><text x="802" y="76" class="tt" font-size="11">Giảm rủi ro cho</text><text x="802" y="93" class="tt" font-size="11">bên cho vay</text>
+        </svg>
+      </figure>
+      <h3>3 điều chỉnh so với phasing cũ</h3>
+      <ul>
+        <li><strong>GĐ0 đừng dàn 3 mũi ngang nhau</strong> — dẫn bằng wedge có người trả tiền (Creator-verify); token-hoá điểm chỉ là lớp viral bật sau khi có lõi giá trị.</li>
+        <li><strong>Khung theo "chứng minh điều gì"</strong> — mỗi giai đoạn là một cột mốc de-risk.</li>
+        <li><strong>Endgame = mở khóa tài chính</strong>, không tự xưng chuẩn.</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p style="margin-bottom:8px">Hồ sơ tổng hợp 20 vòng R&amp;D. Link là điểm xuất phát để soi model; dự án đã ngừng/đổi hướng (DECO PoC, uPort, deemly/eRated, Hamster, Sesame) được dẫn để học vết xe đổ. Số liệu cần kiểm chứng trước khi đưa vào tài liệu gọi vốn.</p>
+      <p>Trình bày theo chuẩn <a href="https://github.com/plannotator/effective-html">effective-html</a>.</p>
+    </footer>
+  </main>
+</div>
+<script>
+(function(){
+  var b=document.getElementById('themeBtn'),i=document.getElementById('themeIcon'),t=document.getElementById('themeTxt');
+  function s(){var d=document.documentElement.classList.contains('dark');i.textContent=d?'☀':'☾';t.textContent=d?'Sáng':'Tối';}s();
+  b.addEventListener('click',function(){document.documentElement.classList.toggle('dark');try{localStorage.setItem('liem-theme',document.documentElement.classList.contains('dark')?'dark':'light');}catch(e){}s();});
+  /* generic tabs (pipeline + roadmap), scoped by data-grp */
+  function act(n){var g=n.getAttribute('data-grp'),tt=n.getAttribute('data-t');
+    document.querySelectorAll('.tabnode[data-grp="'+g+'"]').forEach(function(x){x.classList.toggle('active',x===n);});
+    document.querySelectorAll('.tabpanel[data-grp="'+g+'"]').forEach(function(p){p.classList.toggle('show',p.id==='tab-'+g+'-'+tt);});}
+  [].slice.call(document.querySelectorAll('.tabnode')).forEach(function(n){
+    n.addEventListener('click',function(){act(n);});
+    n.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();act(n);}});
+  });
+  /* scrollspy */
+  var links=[].slice.call(document.querySelectorAll('nav.toc a')),map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});var a=map[e.target.id];if(a)a.classList.add('on');}});},{rootMargin:'-15% 0px -75% 0px'});document.querySelectorAll('section[id]').forEach(function(s){o.observe(s);});}
+})();
+</script>
+</body>
+</html>

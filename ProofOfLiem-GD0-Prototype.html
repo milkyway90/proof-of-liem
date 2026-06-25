@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lá chắn Liêm · Prototype GĐ0</title>
+<style>
+  :root{--bg:#ECEAE3;--ink:#141413;--clay:#D97757;--sky:#3F73A8;--green:#3E9B5F;--red:#C9462F;--gold:#C2A83E;--mut:#7C7B74;--line:#E6E3DA;--soft:#F5F3EC;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:30px 16px 60px}
+  .cap{font-family:var(--mono);font-size:12px;color:var(--mut);text-align:center;margin-bottom:18px;max-width:380px;line-height:1.6}
+  .cap b{color:var(--ink)}
+  /* phone */
+  .phone{width:390px;max-width:100%;height:780px;background:#fff;border-radius:42px;box-shadow:0 24px 60px rgba(0,0,0,.18),0 0 0 11px #1c1c1a,0 0 0 13px #303030;position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#1c1c1a;border-radius:0 0 16px 16px;z-index:50}
+  .status{height:44px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 6px;font-size:12px;font-weight:600;color:var(--ink);flex-shrink:0}
+  .scrollarea{flex:1;overflow-y:auto;position:relative}
+  .screen{display:none;padding:6px 18px 24px;animation:fade .25s ease}
+  .screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  /* app header */
+  .appbar{display:flex;align-items:center;gap:9px;padding:6px 2px 14px}
+  .logo{width:30px;height:30px;border-radius:9px;background:var(--clay);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .logo svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.8}
+  .appbar .nm{font-size:17px;font-weight:700;letter-spacing:-.2px}
+  .appbar .sm{font-size:10px;color:var(--mut);margin-top:1px}
+  h2{font-size:20px;font-weight:700;letter-spacing:-.3px;margin:2px 0 3px}
+  .muted{color:var(--mut);font-size:13px}
+  /* search */
+  .searchcard{background:linear-gradient(135deg,#FBEDE7,#F6F4EC);border:1px solid var(--line);border-radius:18px;padding:16px;margin:6px 0 16px}
+  .searchcard .lab{font-size:13px;font-weight:600;margin-bottom:9px}
+  .ipt{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  .ipt input{border:none;outline:none;flex:1;font-size:13.5px;font-family:var(--sans);background:transparent}
+  .ipt svg{width:16px;height:16px;stroke:var(--mut);fill:none;stroke-width:1.8;flex-shrink:0}
+  .btn{display:block;width:100%;text-align:center;background:var(--clay);color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:600;margin-top:10px;cursor:pointer;font-family:var(--sans)}
+  .btn:active{opacity:.85}
+  .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-size:11px;color:var(--mut);background:#fff;border:1px solid var(--line);border-radius:16px;padding:5px 11px}
+  .try{font-size:11px;color:var(--mut);margin:2px 0 8px;font-weight:600}
+  .exrow{display:flex;gap:8px;margin-bottom:18px}
+  .ex{flex:1;border:1px solid var(--line);border-radius:12px;padding:10px;font-size:11.5px;cursor:pointer;background:#fff;text-align:left}
+  .ex b{display:block;font-size:13px;margin-bottom:2px}
+  .ex.red b{color:var(--red)}.ex.green b{color:var(--green)}
+  /* feed */
+  .sechead{font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin:6px 0 8px}
+  .feed{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .fi{display:flex;align-items:center;gap:11px;padding:12px 13px;border-bottom:1px solid var(--line)}
+  .fi:last-child{border-bottom:none}
+  .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.dot.r{background:var(--red)}.dot.g{background:var(--green)}
+  .fi .ft{font-size:13px;font-weight:600}.fi .fs{font-size:11px;color:var(--mut)}
+  .fi .badge{margin-left:auto;font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px}
+  .badge.r{background:#FBE7E2;color:var(--red)}.badge.g{background:#E4F1E8;color:var(--green)}
+  /* result */
+  .banner{border-radius:18px;padding:20px 18px;color:#fff;margin:4px 0 16px}
+  .banner.red{background:linear-gradient(135deg,#C9462F,#A4351F)}
+  .banner.green{background:linear-gradient(135deg,#3E9B5F,#2E7A49)}
+  .banner .big{font-size:22px;font-weight:800;letter-spacing:-.3px}
+  .banner .who{font-size:14px;opacity:.95;margin-top:6px;font-family:var(--mono)}
+  .banner .sub{font-size:12.5px;opacity:.9;margin-top:8px}
+  .scorerow{display:flex;align-items:baseline;gap:8px;margin-top:10px}
+  .scorerow .sc{font-size:30px;font-weight:800}.scorerow .sl{font-size:11px;opacity:.9}
+  .infocard{border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+  .kv{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line)}
+  .kv:last-child{border-bottom:none}.kv .k{color:var(--mut)}.kv .v{font-weight:600}
+  .evchips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+  .evchip{font-size:10.5px;background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:4px 9px;color:var(--ink)}
+  .back{font-size:13px;color:var(--clay);font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:5px;margin:2px 0 12px}
+  /* AI */
+  textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:13px;font-size:13px;font-family:var(--sans);min-height:130px;resize:none;outline:none;line-height:1.5}
+  .airesult{border:1px solid var(--line);border-radius:14px;padding:15px;margin-top:14px;display:none}
+  .airesult.on{display:block}
+  .ailevel{display:flex;align-items:center;gap:9px;font-weight:800;font-size:16px;color:var(--red)}
+  .gauge{height:8px;background:var(--soft);border-radius:6px;overflow:hidden;margin:11px 0}
+  .gauge>i{display:block;height:100%;width:92%;background:var(--red);border-radius:6px}
+  /* report */
+  .field{margin-bottom:13px}.field label{font-size:12px;font-weight:600;display:block;margin-bottom:6px}
+  .field input{width:100%;border:1px solid var(--line);border-radius:11px;padding:11px;font-size:13px;outline:none;font-family:var(--sans)}
+  .upbox{border:1.5px dashed var(--line);border-radius:12px;padding:18px;text-align:center;font-size:12px;color:var(--mut);cursor:pointer}
+  .selchips .chip{cursor:pointer}.selchips .chip.sel{background:var(--clay);color:#fff;border-color:var(--clay)}
+  /* passport */
+  .pp{background:linear-gradient(140deg,#1f2430,#39414f);border-radius:20px;padding:20px;color:#fff;margin:4px 0 14px}
+  .pp .ttl{font-size:12px;opacity:.85;letter-spacing:.04em;text-transform:uppercase}
+  .pp .big{font-size:46px;font-weight:800;line-height:1;margin:8px 0 2px}
+  .pp .lvl{font-size:12px;color:#F0C9A8}
+  .pbadges{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+  .pb{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+  .pb .pi{width:30px;height:30px;border-radius:9px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .pb .pt{font-size:13px;font-weight:600}.pb .ps{font-size:11px;color:var(--mut)}
+  /* bottom nav */
+  .nav{display:flex;border-top:1px solid var(--line);background:#fff;flex-shrink:0;padding-bottom:6px}
+  .nav button{flex:1;border:none;background:none;padding:9px 0 5px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mut);font-family:var(--sans)}
+  .nav button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7}
+  .nav button .nl{font-size:9.5px;font-weight:600}
+  .nav button.on{color:var(--clay)}
+  /* modal */
+  .modal{position:absolute;inset:0;background:rgba(20,20,19,.5);display:none;align-items:flex-end;z-index:60}
+  .modal.on{display:flex}
+  .sheet{background:#fff;width:100%;border-radius:22px 22px 0 0;padding:20px 18px 26px}
+  .sheet h3{font-size:16px;font-weight:700;margin-bottom:4px}
+  .warncard{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0;background:#FBF0EC}
+  .warncard .wt{font-weight:800;color:var(--red);font-size:14px}
+  .sharebtns{display:flex;gap:9px;margin-top:8px}
+  .sharebtns button{flex:1;border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--sans)}
+  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12.5px;padding:11px 16px;border-radius:12px;opacity:0;transition:all .3s;z-index:70;max-width:300px;text-align:center}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+  <div class="cap">Prototype bấm được · <b>Lá chắn Liêm</b> (GĐ0). Bấm các nút, tab dưới, và "Thử nhanh" để đi qua các màn. <i>Dữ liệu trong app là mô phỏng.</i></div>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+    <div class="scrollarea">
+
+      <!-- HOME / TRA CỨU -->
+      <div class="screen on" id="s-home">
+        <div class="appbar"><span class="logo"><svg viewBox="0 0 24 24"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16 19.6 12 21.5 C8 19.6 4.5 15.8 4.5 11 V5.5 Z"/><path d="M9 11.8 l2.2 2.2 l4 -4.4"/></svg></span><div><div class="nm">Lá chắn Liêm</div><div class="sm">Đã bảo vệ 1.2M giao dịch</div></div></div>
+        <div class="searchcard">
+          <div class="lab">Kiểm tra trước khi giao dịch</div>
+          <div class="ipt"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="SĐT · số tài khoản · link · Zalo/FB"></div>
+          <button class="btn" onclick="go('s-scam')">Kiểm tra ngay</button>
+          <div class="chips"><span class="chip">Số điện thoại</span><span class="chip">Số tài khoản</span><span class="chip">Link / web</span><span class="chip">Zalo · FB</span></div>
+        </div>
+        <div class="try">⚡ THỬ NHANH</div>
+        <div class="exrow">
+          <div class="ex red" onclick="go('s-scam')"><b>0901 234 567</b>tra một số nghi lừa</div>
+          <div class="ex green" onclick="go('s-safe')"><b>Shop Hoa Mai</b>tra một shop uy tín</div>
+        </div>
+        <div class="sechead">Cảnh báo mới từ cộng đồng</div>
+        <div class="feed">
+          <div class="fi"><span class="dot r"></span><div><div class="ft">096 888 1234</div><div class="fs">Mạo danh shipper · thu hộ ảo</div></div><span class="badge r">31 báo</span></div>
+          <div class="fi"><span class="dot r"></span><div><div class="ft">STK 1903 **** 8821</div><div class="fs">Đầu tư ảo "lãi 30%/tháng"</div></div><span class="badge r">47 báo</span></div>
+          <div class="fi"><span class="dot g"></span><div><div class="ft">Anh Phát — bán đồ cũ</div><div class="fs">128 giao dịch sạch</div></div><span class="badge g">Uy tín</span></div>
+        </div>
+      </div>
+
+      <!-- RESULT SCAM -->
+      <div class="screen" id="s-scam">
+        <div class="back" onclick="go('s-home')">‹ Quay lại</div>
+        <div class="banner red"><div class="big">⚠ CẢNH BÁO LỪA ĐẢO</div><div class="who">0901 234 567 · "Nguyễn Văn X"</div><div class="sub">47 người đã báo cáo lừa đảo số này</div></div>
+        <div class="infocard">
+          <div class="kv"><span class="k">Chiêu thường gặp</span><span class="v">Đầu tư ảo · bom hàng</span></div>
+          <div class="kv"><span class="k">Báo cáo gần nhất</span><span class="v">2 giờ trước</span></div>
+          <div class="kv"><span class="k">Đã lừa (ước tính)</span><span class="v">~ 320 triệu</span></div>
+          <div style="margin-top:10px"><div class="muted" style="font-size:11px;margin-bottom:5px">Bằng chứng cộng đồng:</div><div class="evchips"><span class="evchip">Ảnh sao kê ×12</span><span class="evchip">Hội thoại lừa ×9</span><span class="evchip">Cảnh báo CA</span></div></div>
+        </div>
+        <button class="btn" onclick="openShare()">⚠ Cảnh báo mọi người</button>
+        <button class="btn ghost" onclick="go('s-report')">Báo cáo thêm bằng chứng</button>
+      </div>
+
+      <!-- RESULT SAFE -->
+      <div class="screen" id="s-safe">
+        <div class="back" onclick="go('s-home')">‹ Quay lại</div>
+        <div class="banner green"><div class="big">✓ ĐÁNG TIN</div><div class="who">Shop Hoa Mai · Trần Thị M.</div>
+          <div class="scorerow"><span class="sc">870</span><span class="sl">/1000 điểm Liêm · Hạng Vàng</span></div></div>
+        <div class="infocard">
+          <div class="kv"><span class="k">Giao dịch sạch</span><span class="v">128 · 0 khiếu nại</span></div>
+          <div class="kv"><span class="k">Thời gian hoạt động</span><span class="v">2 năm 3 tháng</span></div>
+          <div class="kv"><span class="k">Được xác nhận bởi</span><span class="v">19 người uy tín cao</span></div>
+          <div style="margin-top:10px"><div class="evchips"><span class="evchip">Người thật ✓</span><span class="evchip">Seller verified</span><span class="evchip">Giao đúng hạn 98%</span></div></div>
+        </div>
+        <button class="btn" onclick="toast('Đã gửi yêu cầu xác minh — chờ đối tác xác nhận')">Yêu cầu xác minh trước khi giao dịch</button>
+      </div>
+
+      <!-- AI CHECK -->
+      <div class="screen" id="s-ai">
+        <div class="appbar"><span class="logo"><svg viewBox="0 0 24 24"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16 19.6 12 21.5 C8 19.6 4.5 15.8 4.5 11 V5.5 Z"/></svg></span><div><div class="nm">AI kiểm tra</div><div class="sm">Dán tin nhắn / lời mời đáng ngờ</div></div></div>
+        <textarea id="aitext">Chúc mừng bạn được chọn tham gia dự án đầu tư lãi 30%/tháng, cam kết không rủi ro. Chuyển 2 triệu phí kích hoạt vào STK 1903xxxx8821 trong 30 phút để nhận quà. Link: bit.ly/dt-vip</textarea>
+        <button class="btn" onclick="document.getElementById('aires').classList.add('on')">Kiểm tra</button>
+        <div class="airesult" id="aires">
+          <div class="ailevel">🔴 Rủi ro cao · 92%</div>
+          <div class="gauge"><i></i></div>
+          <div class="muted" style="font-size:12.5px;margin-bottom:7px">Dấu hiệu lừa đảo phát hiện:</div>
+          <div class="evchips"><span class="evchip">Hứa lãi cao "không rủi ro"</span><span class="evchip">Giục chuyển tiền gấp</span><span class="evchip">Thu "phí kích hoạt"</span><span class="evchip">Link rút gọn lạ</span></div>
+          <button class="btn" style="margin-top:13px" onclick="openShare()">Cảnh báo người thân</button>
+        </div>
+      </div>
+
+      <!-- REPORT -->
+      <div class="screen" id="s-report">
+        <div class="appbar"><span class="logo"><svg viewBox="0 0 24 24"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16 19.6 12 21.5 C8 19.6 4.5 15.8 4.5 11 V5.5 Z"/></svg></span><div><div class="nm">Báo cáo lừa đảo</div><div class="sm">Giúp bảo vệ cộng đồng</div></div></div>
+        <div class="field"><label>Số điện thoại / số tài khoản / link kẻ lừa</label><input placeholder="VD: 0901234567"></div>
+        <div class="field"><label>Loại chiêu lừa</label><div class="chips selchips"><span class="chip" onclick="this.classList.toggle('sel')">Đầu tư ảo</span><span class="chip sel" onclick="this.classList.toggle('sel')">Mạo danh</span><span class="chip" onclick="this.classList.toggle('sel')">Bom hàng</span><span class="chip" onclick="this.classList.toggle('sel')">Việc nhẹ lương cao</span></div></div>
+        <div class="field"><label>Bằng chứng (ảnh chụp / sao kê)</label><div class="upbox" onclick="toast('(Demo) chọn ảnh từ thư viện')">+ Thêm ảnh chụp màn hình</div></div>
+        <button class="btn" onclick="toast('Cảm ơn! Báo cáo giúp bảo vệ cộng đồng. +20 điểm Liêm');setTimeout(function(){go('s-home');},900)">Gửi báo cáo</button>
+      </div>
+
+      <!-- PASSPORT -->
+      <div class="screen" id="s-pass">
+        <div class="appbar"><span class="logo"><svg viewBox="0 0 24 24"><path d="M12 2.5 L19.5 5.5 V11 C19.5 15.8 16 19.6 12 21.5 C8 19.6 4.5 15.8 4.5 11 V5.5 Z"/></svg></span><div><div class="nm">Hộ chiếu Uy tín</div><div class="sm">Của bạn · mang đi mọi nơi</div></div></div>
+        <div class="pp"><div class="ttl">Điểm Liêm</div><div class="big">720</div><div class="lvl">Hạng Bạc · top 18% người dùng</div></div>
+        <div class="pbadges">
+          <div class="pb"><span class="pi">✅</span><div><div class="pt">34 giao dịch sạch</div><div class="ps">0 khiếu nại trong 8 tháng</div></div></div>
+          <div class="pb"><span class="pi">🤝</span><div><div class="pt">Được 12 người xác nhận</div><div class="ps">trong đó 3 người uy tín cao</div></div></div>
+          <div class="pb"><span class="pi">🛡️</span><div><div class="pt">Người thật · KYC nhẹ</div><div class="ps">đã xác minh số điện thoại + khuôn mặt</div></div></div>
+        </div>
+        <button class="btn" onclick="toast('Đã tạo link hồ sơ uy tín để chia sẻ')">Chia sẻ hồ sơ uy tín</button>
+        <button class="btn ghost" onclick="toast('Đã gửi lời mời qua Zalo — bảo vệ bố mẹ bạn')">Mời &amp; bảo vệ người thân</button>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="nav">
+      <button class="on" data-s="s-home" onclick="tab(this,'s-home')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><span class="nl">Tra cứu</span></button>
+      <button data-s="s-ai" onclick="tab(this,'s-ai')"><svg viewBox="0 0 24 24"><path d="M12 3 a9 9 0 1 0 0 18 a9 9 0 0 0 0-18"/><path d="M8 12h8M12 8v8"/></svg><span class="nl">AI Check</span></button>
+      <button data-s="s-report" onclick="tab(this,'s-report')"><svg viewBox="0 0 24 24"><path d="M12 3 L21 19 H3 Z"/><path d="M12 10v4M12 17h.01"/></svg><span class="nl">Báo cáo</span></button>
+      <button data-s="s-pass" onclick="tab(this,'s-pass')"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="2.4"/><path d="M8.5 17 c0-2 7-2 7 0"/></svg><span class="nl">Hộ chiếu</span></button>
+    </div>
+
+    <!-- SHARE MODAL -->
+    <div class="modal" id="share" onclick="if(event.target.id==='share')closeShare()">
+      <div class="sheet">
+        <h3>Cảnh báo mọi người</h3>
+        <div class="muted" style="font-size:12.5px">Chia sẻ để bảo vệ người khác — mỗi lượt giúp thêm nhiều người.</div>
+        <div class="warncard"><div class="wt">⚠ Cảnh báo: 0901 234 567</div><div style="font-size:12px;color:var(--mut);margin-top:5px">47 người báo lừa đảo (đầu tư ảo). Kiểm tra trước khi chuyển tiền tại Lá chắn Liêm.</div></div>
+        <div class="sharebtns"><button onclick="toast('Đã mở Zalo (demo)');closeShare()">Zalo</button><button onclick="toast('Đã mở Facebook (demo)');closeShare()">Facebook</button><button onclick="toast('Đã sao chép link');closeShare()">Sao chép</button></div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+  </div>
+
+<script>
+  var sub=['s-scam','s-safe'];
+  function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',s.id===id);});document.querySelector('.scrollarea').scrollTop=0;}
+  function go(id){show(id);
+    // sync bottom nav highlight for main tabs
+    var main={'s-home':0,'s-ai':1,'s-report':2,'s-pass':3};
+    document.querySelectorAll('.nav button').forEach(function(b){b.classList.toggle('on', b.getAttribute('data-s')===id);});
+  }
+  function tab(btn,id){document.querySelectorAll('.nav button').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');show(id);if(id==='s-ai'){document.getElementById('aires').classList.remove('on');}}
+  function openShare(){document.getElementById('share').classList.add('on');}
+  function closeShare(){document.getElementById('share').classList.remove('on');}
+  var tt;
+  function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on');},2200);}
+</script>
+</body>
+</html>

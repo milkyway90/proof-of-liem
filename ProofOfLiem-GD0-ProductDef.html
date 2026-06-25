@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lá chắn Liêm · Định nghĩa sản phẩm GĐ0</title>
+<script>(function(){try{var t=localStorage.getItem('liem-theme');if(t==='dark'||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)){document.documentElement.classList.add('dark');}}catch(e){}})();</script>
+<style>
+  :root{--ivory:#FAF9F5;--paper:#fff;--slate:#141413;--clay:#D97757;--sky:#5E84AE;--olive:#6E8A4E;--plum:#8A6BA8;--gold:#B58F2E;--rust:#B04A3F;--gray-300:#D9D7CD;--gray-500:#8A8980;--gray-700:#3D3D3A;--line:#E2E0D6;--soft:#F4F2EA;--hl:rgba(217,119,87,.08);--serif:ui-serif,Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  html.dark{--ivory:#131310;--paper:#1B1B16;--slate:#F5F3EC;--clay:#E08A6C;--sky:#86A6C8;--olive:#9CB07C;--plum:#B79BD0;--gold:#D6BC52;--rust:#E07A6C;--gray-300:#3A3A33;--gray-500:#9A988F;--gray-700:#D0CEC5;--line:#2C2C25;--soft:#1F1F18;--hl:rgba(224,138,108,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+  body{background:var(--ivory);color:var(--gray-700);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;padding:0 24px 130px;transition:background .3s,color .3s}
+  .page{max-width:1080px;margin:0 auto;padding-top:56px;display:grid;grid-template-columns:194px minmax(0,1fr);gap:54px}
+  @media(max-width:900px){.page{grid-template-columns:1fr;gap:18px}nav.toc{position:static;border-bottom:1px solid var(--line);padding-bottom:12px}}
+  nav.toc{position:sticky;top:28px;align-self:start;font-size:13px;max-height:calc(100vh - 56px);overflow:auto}
+  nav.toc .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-500);margin-bottom:12px}
+  nav.toc a{display:block;padding:6px 0 6px 13px;border-left:2px solid var(--line);color:var(--gray-500);text-decoration:none;line-height:1.35}
+  nav.toc a:hover,nav.toc a.on{color:var(--clay);border-left-color:var(--clay)}
+  nav.toc a .n{font-family:var(--mono);font-size:10px;color:var(--gray-300);margin-right:7px}
+  .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin-bottom:14px}
+  h1{font-family:var(--serif);font-weight:500;font-size:38px;color:var(--slate);letter-spacing:-.02em;line-height:1.1;margin-bottom:14px}
+  .sub{font-size:17px;max-width:600px;margin-bottom:8px;color:var(--gray-700)}
+  section{padding:42px 0 6px;scroll-margin-top:18px}section+section{border-top:1px solid var(--line)}
+  .kicker{font-family:var(--mono);font-size:11px;color:var(--clay);letter-spacing:.08em;margin-bottom:8px}
+  h2{font-family:var(--serif);font-weight:500;font-size:26px;color:var(--slate);letter-spacing:-.015em;margin-bottom:8px}
+  h3{font-family:var(--serif);font-weight:500;font-size:18px;color:var(--slate);margin:24px 0 8px}
+  .lead{font-size:16px;max-width:620px;color:var(--gray-700);margin-bottom:16px}
+  p{margin-bottom:11px;max-width:620px}strong{color:var(--slate);font-weight:600}em{color:var(--clay);font-style:normal;font-weight:500}
+  a{color:var(--sky);text-decoration:none;border-bottom:1px solid transparent}a:hover{border-bottom-color:var(--sky)}
+  ul{margin:2px 0 14px;padding-left:0;list-style:none;max-width:620px}
+  ul li{padding-left:20px;position:relative;margin-bottom:6px}ul li:before{content:"→";position:absolute;left:0;color:var(--clay)}
+  .toggle{position:fixed;top:14px;right:16px;z-index:40;border:1.5px solid var(--line);background:var(--paper);color:var(--gray-700);border-radius:9px;font-family:var(--mono);font-size:11px;padding:7px 11px;cursor:pointer}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 6px}
+  @media(max-width:680px){.stats{grid-template-columns:1fr 1fr}}
+  .stat{border:1.5px solid var(--line);border-radius:12px;background:var(--paper);padding:14px 15px}
+  .stat .n{font-family:var(--serif);font-size:26px;font-weight:500;color:var(--clay);line-height:1}
+  .stat .l{font-size:12px;color:var(--gray-500);margin-top:6px;line-height:1.4}
+  .tldr{border:1.5px solid var(--line);border-left:3px solid var(--clay);border-radius:12px;background:var(--paper);padding:18px 20px;margin:16px 0;max-width:680px}
+  .tldr .q{font-family:var(--serif);font-size:19px;line-height:1.5;color:var(--slate)}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  .pc{border:1.5px solid var(--line);border-radius:14px;background:var(--paper);padding:18px 20px}
+  .pc .nm{font-family:var(--serif);font-size:18px;color:var(--slate);font-weight:500}
+  .pc .meta{font-family:var(--mono);font-size:10px;color:var(--gray-500);margin:3px 0 10px;letter-spacing:.02em}
+  .pc .row{font-size:13px;margin-bottom:7px}.pc .row .t{font-family:var(--mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:var(--clay);display:block;margin-bottom:1px}
+  table{border-collapse:collapse;width:100%;font-size:12.5px;margin:10px 0}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+  th{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-500);font-weight:500}
+  tbody tr:hover{background:var(--soft)}
+  .p0{color:var(--rust);font-weight:600}.p1{color:var(--gold);font-weight:600}.p2{color:var(--gray-500);font-weight:600}
+  figure{margin:16px 0 6px;border:1.5px solid var(--line);border-radius:14px;background:var(--paper);padding:22px 18px 12px;overflow:hidden}
+  figure svg{display:block;width:100%;height:auto}figcaption{font-size:12px;color:var(--gray-500);margin-top:10px}
+  .figlabel{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-500);margin-bottom:12px}
+  .bs{fill:var(--soft);stroke:var(--gray-300);stroke-width:1.5}.bc2{fill:var(--hl);stroke:var(--clay);stroke-width:1.6}
+  .tt{fill:var(--slate);font-family:var(--sans);font-weight:600}.ts{fill:var(--gray-500);font-family:var(--sans)}.cc{fill:var(--clay)}
+  .fl{stroke:var(--clay);stroke-width:1.8;fill:none}.ln{stroke:var(--gray-300);stroke-width:1.5;fill:none}
+  .box{border:1.5px solid var(--clay);border-radius:13px;background:var(--hl);padding:16px 18px;margin:14px 0;max-width:680px}
+  .box .k{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--clay);margin-bottom:7px}
+  .pill{display:inline-block;font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:5px;border:1px solid var(--line);color:var(--gray-700);margin:2px 3px 2px 0}
+  footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--gray-500);max-width:700px}footer a{color:var(--sky)}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeBtn">☾ Tối</button>
+<div class="page">
+  <nav class="toc">
+    <div class="lbl">GĐ0 · Lá chắn Liêm</div>
+    <a href="#tomtat"><span class="n">00</span>Tóm tắt</a>
+    <a href="#thitruong"><span class="n">01</span>Thị trường &amp; painpoint</a>
+    <a href="#persona"><span class="n">02</span>Chân dung user</a>
+    <a href="#sanpham"><span class="n">03</span>Sản phẩm &amp; tính năng</a>
+    <a href="#viral"><span class="n">04</span>Vòng lặp viral</a>
+    <a href="#gtm"><span class="n">05</span>GTM chi phí thấp</a>
+    <a href="#metric"><span class="n">06</span>Chỉ số &amp; mục tiêu</a>
+    <a href="#doithu"><span class="n">07</span>Đối thủ &amp; lộ trình</a>
+  </nav>
+
+  <main>
+    <div class="eyebrow">Định nghĩa sản phẩm · Giai đoạn 0 · thị trường Việt Nam</div>
+    <h1>Lá chắn Liêm<br>Sản phẩm GĐ0 — viral nhanh nhất, rẻ nhất</h1>
+    <p class="sub">App chống lừa đảo cộng đồng: tra cứu người lạ trước khi giao dịch. Mục tiêu GĐ0 = <strong>kéo user ồ ạt với chi phí ~0</strong>, đồng thời âm thầm dựng <em>hộ chiếu uy tín</em> cho mỗi người.</p>
+
+    <section id="tomtat">
+      <div class="kicker">00 · TÓM TẮT</div>
+      <h2>Vì sao đây là wedge viral-rẻ nhất ở VN</h2>
+      <div class="tldr"><div class="q">Lừa đảo online là nỗi đau cấp quốc gia, và <em>người Việt vốn đã tự đi cảnh báo nhau</em> mỗi khi gặp scam. Ta chỉ cần đưa cho hành vi đó một công cụ — viral tự chạy, chi phí gần 0.</div></div>
+      <div class="stats">
+        <div class="stat"><div class="n">18.900 tỷ</div><div class="l">VND mất vì lừa đảo online (VN, 2024 ≈ $744 tr)</div></div>
+        <div class="stat"><div class="n">đa số</div><div class="l">nạn nhân <strong>cảnh báo người thân/bạn bè</strong> (chỉ 32% báo công an)</div></div>
+        <div class="stat"><div class="n">&gt;90% · 86%</div><div class="l">độ phủ Facebook · Zalo — kênh lan cảnh báo sẵn có</div></div>
+        <div class="stat"><div class="n">45k</div><div class="l">MAU của ChongLuaDao — thị trường còn rất nhỏ, nhiều khoảng trống</div></div>
+      </div>
+      <ul>
+        <li><strong>Painpoint cấp tính + phổ quát</strong> → ai cũng cần, không phải giáo dục thị trường.</li>
+        <li><strong>Hành vi chia sẻ cảnh báo có sẵn</strong> → mỗi report là một lần marketing miễn phí.</li>
+        <li><strong>Tạo data uy tín thật</strong> ngay từ GĐ0 (giao dịch sạch, xác nhận 2 chiều) — khác mọi app chống lừa đảo chỉ blacklist.</li>
+      </ul>
+    </section>
+
+    <section id="thitruong">
+      <div class="kicker">01 · THỊ TRƯỜNG &amp; PAINPOINT</div>
+      <h2>Lừa đảo ở VN — quy mô &amp; hành vi</h2>
+      <p class="lead">Dữ liệu 2024–2025 cho thấy đây là thị trường lớn, đau, và đang nóng trên truyền thông (dễ PR).</p>
+      <ul>
+        <li><strong>18.900 tỷ VND</strong> thiệt hại 2024; 11 tháng đầu 2025 đã hơn <strong>6.000 tỷ</strong>. Trung bình <strong>17,7 triệu/nạn nhân</strong>.</li>
+        <li>Chiêu phổ biến: <strong>đầu tư ảo lãi cao</strong> (70,7%), <strong>mạo danh công an/ngân hàng</strong> (62%), trúng thưởng giả. Scammer dùng cả <em>deepfake</em>.</li>
+        <li>Chỉ <strong>1%</strong> lấy lại được tiền; <strong>54%</strong> bị sang chấn tâm lý mạnh → nỗi sợ rất thật.</li>
+        <li>Kênh giao dịch &amp; lan truyền: <strong>Facebook</strong> (>90%, 94% mua sắm social), <strong>Zalo</strong> (86% nhắn tin, mạnh ở người lớn tuổi/“hạ tầng xã hội”), <strong>TikTok</strong> (GenZ >80%).</li>
+      </ul>
+      <div class="box"><div class="k">Insight GTM cốt lõi</div><p style="margin:0;max-width:none">Nạn nhân <strong>không báo công an</strong> (chỉ 32%) nhưng <strong>cảnh báo người thân</strong> — kênh phân phối tự nhiên đã tồn tại. Sản phẩm chỉ cần "đổ" hành vi này vào một nút bấm.</p></div>
+    </section>
+
+    <section id="persona">
+      <div class="kicker">02 · CHÂN DUNG USER</div>
+      <h2>Ai · ở đâu · hành vi thế nào</h2>
+      <p class="lead">4 chân dung lõi của GĐ0 (tập viral), cộng 1 chân dung bắc cầu sang monetize (GĐ1).</p>
+      <div class="cards">
+        <div class="pc"><div class="nm">Chị Lan — "sợ mất tiền khi chuyển khoản"</div><div class="meta">34 tuổi · Đà Nẵng · bán/mua online + nội trợ</div>
+          <div class="row"><span class="t">Hành vi số</span>Mua bán trên Facebook group + chuyển khoản cho người lạ vài lần/tuần; ở trong nhiều group "thanh lý/cảnh báo".</div>
+          <div class="row"><span class="t">Nỗi đau</span>Không biết số tài khoản / người này có lừa không; từng suýt mất cọc.</div>
+          <div class="row"><span class="t">Khoảnh khắc dùng</span>Ngay trước khi bấm "chuyển tiền" cho người lạ.</div>
+          <div class="row"><span class="t">Kênh tiếp cận</span>Facebook groups, Zalo.</div>
+        </div>
+        <div class="pc"><div class="nm">Minh — GenZ giao dịch P2P / freelance</div><div class="meta">21 tuổi · TP.HCM · sinh viên + bán đồ cũ + thử crypto</div>
+          <div class="row"><span class="t">Hành vi số</span>TikTok native; giao dịch P2P liên tục; dễ gặp "việc nhẹ lương cao", đầu tư ảo.</div>
+          <div class="row"><span class="t">Nỗi đau</span>Sợ bị lừa khi gặp người lạ / job online / sàn đầu tư lạ.</div>
+          <div class="row"><span class="t">Khoảnh khắc dùng</span>Khi nhận lời mời/job/đối tác mới qua mạng.</div>
+          <div class="row"><span class="t">Kênh tiếp cận</span>TikTok, group Facebook/Telegram.</div>
+        </div>
+        <div class="pc"><div class="nm">Anh Tuấn — "lo bố mẹ bị lừa"</div><div class="meta">38 tuổi · Hà Nội · nhân viên VP, con của mẹ 62t</div>
+          <div class="row"><span class="t">Hành vi số</span>Quản lý Zalo gia đình; cài app hộ bố mẹ; hay gửi link cảnh báo cho nhà.</div>
+          <div class="row"><span class="t">Nỗi đau</span>Bố mẹ nhận cuộc gọi mạo danh công an/ngân hàng, dễ tin.</div>
+          <div class="row"><span class="t">Khoảnh khắc dùng</span>Cài + bật cảnh báo cho bố mẹ; tra giúp số lạ gọi tới.</div>
+          <div class="row"><span class="t">Kênh tiếp cận</span>Zalo gia đình (referral mạnh).</div>
+        </div>
+        <div class="pc"><div class="nm">Cô Hồng — tiểu thương / seller nhỏ</div><div class="meta">45 tuổi · Cần Thơ · bán hàng online + sạp chợ</div>
+          <div class="row"><span class="t">Hành vi số</span>Nhận cọc chuyển khoản; sợ khách bom hàng/lừa; muốn khách TIN mình.</div>
+          <div class="row"><span class="t">Nỗi đau</span>Vừa sợ bị lừa, vừa muốn chứng minh mình là người bán uy tín.</div>
+          <div class="row"><span class="t">Khoảnh khắc dùng</span>Gửi khách "hồ sơ uy tín" để chốt đơn; tra khách lạ.</div>
+          <div class="row"><span class="t">Bắc cầu</span>→ Hộ chiếu uy tín → wedge Creator/Seller (GĐ1 monetize).</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sanpham">
+      <div class="kicker">03 · SẢN PHẨM &amp; TÍNH NĂNG</div>
+      <h2>"Lá chắn Liêm" — làm gì &amp; ưu tiên gì</h2>
+      <p class="lead">Một app di động (B2C), miễn phí. Lõi: <strong>tra cứu trước khi giao dịch</strong>. Phụ phẩm: <strong>hộ chiếu uy tín</strong> của mỗi người.</p>
+      <h3>Việc người dùng cần làm (jobs)</h3>
+      <ul>
+        <li>"Trước khi chuyển tiền cho người lạ, cho tôi biết họ có an toàn không."</li>
+        <li>"Tin nhắn / lời mời / sàn này có phải lừa đảo không?"</li>
+        <li>"Tôi vừa gặp kẻ lừa đảo — báo &amp; cảnh báo mọi người."</li>
+        <li>"Tôi là người tử tế — cho tôi cách chứng minh để người khác tin."</li>
+        <li>"Bảo vệ bố mẹ tôi khỏi cuộc gọi mạo danh."</li>
+      </ul>
+      <h3>Bảng tính năng (ưu tiên)</h3>
+      <table>
+        <thead><tr><th style="width:24%">Tính năng</th><th style="width:9%">Ưu tiên</th><th>Mô tả &amp; tiêu chí chấp nhận</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Tra cứu người lạ</strong> (SĐT · số TK · Zalo/FB · link)</td><td><span class="p0">P0</span></td><td>Nhập định danh → trả "An toàn / Cảnh báo / Chưa có dữ liệu" + lý do + số lượt báo. <em>Chấp nhận:</em> ≤3s; có nguồn; không kết luận chắc khi thiếu data.</td></tr>
+          <tr><td><strong>AI kiểm tin nhắn/ảnh</strong></td><td><span class="p0">P0</span></td><td>Dán tin nhắn/lời mời/ảnh chụp → AI phán mức rủi ro + giải thích chiêu. <em>Chấp nhận:</em> chạy offline-first cho text; nêu lý do; không lưu nội dung nhạy cảm.</td></tr>
+          <tr><td><strong>Báo cáo lừa đảo</strong> (crowdsource)</td><td><span class="p0">P0</span></td><td>Báo số/TK lừa + bằng chứng (ảnh/biên lai). <em>Chấp nhận:</em> cần ≥1 bằng chứng; chống spam; cờ tiêu cực chỉ hiện khi đủ xác nhận.</td></tr>
+          <tr><td><strong>Cảnh báo 1 chạm</strong> → Zalo/FB</td><td><span class="p0">P0</span></td><td>Tạo thẻ cảnh báo đẹp + link → share group. <em>Chấp nhận:</em> mỗi share gắn mã mời (đo K-factor).</td></tr>
+          <tr><td><strong>Bảo vệ người thân</strong></td><td><span class="p0">P0</span></td><td>Mời + cài cho bố mẹ; cảnh báo cuộc gọi/định danh mạo danh. <em>Chấp nhận:</em> luồng mời qua Zalo &lt;3 bước.</td></tr>
+          <tr><td><strong>Yêu cầu xác minh 2 chiều</strong></td><td><span class="p1">P1</span></td><td>Gửi đối tác "xác minh uy tín" trước giao dịch → đối tác vào app xác nhận → tạo bản ghi giao dịch sạch. <em>Kéo user mới + sinh data.</em></td></tr>
+          <tr><td><strong>Sổ / Hộ chiếu uy tín</strong> (phụ phẩm)</td><td><span class="p1">P1</span></td><td>Mỗi giao dịch sạch + xác nhận → điểm uy tín; claim hồ sơ "người tin được" để khoe.</td></tr>
+          <tr><td><strong>Liêm-điểm gamified</strong> (mời/đóng góp)</td><td><span class="p2">P2</span></td><td>Điểm cho report tốt + mời người thật; bảng xếp hạng. Chưa token, chưa quy đổi tiền.</td></tr>
+          <tr><td>Tích hợp ngân hàng / cảnh báo lúc chuyển khoản</td><td><span class="p2">P2</span></td><td>Cảnh báo ngay trong app ngân hàng (cần đối tác) — để sau.</td></tr>
+        </tbody>
+      </table>
+      <div class="box"><div class="k">Non-goals GĐ0 (tránh phình)</div><p style="margin:0;max-width:none">Chưa làm: cho vay/midman/giữ tiền · token quy đổi · chấm điểm tín dụng đầy đủ · blacklist công khai danh tính (chỉ cờ ẩn danh có bằng chứng). Những thứ này thuộc GĐ sau.</p></div>
+    </section>
+
+    <section id="viral">
+      <div class="kicker">04 · VÒNG LẶP VIRAL</div>
+      <h2>Bốn vòng lặp tự chạy, chi phí ~0</h2>
+      <figure>
+        <div class="figlabel">Vòng lặp tăng trưởng</div>
+        <svg viewBox="0 0 940 200" role="img" aria-label="Vòng lặp viral">
+          <rect x="20" y="80" width="170" height="44" rx="11" class="bs"/><text x="105" y="100" text-anchor="middle" class="tt" font-size="11">Gặp/nghi lừa đảo</text><text x="105" y="116" text-anchor="middle" class="ts" font-size="9">tra cứu / AI check</text>
+          <path d="M190 102 L 224 102" class="fl"/>
+          <rect x="224" y="80" width="170" height="44" rx="11" class="bs"/><text x="309" y="100" text-anchor="middle" class="tt" font-size="11">Báo cáo + 1 chạm</text><text x="309" y="116" text-anchor="middle" class="ts" font-size="9">share cảnh báo</text>
+          <path d="M394 102 L 428 102" class="fl"/>
+          <rect x="428" y="80" width="190" height="44" rx="11" class="bc2"/><text x="523" y="100" text-anchor="middle" class="cc" font-size="11" font-weight="600">Lan ra Zalo/FB group</text><text x="523" y="116" text-anchor="middle" class="ts" font-size="9">người mới thấy → tải app</text>
+          <path d="M618 102 L 652 102" class="fl"/>
+          <rect x="652" y="80" width="170" height="44" rx="11" class="bs"/><text x="737" y="100" text-anchor="middle" class="tt" font-size="11">User mới</text><text x="737" y="116" text-anchor="middle" class="ts" font-size="9">+ data uy tín</text>
+          <path d="M737 124 C 737 168 105 168 105 126" class="fl" stroke-dasharray="5 4"/>
+          <text x="420" y="186" text-anchor="middle" class="ts" font-size="10">vòng lặp khép kín — mỗi nỗi sợ tạo thêm user</text>
+        </svg>
+      </figure>
+      <ul>
+        <li><strong>Vòng cảnh báo:</strong> report → share thẻ cảnh báo lên group → người mới tải app. (Marketing nội sinh.)</li>
+        <li><strong>Vòng xác minh 2 chiều:</strong> mỗi giao dịch, một bên kéo bên kia vào app để xác minh.</li>
+        <li><strong>Vòng bảo vệ người thân:</strong> cài cho bố mẹ → mời tiếp họ hàng (Zalo gia đình).</li>
+        <li><strong>Vòng "suýt bị lừa":</strong> thoát vụ lừa nhờ app → kể lại / review → user mới.</li>
+      </ul>
+    </section>
+
+    <section id="gtm">
+      <div class="kicker">05 · GTM CHI PHÍ THẤP</div>
+      <h2>Kênh kéo user rẻ nhất ở VN</h2>
+      <p class="lead">Tận dụng kênh + hành vi sẵn có; ngân sách marketing gần 0, dựa vào nội sinh + cộng đồng.</p>
+      <table>
+        <thead><tr><th style="width:26%">Kênh</th><th>Cách làm · vì sao rẻ</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Seeding group Facebook/Zalo</strong> (cảnh báo lừa đảo, thanh lý, chợ)</td><td>Vào các group sẵn có (đã có hành vi cảnh báo) chia sẻ tính năng "tra số lừa đảo". Chi phí 0, đúng tệp.</td></tr>
+          <tr><td><strong>TikTok content "vạch chiêu lừa"</strong></td><td>Video bóc chiêu lừa + demo tra cứu → viral organic, GenZ. Tự làm/seeding nano.</td></tr>
+          <tr><td><strong>Tính năng share cảnh báo</strong></td><td>Mỗi cảnh báo người dùng share = một quảng cáo miễn phí có mã mời.</td></tr>
+          <tr><td><strong>KOC nano seeding</strong></td><td>Hợp tác micro-KOC (chi phí thấp) review app như "công cụ bảo vệ".</td></tr>
+          <tr><td><strong>Hợp tác ChongLuaDao / cộng đồng an ninh mạng</strong></td><td>Tie-in thay vì đối đầu: bổ sung mảng "tra số TK/người" họ chưa làm. Mượn uy tín + cộng đồng 45k.</td></tr>
+          <tr><td><strong>"Bảo vệ bố mẹ" referral</strong></td><td>Lan qua Zalo gia đình — kênh tin cậy, viral tự nhiên.</td></tr>
+          <tr><td><strong>PR báo chí</strong></td><td>Scam là chủ đề nóng → dễ lên VnExpress/báo công nghệ với data + câu chuyện cứu người.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="metric">
+      <div class="kicker">06 · CHỈ SỐ &amp; MỤC TIÊU</div>
+      <h2>Đo gì để biết GĐ0 thắng</h2>
+      <table>
+        <thead><tr><th style="width:34%">Chỉ số (leading)</th><th>Mục tiêu tham khảo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>K-factor</strong> (mỗi user kéo thêm bao nhiêu)</td><td>&gt; 1 bền vững — điều kiện sống còn của GĐ0</td></tr>
+          <tr><td>Lượt tra cứu / user / tuần</td><td>≥ 2 (tần suất dùng thật)</td></tr>
+          <tr><td>% user có ≥1 lần share cảnh báo</td><td>≥ 25%</td></tr>
+          <tr><td>Số report có bằng chứng / tuần</td><td>tăng đều (data lõi)</td></tr>
+          <tr><td>CAC (chi phí/ user)</td><td>~ 0 (dựa nội sinh)</td></tr>
+          <tr><td>Retention D7 / D30</td><td>D30 ≥ 20% (cao hơn nhờ "bảo vệ người thân" + verify-request)</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:13px;color:var(--gray-500)">Lagging (GĐ1+): % user dựng hộ chiếu uy tín · số giao dịch verify-request · chuyển đổi sang creator/seller verify trả phí.</p>
+    </section>
+
+    <section id="doithu">
+      <div class="kicker">07 · ĐỐI THỦ &amp; LỘ TRÌNH</div>
+      <h2>Khoảng trống &amp; bước kế tiếp</h2>
+      <ul>
+        <li><strong><a href="https://en.wikipedia.org/wiki/ChongLuaDao">ChongLuaDao</a></strong> (45k MAU): mạnh về <em>website/link/phishing</em> + extension, phi lợi nhuận. <strong>Khoảng trống ta lấp:</strong> tra <em>số tài khoản / SĐT / người</em> trước giao dịch; mobile-first + vòng viral; và <em>hộ chiếu uy tín tích cực</em> (họ chỉ blacklist).</li>
+        <li><strong><a href="https://gogolook.com">Whoscall</a> / Truecaller:</strong> mạnh ở caller-ID/chặn số → ta khác ở "giao dịch + uy tín tích cực", và Việt-hoá sâu (Zalo/FB/số TK).</li>
+        <li><strong>Lộ trình:</strong> GĐ0 viral (Lá chắn) → GĐ1 giữ chân + <em>Creator/Seller verify</em> (brand/seller trả tiền) → GĐ2 mở domain + "Verify with Liêm" API → GĐ3 mở khoá tài chính.</li>
+      </ul>
+      <div class="box"><div class="k">Việc cần làm tiếp (đề xuất)</div><p style="margin:0;max-width:none">Test concierge 30 ngày: dựng 3 màn lõi (tra cứu · AI check · share cảnh báo), seeding 5 group + 3 nano-KOC, đo K-factor &amp; tần suất. Nếu K&gt;1 → có cỗ máy tăng trưởng để gọi vốn.</p></div>
+    </section>
+
+    <footer>
+      <p style="margin-bottom:8px"><strong>Nguồn:</strong> thiệt hại scam VN 18.900 tỷ/2024 — <a href="https://e.vnexpress.net/news/tech/vietnamese-lose-744m-to-online-scams-in-2024-4828826.html">VnExpress</a>; hành vi nạn nhân (cảnh báo người thân, 17,7tr/vụ) — <a href="https://vietnamnews.vn/society/1689079/online-frauds-caused-744-million-in-damages-in-2024.html">Vietnam News</a>; social VN (FB/Zalo/TikTok) — <a href="https://www.statista.com/topics/8182/social-media-in-vietnam/">Statista</a>; ChongLuaDao 45k MAU — <a href="https://en.wikipedia.org/wiki/ChongLuaDao">Wikipedia</a>.</p>
+      <p>Tài liệu nội bộ · GĐ0 product definition · trình bày theo <a href="https://github.com/plannotator/effective-html">effective-html</a> · số liệu cần kiểm chứng trước khi gọi vốn.</p>
+    </footer>
+  </main>
+</div>
+<script>
+(function(){var b=document.getElementById('themeBtn');function s(){var d=document.documentElement.classList.contains('dark');b.textContent=d?'☀ Sáng':'☾ Tối';}s();b.addEventListener('click',function(){document.documentElement.classList.toggle('dark');try{localStorage.setItem('liem-theme',document.documentElement.classList.contains('dark')?'dark':'light');}catch(e){}s();});
+var links=[].slice.call(document.querySelectorAll('nav.toc a')),map={};links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+if('IntersectionObserver' in window){var o=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});var a=map[e.target.id];if(a)a.classList.add('on');}});},{rootMargin:'-15% 0px -75% 0px'});document.querySelectorAll('section[id]').forEach(function(s){o.observe(s);});}})();
+</script>
+</body>
+</html>
