@@ -1,280 +1,575 @@
 <!doctype html>
-<html lang="vi">
+<html lang="vi" class="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Liêm Super-App · Prototype</title>
+<title>Liêm Super-App · Prototype v2</title>
 <style>
-  :root{--bg:#ECEAE3;--ink:#16160f;--clay:#D97757;--sky:#3F73A8;--green:#3E9B5F;--red:#C9462F;--gold:#C39A2E;--plum:#7E5FA0;--mut:#807F77;--line:#E9E6DD;--soft:#F6F4EC;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  :root{
+    --bg:#0E0E13;--bg2:#16161f;--card:rgba(255,255,255,.045);--card2:rgba(255,255,255,.08);
+    --line:rgba(255,255,255,.10);--ink:#F5F4F8;--mut:#9C9BAB;--mut2:#6C6B7B;
+    --clay:#E08A6C;--coral:#FF7A59;--violet:#8B6CFF;--sky:#56AEFF;--lime:#43E3A6;--gold:#FFC24B;--pink:#FF74B8;--danger:#FF6060;
+    --grad:linear-gradient(135deg,#E08A6C 0%,#FF7A59 42%,#8B6CFF 100%);
+    --gradsoft:linear-gradient(135deg,rgba(224,138,108,.22),rgba(139,108,255,.22));
+    --sans:-apple-system,system-ui,"Segoe UI",Roboto,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;
+  }
+  html.light{--bg:#F2F1EC;--bg2:#FFFFFF;--card:rgba(20,18,30,.04);--card2:rgba(20,18,30,.06);--line:rgba(20,18,30,.10);--ink:#15141B;--mut:#6A6878;--mut2:#9A98A8;}
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:26px 14px 56px}
-  .cap{font-family:var(--mono);font-size:12px;color:var(--mut);text-align:center;margin-bottom:16px;max-width:400px;line-height:1.6}.cap b{color:var(--ink)}
-  .phone{width:392px;max-width:100%;height:792px;background:#fff;border-radius:42px;box-shadow:0 24px 60px rgba(0,0,0,.18),0 0 0 11px #1c1c1a,0 0 0 13px #2f2f2f;position:relative;overflow:hidden;display:flex;flex-direction:column}
-  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:150px;height:26px;background:#1c1c1a;border-radius:0 0 16px 16px;z-index:50}
-  .status{height:42px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 5px;font-size:12px;font-weight:600;flex-shrink:0}
-  .scrollarea{flex:1;overflow-y:auto;position:relative;background:var(--soft)}
-  .screen{display:none;padding:8px 16px 26px;animation:fade .24s ease}.screen.on{display:block}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .hi{font-size:13px;color:var(--mut)}.hn{font-size:19px;font-weight:800;letter-spacing:-.3px}
-  .row{display:flex;align-items:center}
-  .av{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#E9A07F,#D97757);margin-left:auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
-  /* status card */
-  .liemcard{background:linear-gradient(140deg,#20242f,#39414f);border-radius:20px;padding:16px 18px;color:#fff;margin:12px 0 14px}
-  .liemcard .top{display:flex;align-items:center;gap:12px}
-  .liemcard .sc{font-size:38px;font-weight:800;line-height:1}
-  .liemcard .lv{font-size:11px;background:rgba(255,255,255,.16);padding:3px 9px;border-radius:8px;color:#F2D1B8;font-weight:700}
-  .liemcard .meta{font-size:11px;opacity:.82;margin-top:3px}
-  .liemcard .tok{margin-left:auto;text-align:right}
-  .liemcard .tok .tn{font-size:18px;font-weight:800;color:#F2D1B8}
-  .liemcard .tok .ts{font-size:9.5px;opacity:.8}
-  .prog{height:7px;background:rgba(255,255,255,.18);border-radius:5px;margin-top:13px;overflow:hidden}.prog>i{display:block;height:100%;width:100%;background:var(--clay);border-radius:5px}
-  .progtx{font-size:10.5px;opacity:.85;margin-top:6px}
-  /* generic card */
-  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:13px}
-  .ch{display:flex;align-items:center;margin-bottom:11px}.ch .t{font-size:14px;font-weight:700}.ch .more{margin-left:auto;font-size:11px;color:var(--clay);font-weight:600;cursor:pointer}
-  .fin{display:flex;gap:10px}.fin .b{flex:1;background:var(--soft);border-radius:12px;padding:11px}
-  .fin .b .l{font-size:10.5px;color:var(--mut)}.fin .b .v{font-size:17px;font-weight:800;margin-top:2px}.fin .b .v.r{color:var(--red)}.fin .b .v.g{color:var(--green)}
-  .auto{font-size:10px;color:var(--green);font-weight:700;margin-top:8px}
+  body{background:radial-gradient(1200px 600px at 50% -10%,rgba(139,108,255,.16),transparent 60%),var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:22px 12px 60px;transition:background .3s}
+  .cap{font-family:var(--mono);font-size:11.5px;color:var(--mut);text-align:center;margin-bottom:12px;max-width:430px;line-height:1.6}.cap b{color:var(--ink)}
+  /* demo bar */
+  .demobar{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:6px;margin-bottom:16px;backdrop-filter:blur(8px)}
+  .demobar .dl{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--mut);padding:0 6px 0 8px;text-transform:uppercase}
+  .seg{border:none;background:transparent;color:var(--mut);font-family:var(--sans);font-size:12px;font-weight:700;padding:7px 13px;border-radius:11px;cursor:pointer;transition:.18s;white-space:nowrap}
+  .seg.on{background:var(--grad);color:#fff;box-shadow:0 4px 14px rgba(139,108,255,.4)}
+  /* phone */
+  .phone{width:394px;max-width:100%;height:808px;background:var(--bg2);border-radius:46px;box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 11px #18181f,0 0 0 13px #2c2c36;position:relative;overflow:hidden;display:flex;flex-direction:column}
+  .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:128px;height:27px;background:#0d0d12;border-radius:0 0 17px 17px;z-index:60}
+  .status{height:44px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 6px;font-size:12.5px;font-weight:700;flex-shrink:0;color:var(--ink)}
+  .scrollarea{flex:1;overflow-y:auto;position:relative}
+  .scrollarea::-webkit-scrollbar{width:0}
+  .screen{display:none;padding:6px 15px 24px;animation:fade .26s ease}.screen.on{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  /* generic */
+  .hrow{display:flex;align-items:center;gap:10px;margin:6px 2px 4px}
+  .hi{font-size:12.5px;color:var(--mut)}.hn{font-size:20px;font-weight:800;letter-spacing:-.3px}
+  .av{width:42px;height:42px;border-radius:13px;background:var(--grad);margin-left:auto;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;box-shadow:0 4px 14px rgba(224,138,108,.4)}
+  .ico{width:30px;height:30px;border-radius:9px;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:13px;backdrop-filter:blur(6px)}
+  .ch{display:flex;align-items:center;gap:8px;margin-bottom:12px}.ch .t{font-size:14px;font-weight:800;letter-spacing:-.2px}.ch .more{margin-left:auto;font-size:11px;color:var(--clay);font-weight:700;cursor:pointer}
+  .pill{font-size:9.5px;font-weight:800;padding:3px 8px;border-radius:20px;letter-spacing:.02em}
+  .pill.ev{background:rgba(67,227,166,.16);color:var(--lime)} .pill.evB{background:rgba(86,174,255,.16);color:var(--sky)} .pill.evC{background:rgba(255,194,75,.16);color:var(--gold)}
+  .sec{font-size:12px;font-weight:800;color:var(--mut);margin:18px 2px 9px;letter-spacing:.02em;text-transform:uppercase;font-family:var(--mono)}
+  .muted{font-size:11px;color:var(--mut);line-height:1.55}
+  /* HERO */
+  .hero{position:relative;background:var(--grad);border-radius:24px;padding:18px;color:#fff;margin:8px 0 14px;overflow:hidden}
+  .hero::after{content:'';position:absolute;right:-40px;top:-40px;width:160px;height:160px;background:radial-gradient(circle,rgba(255,255,255,.25),transparent 70%)}
+  .hero .top{display:flex;align-items:center;gap:14px;position:relative;z-index:2}
+  .ringwrap{position:relative;width:104px;height:104px;flex-shrink:0}
+  .ringwrap svg{transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:rgba(255,255,255,.22);stroke-width:9}
+  .ring-fg{fill:none;stroke:#fff;stroke-width:9;stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.3,1,.4,1)}
+  .ringtxt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ringtxt .n{font-size:30px;font-weight:900;line-height:1}.ringtxt .u{font-size:9px;opacity:.85;margin-top:2px;letter-spacing:.04em}
+  .hero .meta{flex:1}
+  .hero .tierbadge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:20px;font-size:12px;font-weight:800;margin-bottom:7px}
+  .hero .sub{font-size:11.5px;opacity:.92;line-height:1.5}
+  .herostats{display:flex;gap:8px;margin-top:13px;position:relative;z-index:2}
+  .hstat{flex:1;background:rgba(255,255,255,.14);border-radius:13px;padding:9px 11px}
+  .hstat .l{font-size:9.5px;opacity:.85}.hstat .v{font-size:15px;font-weight:800;margin-top:1px}
+  .soul{font-size:9px;opacity:.8;margin-top:10px;position:relative;z-index:2}
+  /* domains */
+  .dom{margin-bottom:11px}
+  .dom .dr{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .dom .dn{font-size:12.5px;font-weight:700}.dom .dv{margin-left:auto;font-size:12.5px;font-weight:800;font-variant-numeric:tabular-nums}.dom .dv small{color:var(--mut);font-weight:600;font-size:10px}
+  .bar{height:7px;background:var(--card2);border-radius:6px;overflow:hidden}
+  .bar>i{display:block;height:100%;border-radius:6px;transition:width .7s cubic-bezier(.3,1,.4,1)}
+  .dlock{font-size:11px;color:var(--mut2);margin-left:auto;font-weight:700}
   /* quests */
-  .q{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px dashed var(--line)}.q:last-child{border-bottom:none}
-  .qi{width:32px;height:32px;border-radius:10px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-  .qt{font-size:13px;font-weight:600}.qs{font-size:11px;color:var(--mut)}
-  .qr{margin-left:auto;font-size:11px;font-weight:800;color:var(--clay);white-space:nowrap}
-  .qbtn{margin-left:8px;font-size:11px;font-weight:700;background:var(--clay);color:#fff;border:none;border-radius:9px;padding:6px 11px;cursor:pointer;font-family:var(--sans)}
-  .qbtn.done{background:var(--soft);color:var(--green)}
-  /* quick actions */
+  .q{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line)}.q:last-child{border:none}
+  .qt{font-size:13px;font-weight:700}.qs{font-size:11px;color:var(--mut)}
+  .qr{margin-left:auto;font-size:10.5px;font-weight:800;color:var(--lime);white-space:nowrap;text-align:right}
+  .btn{font-size:11.5px;font-weight:800;background:var(--grad);color:#fff;border:none;border-radius:11px;padding:8px 14px;cursor:pointer;font-family:var(--sans);box-shadow:0 4px 12px rgba(224,138,108,.3)}
+  .btn.ghost{background:var(--card2);color:var(--ink);box-shadow:none;border:1px solid var(--line)}
+  .btn.sm{padding:6px 11px;font-size:11px;border-radius:10px}
+  .btn.done{background:rgba(67,227,166,.16);color:var(--lime);box-shadow:none}
+  .btn.block{display:block;width:100%;text-align:center;padding:12px;font-size:13px;border-radius:14px;margin-top:4px}
+  /* alert */
+  .alert{display:flex;align-items:center;gap:11px;background:linear-gradient(135deg,rgba(255,96,96,.16),rgba(255,116,184,.10));border:1px solid rgba(255,96,96,.3);border-radius:16px;padding:12px 14px;margin-bottom:13px}
+  .alert .em{font-size:20px}.alert .at{font-size:12.5px;font-weight:800}.alert .as{font-size:11px;color:var(--mut)}
+  /* shortcuts */
   .qa{display:flex;gap:9px;margin-bottom:14px}
-  .qac{flex:1;background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px 6px;text-align:center;cursor:pointer}
-  .qac .ic{font-size:20px}.qac .l{font-size:10.5px;font-weight:600;margin-top:5px}
+  .qac{flex:1;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:13px 5px;text-align:center;cursor:pointer;transition:.15s}
+  .qac:active{transform:scale(.96)}.qac .ic{font-size:21px}.qac .l{font-size:10px;font-weight:700;margin-top:5px}
   /* teaser */
-  .teaser{border:1.5px dashed var(--clay);border-radius:14px;padding:13px 15px;background:#FCF2EC;display:flex;align-items:center;gap:11px}
-  .teaser .lk{font-size:18px}.teaser .tt{font-size:12.5px;font-weight:700}.teaser .ts{font-size:11px;color:var(--mut)}
-  .teaser .go{margin-left:auto;font-size:11px;color:var(--clay);font-weight:700;cursor:pointer}
-  /* transactions */
-  .tx{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}.tx:last-child{border-bottom:none}
-  .txi{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--soft)}
-  .txt{font-size:13px;font-weight:600}.txs{font-size:10.5px;color:var(--mut)}
-  .txa{margin-left:auto;font-weight:700;font-size:13.5px}.txa.r{color:var(--red)}.txa.g{color:var(--green)}
-  .tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px;background:#E4F1E8;color:var(--green);margin-left:6px}
-  /* sources */
-  .src{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.src:last-child{border-bottom:none}
-  .srn{font-size:13px;font-weight:600}.srbtn{margin-left:auto;font-size:11px;font-weight:700;border:1px solid var(--line);background:#fff;border-radius:9px;padding:6px 11px;cursor:pointer;color:var(--sky)}
-  .srok{margin-left:auto;font-size:11px;font-weight:700;color:var(--green)}
-  .srlock{margin-left:auto;font-size:11px;font-weight:700;color:var(--mut)}
+  .teaser{display:flex;align-items:center;gap:11px;border:1.5px dashed var(--violet);border-radius:15px;padding:12px 14px;background:rgba(139,108,255,.08)}
+  .teaser .em{font-size:19px}.teaser .tt{font-size:12px;font-weight:800}.teaser .ts{font-size:11px;color:var(--mut)}
+  .teaser .go{margin-left:auto;font-size:11px;color:var(--violet);font-weight:800;cursor:pointer}
+  /* bento dashboard */
+  .bento{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px}
+  .bento .b{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px}
+  .bento .b.wide{grid-column:1/3}
+  .b .bl{font-size:10.5px;color:var(--mut);font-weight:600}.b .bv{font-size:22px;font-weight:900;margin-top:3px;letter-spacing:-.5px}
+  .b .bv.r{color:var(--coral)}.b .bv.g{color:var(--lime)}
+  .b .bd{font-size:10px;color:var(--mut);margin-top:3px}
+  .donut{width:104px;height:104px;border-radius:50%;position:relative;flex-shrink:0}
+  .donut::after{content:'';position:absolute;inset:16px;border-radius:50%;background:var(--bg2)}
+  .donut .dc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+  .donut .dc .n{font-size:15px;font-weight:900}.donut .dc .u{font-size:8.5px;color:var(--mut)}
+  .legend{flex:1}.lg{display:flex;align-items:center;gap:7px;font-size:11px;margin-bottom:6px}.lg .dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}.lg .lv{margin-left:auto;font-weight:800;font-variant-numeric:tabular-nums}
+  .spark{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:6px}
+  .spark .sb{flex:1;background:var(--gradsoft);border:1px solid var(--line);border-radius:6px 6px 4px 4px;position:relative;min-height:8px;transition:height .6s}
+  .spark .sb.hi{background:var(--grad);border-color:transparent}
+  .spark .sl{position:absolute;bottom:-17px;left:0;right:0;text-align:center;font-size:8.5px;color:var(--mut2)}
+  /* tx */
+  .tx{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--line)}.tx:last-child{border:none}
+  .txt{font-size:12.5px;font-weight:700}.txs{font-size:10px;color:var(--mut)}
+  .txa{margin-left:auto;font-weight:800;font-size:13px;font-variant-numeric:tabular-nums}.txa.r{color:var(--coral)}.txa.g{color:var(--lime)}
+  .tag{font-size:8.5px;font-weight:800;padding:2px 6px;border-radius:6px;background:rgba(67,227,166,.16);color:var(--lime);margin-left:5px}
+  /* earn / feature cards */
+  .feat{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:17px;padding:14px;margin-bottom:12px}
+  .feat .fh{display:flex;align-items:center;gap:11px}
+  .feat .fic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+  .feat .ft{font-size:13.5px;font-weight:800}.feat .fs{font-size:11px;color:var(--mut);margin-top:2px;line-height:1.45}
+  .feat .fb{margin-top:11px;display:flex;align-items:center;gap:8px}
+  .chipline{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-size:10px;font-weight:700;padding:4px 9px;border-radius:9px;background:var(--card2);color:var(--mut)}
+  .chip.on{background:rgba(67,227,166,.16);color:var(--lime)}
+  .earnsum{background:var(--grad);border-radius:18px;padding:15px;color:#fff;margin-bottom:14px;position:relative;overflow:hidden}
+  .earnsum::after{content:'';position:absolute;right:-30px;bottom:-40px;width:140px;height:140px;background:radial-gradient(circle,rgba(255,255,255,.2),transparent 70%)}
+  .earnsum .l{font-size:11px;opacity:.9}.earnsum .v{font-size:28px;font-weight:900;margin-top:2px}.earnsum .d{font-size:10.5px;opacity:.88;margin-top:3px}
+  /* gate / lock */
+  .gate{position:relative}
+  .gate .lockmask{display:none;position:absolute;inset:0;z-index:8;background:rgba(14,14,19,.62);backdrop-filter:blur(2.5px);border-radius:inherit;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;padding:12px}
+  html.light .gate .lockmask{background:rgba(242,241,236,.72)}
+  .gate.locked .lockmask{display:flex}
+  .gate.locked .inner{opacity:.5;filter:saturate(.35)}
+  .lockmask .lk{font-size:22px}.lockmask .lvtxt{font-size:12px;font-weight:800;color:var(--ink)}.lockmask .lsub{font-size:10.5px;color:var(--mut)}
+  /* loan / credit */
+  .loan{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--line)}.loan:last-child{border:none}
+  .loan .ln{font-size:12.5px;font-weight:700}.loan .ls{font-size:10.5px;color:var(--mut)}
+  .loan .la{margin-left:auto;text-align:right}.loan .la .am{font-size:13px;font-weight:800;font-variant-numeric:tabular-nums}
+  .st{font-size:9px;font-weight:800;padding:2px 7px;border-radius:7px}
+  .st.ok{background:rgba(67,227,166,.16);color:var(--lime)}.st.due{background:rgba(255,194,75,.16);color:var(--gold)}.st.late{background:rgba(255,96,96,.16);color:var(--danger)}
+  .scorenote{display:flex;gap:8px;margin-top:11px}
+  .scorenote .sn{flex:1;border-radius:12px;padding:9px 11px;font-size:10.5px;font-weight:700}
+  .sn.plus{background:rgba(67,227,166,.12);color:var(--lime)}.sn.minus{background:rgba(255,96,96,.12);color:var(--danger)}
   /* journey */
-  .lvl{position:relative;padding-left:38px;padding-bottom:6px}
-  .lvl:before{content:"";position:absolute;left:14px;top:6px;bottom:-10px;width:2px;background:var(--line)}
-  .lvl:last-child:before{display:none}
-  .lvl .node{position:absolute;left:5px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px}
-  .lvl.done .node{background:var(--green);border-color:var(--green);color:#fff}
-  .lvl.cur .node{background:var(--clay);border-color:var(--clay);color:#fff;box-shadow:0 0 0 4px #FBEDE7}
-  .lvl .lcard{border:1px solid var(--line);border-radius:13px;padding:12px 14px;margin-bottom:14px;background:#fff}
-  .lvl.cur .lcard{border-color:var(--clay)}
-  .lvl.lock .lcard{background:var(--soft);opacity:.92}
-  .lvl .ln{font-size:14px;font-weight:800}.lvl .lc{font-size:10.5px;color:var(--mut);margin:2px 0 8px}
-  .feat{font-size:11.5px;padding:3px 0;color:var(--ink)}.feat .fk{color:var(--green);font-weight:700}.feat.lk{color:var(--mut)}.feat .lkk{color:var(--mut)}
-  /* community */
-  .actfi{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}.actfi:last-child{border-bottom:none}
-  .pf{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px}
-  .actt{font-size:12.5px}.actt b{font-weight:700}.acts{font-size:10.5px;color:var(--mut)}
-  .lieml{margin-left:auto;font-size:14px}
-  .grouprow{display:flex;gap:10px;margin:2px 0 13px}
-  .gcard{flex:1;border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff;cursor:pointer}
-  .gcard .gi{font-size:20px}.gcard .gt{font-size:12.5px;font-weight:700;margin-top:5px}.gcard .gs{font-size:10.5px;color:var(--mut)}
+  .lvl{position:relative;padding-left:34px;padding-bottom:4px}
+  .lvl:before{content:"";position:absolute;left:13px;top:7px;bottom:-8px;width:2px;background:var(--line)}.lvl:last-child:before{display:none}
+  .lvl .node{position:absolute;left:4px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--bg2);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--mut)}
+  .lvl.done .node{background:var(--lime);border-color:var(--lime);color:#08120c}
+  .lvl.cur .node{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 0 0 4px rgba(139,108,255,.25)}
+  .lvl .lc{border:1px solid var(--line);border-radius:13px;padding:11px 13px;margin-bottom:12px;background:var(--card)}
+  .lvl.cur .lc{border-color:var(--violet);background:rgba(139,108,255,.08)}
+  .lvl .ll{font-size:13px;font-weight:800}.lvl .lf{font-size:10.5px;color:var(--mut);margin-top:3px;line-height:1.5}
+  /* history feed */
+  .hist{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}.hist:last-child{border:none}
+  .hist .hb{width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+  .hist .ht{font-size:12px;font-weight:600}.hist .hsub{font-size:10px;color:var(--mut)}
+  .hist .hd{margin-left:auto;font-weight:800;font-size:12.5px;font-variant-numeric:tabular-nums}.hd.p{color:var(--lime)}.hd.m{color:var(--danger)}
+  /* vouch */
+  .vou{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--line)}.vou:last-child{border:none}
+  .pf{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;flex-shrink:0}
+  .vt{font-size:11.5px}.vt b{font-weight:800}.vs{font-size:10px;color:var(--mut)}
   /* token */
-  .tokbig{background:linear-gradient(140deg,#3a2e1a,#5a4424);border-radius:20px;padding:20px;color:#fff;margin-bottom:14px;text-align:center}
-  .tokbig .n{font-size:42px;font-weight:800;color:#F2D7A8}.tokbig .u{font-size:12px;opacity:.85;margin-top:2px}
-  .tokbig .lock{display:inline-block;font-size:10.5px;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:18px;margin-top:11px}
-  .split{display:flex;gap:10px;margin-bottom:13px}
-  .sp{flex:1;border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}
-  .sp .l{font-size:10px;color:var(--mut)}.sp .v{font-size:18px;font-weight:800;margin-top:3px}.sp .d{font-size:10px;color:var(--mut);margin-top:3px}
-  .earn{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}.earn:last-child{border-bottom:none}
-  .earn .ei{width:30px;height:30px;border-radius:9px;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-  .earn .et{font-size:12.5px;font-weight:600}.earn .ea{margin-left:auto;font-size:12px;font-weight:800;color:var(--gold)}
-  .streak{display:flex;align-items:center;gap:8px;background:#FFF6E6;border:1px solid #F0E2C0;border-radius:12px;padding:11px 14px;margin-bottom:13px}
-  .streak .f{font-size:18px}.streak .st{font-size:13px;font-weight:700}.streak .ss{font-size:10.5px;color:var(--mut)}
-  .note{font-size:11px;color:var(--mut);text-align:center;line-height:1.5;padding:0 6px}
+  .tokbig{background:linear-gradient(135deg,#3a2e1a,#5a4424);border-radius:18px;padding:18px;color:#fff;text-align:center;margin-bottom:12px;position:relative;overflow:hidden}
+  .tokbig .n{font-size:34px;font-weight:900;color:#FFD9A0}.tokbig .u{font-size:11px;opacity:.85;margin-top:2px}.tokbig .lk{display:inline-block;font-size:10px;background:rgba(255,255,255,.14);padding:5px 12px;border-radius:18px;margin-top:10px}
   /* nav */
-  .nav{display:flex;border-top:1px solid var(--line);background:#fff;flex-shrink:0;padding-bottom:6px}
-  .nav button{flex:1;border:none;background:none;padding:9px 0 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mut);font-family:var(--sans)}
-  .nav button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7}
-  .nav button .nl{font-size:9px;font-weight:600}.nav button.on{color:var(--clay)}
+  .nav{display:flex;border-top:1px solid var(--line);background:var(--bg2);flex-shrink:0;padding-bottom:6px;backdrop-filter:blur(12px)}
+  .nav button{flex:1;border:none;background:none;padding:9px 0 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mut2);font-family:var(--sans);transition:.15s}
+  .nav button svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8}
+  .nav button .nl{font-size:8.5px;font-weight:700}.nav button.on{color:var(--clay)}
   /* modal + toast */
-  .modal{position:absolute;inset:0;background:rgba(20,20,19,.5);display:none;align-items:center;justify-content:center;z-index:60;padding:24px}
-  .modal.on{display:flex}
-  .mc{background:#fff;border-radius:20px;padding:22px;width:100%;text-align:center}
-  .mc .lk{font-size:34px}.mc h3{font-size:17px;font-weight:800;margin:8px 0 4px}.mc p{font-size:13px;color:var(--mut);line-height:1.5}
-  .mc .cond{background:var(--soft);border-radius:12px;padding:12px;margin:13px 0;font-size:12px;text-align:left}
-  .mc .cond .ci{display:flex;justify-content:space-between;padding:4px 0}.mc .cond .ci .ok{color:var(--green);font-weight:700}.mc .cond .ci .no{color:var(--clay);font-weight:700}
-  .mc button{width:100%;background:var(--clay);color:#fff;border:none;border-radius:12px;padding:12px;font-weight:700;cursor:pointer;font-family:var(--sans);margin-top:4px}
-  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:12.5px;padding:11px 16px;border-radius:12px;opacity:0;transition:all .3s;z-index:70;max-width:310px;text-align:center}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .modal{position:absolute;inset:0;background:rgba(8,8,12,.62);display:none;align-items:center;justify-content:center;z-index:80;padding:24px}.modal.on{display:flex}
+  .mc{background:var(--bg2);border:1px solid var(--line);border-radius:22px;padding:22px;width:100%;text-align:center}
+  .mc .lk{font-size:32px}.mc h3{font-size:16px;font-weight:800;margin:8px 0 4px}.mc p{font-size:12.5px;color:var(--mut);line-height:1.5}
+  .mc button{width:100%;background:var(--grad);color:#fff;border:none;border-radius:13px;padding:12px;font-weight:800;cursor:pointer;font-family:var(--sans);margin-top:14px}
+  .toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);font-size:12px;font-weight:600;padding:11px 16px;border-radius:13px;opacity:0;transition:.3s;z-index:90;max-width:300px;text-align:center}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  .themebtn{position:absolute;top:48px;right:16px;z-index:55;border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:9px;font-size:13px;width:30px;height:30px;cursor:pointer}
 </style>
 </head>
 <body>
-  <div class="cap">Prototype · <b>Liêm Super-App</b> (GenZ + Gig). Bấm 5 tab dưới + thử tab <b>Hành trình</b> để xem cơ chế <b>mở khóa theo cấp độ</b>, và <b>Ví Liêm</b> cho token kiểu Pi. <i>Dữ liệu mô phỏng.</i> <b>Tài khoản demo: Lv4 · Elite — mở full tính năng.</b></div>
+  <div class="cap">Prototype · <b>Liêm Super-App v2</b> — siêu app biến uy tín thật thành <b>hộ chiếu Liêm</b> mở khóa tài chính. Bấm <b>chuyển cấp</b> bên dưới để xem cơ chế <b>scoring & khoá/mở theo cấp</b>; lướt 5 tab. <i>Dữ liệu mô phỏng.</i></div>
+
+  <div class="demobar">
+    <span class="dl">Demo cấp</span>
+    <button class="seg" data-t="0" onclick="setTier(0)">Tân binh</button>
+    <button class="seg" data-t="2" onclick="setTier(2)">Ổn định</button>
+    <button class="seg on" data-t="4" onclick="setTier(4)">Elite</button>
+  </div>
+
   <div class="phone">
     <div class="notch"></div>
     <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+    <button class="themebtn" onclick="toggleTheme()" id="themebtn">☀</button>
     <div class="scrollarea">
 
-      <!-- HOME -->
+      <!-- ============ HOME ============ -->
       <div class="screen on" id="s-home">
-        <div class="row"><div><div class="hi">Chào buổi sáng,</div><div class="hn">Minh 👋</div></div><div class="av">M</div></div>
-        <div class="liemcard">
+        <div class="hrow"><div><div class="hi">Chào buổi sáng,</div><div class="hn">Minh 👋</div></div><div class="av">M</div></div>
+
+        <div class="hero">
           <div class="top">
-            <div><div class="sc">985</div><div class="meta">Điểm Liêm · uy tín của bạn</div></div>
-            <div style="margin-left:10px"><span class="lv">Lv4 · Elite</span></div>
-            <div class="tok"><div class="tn">1.240</div><div class="ts">🔓 LIÊM token</div></div>
+            <div class="ringwrap">
+              <svg width="104" height="104" viewBox="0 0 104 104">
+                <circle class="ring-bg" cx="52" cy="52" r="46"></circle>
+                <circle class="ring-fg" id="ring" cx="52" cy="52" r="46" stroke-dasharray="289" stroke-dashoffset="0"></circle>
+              </svg>
+              <div class="ringtxt"><div class="n" data-liem>985</div><div class="u">ĐIỂM LIÊM</div></div>
+            </div>
+            <div class="meta">
+              <span class="tierbadge">🏆 <span data-tiername>Lv4 · Elite</span></span>
+              <div class="sub">Hộ chiếu uy tín của bạn — mang đi được, chứng minh ở bất cứ đâu.</div>
+            </div>
           </div>
-          <div class="prog"><i></i></div>
-          <div class="progtx">Đã đạt <b>Lv4 · Elite</b> — cấp cao nhất, mở toàn bộ tính năng ✓</div>
+          <div class="herostats">
+            <div class="hstat"><div class="l">🔥 Chuỗi ngày</div><div class="v"><span data-streak>48</span> ngày</div></div>
+            <div class="hstat"><div class="l">🪙 LIÊM token</div><div class="v" data-token>5.600</div></div>
+            <div class="hstat"><div class="l">🤝 Bảo lãnh</div><div class="v">12 người</div></div>
+          </div>
+          <div class="soul">🔒 Uy tín là soulbound — không mua, không bán, không chuyển nhượng.</div>
         </div>
+
+        <div class="alert">
+          <span class="em">🛡️</span>
+          <div><div class="at">Lá chắn vừa chặn 1 số nghi lừa đảo</div><div class="as">+84 90••• gọi tới · 47 lượt báo "giả công an"</div></div>
+        </div>
+
         <div class="card">
-          <div class="ch"><span class="t">Tài chính tháng 6</span><span class="more" onclick="tab(1)">Chi tiết ›</span></div>
-          <div class="fin"><div class="b"><div class="l">Chi tiêu</div><div class="v r">8,2tr</div></div><div class="b"><div class="l">Thu nhập</div><div class="v g">12,5tr</div></div><div class="b"><div class="l">Tiết kiệm</div><div class="v">4,3tr</div></div></div>
-          <div class="auto">● Tự động ghi nhận từ chuyển khoản &amp; bill — bạn không phải nhập tay</div>
+          <div class="ch"><span class="t">Uy tín theo lĩnh vực</span><span class="more" onclick="tab(4)">Hộ chiếu ›</span></div>
+          <div id="domMini"></div>
         </div>
+
         <div class="card">
-          <div class="ch"><span class="t">Nhiệm vụ hôm nay</span><span class="more" onclick="tab(2)">Tất cả ›</span></div>
-          <div class="q"><span class="qi">🧾</span><div><div class="qt">Ghi nhận 1 giao dịch</div><div class="qs">Quét bill hoặc đọc chuyển khoản</div></div><span class="qr">+5đ +10🪙</span><button class="qbtn" onclick="toast('+5 điểm Liêm · +10 token')">Làm</button></div>
-          <div class="q"><span class="qi">🔗</span><div><div class="qt">Kết nối ví MoMo</div><div class="qs">Để chấm điểm chính xác hơn</div></div><span class="qr">+50đ +80🪙</span><button class="qbtn" onclick="toast('Đang kết nối MoMo… (demo)')">Làm</button></div>
-          <div class="q"><span class="qi">👥</span><div><div class="qt">Mời 1 người bạn thật</div><div class="qs">Bạn xác minh = không phải bot</div></div><span class="qr">+30đ +50🪙</span><button class="qbtn done">✓ Xong</button></div>
+          <div class="ch"><span class="t">Nhiệm vụ hôm nay</span><span class="more">+điểm +token</span></div>
+          <div class="q"><span class="ico">🧾</span><div><div class="qt">Ghi nhận 1 giao dịch</div><div class="qs">Quét bill / đọc chuyển khoản</div></div><span class="qr">+5đ +10🪙</span><button class="btn sm" onclick="toast('+5 điểm Tài chính-Liêm · +10 token')">Làm</button></div>
+          <div class="q"><span class="ico">🤝</span><div><div class="qt">Bảo lãnh 1 người bạn</div><div class="qs">Tăng web-of-trust</div></div><span class="qr">+20đ +40🪙</span><button class="btn sm" onclick="toast('Đã gửi bảo lãnh (demo)')">Làm</button></div>
+          <div class="q"><span class="ico">📲</span><div><div class="qt">Kết nối nguồn data mới</div><div class="qs">zkTLS — chấm điểm chính xác hơn</div></div><span class="qr">+80đ +80🪙</span><button class="btn sm done">✓ Xong</button></div>
         </div>
+
         <div class="qa">
+          <div class="qac" onclick="tab(3)"><div class="ic">🛡️</div><div class="l">Lá chắn</div></div>
           <div class="qac" onclick="tab(1)"><div class="ic">🧾</div><div class="l">Quét bill</div></div>
-          <div class="qac" onclick="toast('Đang đọc chuyển khoản trên màn hình… (demo)')"><div class="ic">📲</div><div class="l">Đọc CK</div></div>
-          <div class="qac" onclick="toast('Mở Lá chắn chống lừa đảo (demo)')"><div class="ic">🛡️</div><div class="l">Check scam</div></div>
+          <div class="qac" onclick="tab(3)"><div class="ic">🤝</div><div class="l">Vay bạn</div></div>
+          <div class="qac" onclick="tab(2)"><div class="ic">💸</div><div class="l">Kiếm thêm</div></div>
         </div>
-        <div class="teaser" style="border-color:var(--green);background:#EAF5EE"><span class="lk">🎉</span><div><div class="tt">Đã mở toàn bộ tính năng</div><div class="ts">Tài khoản Elite · full quyền truy cập</div></div><span class="go" style="color:var(--green)" onclick="tab(2)">Hành trình ›</span></div>
+
+        <div class="teaser" id="homeTeaser">
+          <span class="em">🎉</span>
+          <div><div class="tt" id="teaserTitle">Bạn đã mở toàn bộ tính năng</div><div class="ts" id="teaserSub">Cấp Elite · full quyền truy cập</div></div>
+          <span class="go" onclick="tab(4)">Hành trình ›</span>
+        </div>
       </div>
 
-      <!-- MONEY -->
+      <!-- ============ MONEY / DASHBOARD ============ -->
       <div class="screen" id="s-money">
-        <div class="hn" style="margin:4px 0 12px">Chi tiêu &amp; Tài chính</div>
+        <div class="hn" style="margin:6px 2px 4px">Chi tiêu</div>
+        <div class="muted" style="margin:0 2px 12px">Tháng 6 · tự động ghi nhận từ chuyển khoản & bill — bạn không nhập tay</div>
+
+        <div class="bento">
+          <div class="b wide" style="display:flex;align-items:center;gap:14px">
+            <div><div class="bl">Số dư khả dụng</div><div class="bv">24,8tr</div><div class="bd">↑ 1,3tr so với tháng trước</div></div>
+            <div style="margin-left:auto;text-align:right">
+              <div style="font-size:11px;color:var(--lime);font-weight:800">+12,5tr thu</div>
+              <div style="font-size:11px;color:var(--coral);font-weight:800;margin-top:4px">−8,2tr chi</div>
+            </div>
+          </div>
+          <div class="b"><div class="bl">Tiết kiệm</div><div class="bv g">4,3tr</div><div class="bd">86% mục tiêu tháng</div><div class="bar" style="margin-top:8px"><i style="width:86%;background:var(--lime)"></i></div></div>
+          <div class="b"><div class="bl">Đầu tư</div><div class="bv">7,1tr</div><div class="bd">CK · vàng · crypto</div><div class="bar" style="margin-top:8px"><i style="width:54%;background:var(--violet)"></i></div></div>
+        </div>
+
         <div class="card">
-          <div class="ch"><span class="t">Tự động ghi nhận</span></div>
-          <div class="qa" style="margin:0">
-            <div class="qac" onclick="toast('Bật: đọc chuyển khoản hiện trên màn hình → auto-fill')"><div class="ic">📲</div><div class="l">Đọc chuyển khoản</div></div>
-            <div class="qac" onclick="toast('Mở camera quét bill → OCR → auto-fill')"><div class="ic">📷</div><div class="l">Quét bill OCR</div></div>
+          <div class="ch"><span class="t">Chi theo danh mục</span><span class="more">tháng 6</span></div>
+          <div style="display:flex;align-items:center;gap:16px">
+            <div class="donut" style="background:conic-gradient(var(--coral) 0 31%,var(--violet) 31% 54%,var(--sky) 54% 72%,var(--lime) 72% 88%,var(--gold) 88% 100%)">
+              <div class="dc"><div class="n">8,2tr</div><div class="u">tổng chi</div></div>
+            </div>
+            <div class="legend">
+              <div class="lg"><span class="dot" style="background:var(--coral)"></span>Ăn uống <span class="lv">2,5tr</span></div>
+              <div class="lg"><span class="dot" style="background:var(--violet)"></span>Thuê nhà <span class="lv">1,9tr</span></div>
+              <div class="lg"><span class="dot" style="background:var(--sky)"></span>Di chuyển <span class="lv">1,5tr</span></div>
+              <div class="lg"><span class="dot" style="background:var(--lime)"></span>Mua sắm <span class="lv">1,3tr</span></div>
+              <div class="lg"><span class="dot" style="background:var(--gold)"></span>Khác <span class="lv">1,0tr</span></div>
+            </div>
           </div>
         </div>
+
+        <div class="card">
+          <div class="ch"><span class="t">Dòng tiền 6 tháng</span><span class="more">net</span></div>
+          <div class="spark">
+            <div class="sb" style="height:42%"><span class="sl">T1</span></div>
+            <div class="sb" style="height:58%"><span class="sl">T2</span></div>
+            <div class="sb" style="height:50%"><span class="sl">T3</span></div>
+            <div class="sb" style="height:71%"><span class="sl">T4</span></div>
+            <div class="sb" style="height:64%"><span class="sl">T5</span></div>
+            <div class="sb hi" style="height:88%"><span class="sl">T6</span></div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="ch"><span class="t">Giao dịch gần đây</span></div>
-          <div class="tx"><span class="txi">⚡</span><div><div class="txt">Trả tiền điện EVN <span class="tag">tự động</span></div><div class="txs">Hôm nay · đúng hạn → +điểm Liêm</div></div><span class="txa r">−850k</span></div>
-          <div class="tx"><span class="txi">🛍️</span><div><div class="txt">Mua Shopee <span class="tag">OCR bill</span></div><div class="txs">Hôm qua · đã giao</div></div><span class="txa r">−320k</span></div>
-          <div class="tx"><span class="txi">💸</span><div><div class="txt">Nhận lương <span class="tag">tự động</span></div><div class="txs">01/06 · thu nhập ổn định</div></div><span class="txa g">+12,5tr</span></div>
-          <div class="tx"><span class="txi">🏠</span><div><div class="txt">Tiền thuê nhà <span class="tag">tự động</span></div><div class="txs">03/06 · đúng hạn 14 tháng</div></div><span class="txa r">−3,5tr</span></div>
+          <div class="tx"><span class="ico">💸</span><div><div class="txt">Nhận lương<span class="tag">tự động</span></div><div class="txs">01/06 · thu nhập ổn định 14 tháng</div></div><span class="txa g">+12,5tr</span></div>
+          <div class="tx"><span class="ico">🏠</span><div><div class="txt">Tiền thuê nhà<span class="tag">đúng hạn</span></div><div class="txs">03/06 · +Tài chính-Liêm</div></div><span class="txa r">−3,5tr</span></div>
+          <div class="tx"><span class="ico">⚡</span><div><div class="txt">Điện EVN<span class="tag">đúng hạn</span></div><div class="txs">Hôm nay · +Tài chính-Liêm</div></div><span class="txa r">−850k</span></div>
+          <div class="tx"><span class="ico">🛍️</span><div><div class="txt">Shopee</div><div class="txs">Hôm qua · OCR bill</div></div><span class="txa r">−320k</span></div>
         </div>
-        <div class="card">
-          <div class="ch"><span class="t">Nguồn kết nối (để chấm điểm)</span></div>
-          <div class="src"><span class="txi">📱</span><span class="srn">Ví MoMo</span><span class="srok">✓ Đã kết nối</span></div>
-          <div class="src"><span class="txi">🏦</span><span class="srn">Vietcombank</span><span class="srok">✓ Đã kết nối</span></div>
-          <div class="src"><span class="txi">🛒</span><span class="srn">Shopee (seller)</span><span class="srbtn" onclick="toast('Kết nối Shopee qua zkTLS (demo)')">Kết nối</span></div>
-          <div class="src"><span class="txi">🎵</span><span class="srn">TikTok</span><span class="srbtn" onclick="toast('Kết nối TikTok (demo)')">Kết nối</span></div>
-          <div class="src"><span class="txi">📊</span><span class="srn">CIC (lịch sử tín dụng)</span><span class="srok">✓ Đã kết nối</span></div>
-        </div>
-        <div class="card">
-          <div class="ch"><span class="t">Tài chính nâng cao</span><span class="more" style="color:var(--green)">✓ Đã mở</span></div>
-          <div class="src"><span class="txi">🏦</span><span class="srn">Lãi tiết kiệm</span><span class="srok">4,3tr · 5,6%/năm</span></div>
-          <div class="src"><span class="txi">📈</span><span class="srn">Chứng khoán · Vàng</span><span class="srbtn" onclick="toast('Theo dõi danh mục (demo)')">Theo dõi</span></div>
-          <div class="src"><span class="txi">🪙</span><span class="srn">Crypto watch</span><span class="srbtn" onclick="toast('Theo dõi giá crypto (demo)')">Theo dõi</span></div>
-          <div class="src"><span class="txi">🤝</span><span class="srn">Quản lý hụi/họ</span><span class="srbtn" onclick="toast('Mở Quản lý hụi/họ (demo)')">Mở</span></div>
+
+        <div class="card" style="background:var(--gradsoft);border-color:transparent">
+          <div style="display:flex;align-items:center;gap:11px"><span style="font-size:22px">📈</span><div><div style="font-size:12.5px;font-weight:800">Chi tiêu đều đặn = xây Tài chính-Liêm</div><div class="muted" style="margin-top:2px">Trả bill/thuê đúng hạn → điểm tăng → mở khóa tín dụng giá tốt.</div></div></div>
         </div>
       </div>
 
-      <!-- JOURNEY -->
-      <div class="screen" id="s-journey">
-        <div class="hn" style="margin:4px 0 3px">Hành trình Liêm</div>
-        <div class="muted" style="font-size:12.5px;color:var(--mut);margin-bottom:14px">Mỗi cấp độ mở thêm tính năng. Lên cấp bằng <b>điểm Liêm + nhiệm vụ + thời gian</b>.</div>
-        <div class="lvl done"><span class="node">✓</span><div class="lcard"><div class="ln">Lv0 · Tân binh</div><div class="lc">Đã đạt · ngày 1</div>
-          <div class="feat"><span class="fk">✓</span> Quản lý chi tiêu · OCR bill · đọc chuyển khoản</div>
-          <div class="feat"><span class="fk">✓</span> Lá chắn chống lừa đảo · nhiệm vụ onboarding</div></div></div>
-        <div class="lvl done"><span class="node">✓</span><div class="lcard"><div class="ln">Lv1 · Đã xác thực</div><div class="lc">Đã đạt · proof-of-human + 1 nguồn</div>
-          <div class="feat"><span class="fk">✓</span> Xác thực người thật · kết nối ví/bank/social</div>
-          <div class="feat"><span class="fk">✓</span> Chấm điểm hoạt động quá khứ + hiện tại</div>
-          <div class="feat"><span class="fk">✓</span> Chia sẻ activity với người thân (Locket-style)</div></div></div>
-        <div class="lvl done"><span class="node">✓</span><div class="lcard"><div class="ln">Lv2 · Ổn định</div><div class="lc">Đã đạt</div>
-          <div class="feat"><span class="fk">✓</span> Lãi tiết kiệm · chứng khoán/vàng/crypto</div>
-          <div class="feat"><span class="fk">✓</span> Quản lý hụi/họ · mua chung/gom đơn</div>
-          <div class="feat"><span class="fk">✓</span> Affiliate mời bạn mua · token tăng tốc</div></div></div>
-        <div class="lvl done"><span class="node">✓</span><div class="lcard"><div class="ln">Lv3 · Liêm cao</div><div class="lc">Đã đạt</div>
-          <div class="feat"><span class="fk">✓</span> Ref nghề nghiệp · giới thiệu tuyển dụng</div>
-          <div class="feat"><span class="fk">✓</span> Hộ chiếu portable · verify-request 2 chiều</div>
-          <div class="feat"><span class="fk">✓</span> Miniapp Zalo/Telegram · gig nâng cao</div></div></div>
-        <div class="lvl cur"><span class="node">◉</span><div class="lcard"><div class="ln">Lv4 · Elite <span style="font-size:10px;color:var(--clay)">— bạn đang ở đây</span></div><div class="lc">Cấp cao nhất · đã mở toàn bộ</div>
-          <div class="feat"><span class="fk">✓</span> Token quy đổi / lên sàn (khi có giấy phép)</div>
-          <div class="feat"><span class="fk">✓</span> Mở khóa vay · BNPL · bảo hiểm (qua đối tác)</div>
-          <div class="feat"><span class="fk">✓</span> Làm trung gian uy tín (midman)</div></div></div>
+      <!-- ============ EARN ============ -->
+      <div class="screen" id="s-earn">
+        <div class="hn" style="margin:6px 2px 4px">Kiếm thêm</div>
+        <div class="muted" style="margin:0 2px 12px">Uy tín càng cao, kiếm thêm càng nhiều. Mỗi việc vừa là <b>hoạt động cộng điểm</b>, vừa là <b>quyền lợi</b> mở khóa theo cấp.</div>
+
+        <div class="earnsum">
+          <div class="l">Thu nhập thêm tháng này</div>
+          <div class="v">+2,84tr</div>
+          <div class="d">affiliate · chủ trì mua chung · hoa hồng midman</div>
+        </div>
+
+        <div class="feat gate" data-lock="2">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(86,174,255,.16)">🔗</div><div><div class="ft">Link affiliate theo uy tín</div><div class="fs">Hoa hồng cao hơn khi điểm Liêm cao — đối tác tin người uy tín.</div></div></div>
+            <div class="chipline"><span class="chip on">Hoa hồng 8%</span><span class="chip">Đã tạo 6 link</span><span class="chip">+640k tháng này</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Đã tạo link affiliate (demo)')">Tạo link</button><button class="btn sm ghost" onclick="toast('Xem hiệu suất link (demo)')">Hiệu suất</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv2</span><span class="lsub">Cần cấp Ổn định</span></div>
+        </div>
+
+        <div class="feat gate" data-lock="2">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(67,227,166,.16)">🛒</div><div><div class="ft">Tham gia Mua chung</div><div class="fs">Vào nhóm gom đơn → giá sỉ. Uy tín cao = được vào nhóm xịn.</div></div></div>
+            <div class="chipline"><span class="chip on">3 nhóm đang mở</span><span class="chip">Tiết kiệm ~22%</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Tham gia nhóm mua chung (demo)')">Tham gia</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv2</span><span class="lsub">Cần cấp Ổn định</span></div>
+        </div>
+
+        <div class="feat gate" data-lock="3">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(224,138,108,.18)">👑</div><div><div class="ft">Chủ trì Mua chung / Gom nhóm</div><div class="fs">Tự đứng ra gom đơn, ăn <b>hoa hồng người tổ chức</b>. Chỉ người uy tín cao được làm chủ nhóm.</div></div></div>
+            <div class="chipline"><span class="chip on">Hoa hồng 3–6%</span><span class="chip">42 thành viên tin bạn</span><span class="chip">+1,2tr tháng này</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Mở nhóm gom đơn mới (demo)')">Mở nhóm</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv3</span><span class="lsub">Cần cấp Uy tín cao</span></div>
+        </div>
+
+        <div class="feat gate" data-lock="3">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(139,108,255,.18)">🎬</div><div><div class="ft">Marketplace Brand-deal</div><div class="fs">Brand tìm creator qua hộ chiếu verified (audience thật, không follower ảo) → nhận deal.</div></div></div>
+            <div class="chipline"><span class="chip on">5 brand đang mời</span><span class="chip">Creator-Liêm 940</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Xem brand-deal đang mời (demo)')">Xem deal</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv3</span><span class="lsub">Cần cấp Uy tín cao</span></div>
+        </div>
+
+        <div class="feat gate" data-lock="3">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(255,194,75,.18)">⚖️</div><div><div class="ft">Làm Trung gian P2P (Midman)</div><div class="fs">Đứng giữa giữ kèo giao dịch P2P (escrow qua đối tác cấp phép) → ăn <b>phí trung gian</b>. Buyer & seller đều an tâm vì bạn uy tín.</div></div></div>
+            <div class="chipline"><span class="chip on">Phí 1–2%/kèo</span><span class="chip">38 kèo thành công</span><span class="chip">0 tranh chấp</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Nhận kèo trung gian mới (demo)')">Nhận kèo</button><button class="btn sm ghost" onclick="toast('Lịch sử kèo (demo)')">Lịch sử</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv3</span><span class="lsub">Cần cấp Uy tín cao</span></div>
+        </div>
+
+        <div class="sec">Sắp ra mắt — kiếm thêm dựa uy tín</div>
+        <div class="chipline">
+          <span class="chip">🤝 Bảo lãnh ăn hoa hồng</span><span class="chip">🛵 Gig/việc nhanh</span><span class="chip">🚗 Cho thuê đồ/xe</span><span class="chip">🏘️ Escrow B2B</span>
+        </div>
+        <div class="muted" style="margin:10px 2px 0">💡 Tiền là của bạn & đối tác — app chỉ kết nối + giữ kèo qua đối tác cấp phép, không tự giữ tiền.</div>
       </div>
 
-      <!-- COMMUNITY -->
-      <div class="screen" id="s-comm">
-        <div class="hn" style="margin:4px 0 12px">Cộng đồng Liêm</div>
-        <div class="card">
-          <div class="ch"><span class="t">Hoạt động bạn bè · người thân</span><span class="more">như Locket</span></div>
-          <div class="actfi"><span class="pf" style="background:#5E84AE">L</span><div><div class="actt"><b>Lan</b> vừa trả tiền điện đúng hạn</div><div class="acts">2 phút trước · chuỗi 8 tháng sạch</div></div><span class="lieml">🟢</span></div>
-          <div class="actfi"><span class="pf" style="background:#6E8A4E">T</span><div><div class="actt"><b>Tuấn</b> hoàn thành nhiệm vụ tuần</div><div class="acts">15 phút trước · +120 token</div></div><span class="lieml">🔥</span></div>
-          <div class="actfi"><span class="pf" style="background:#8A6BA8">H</span><div><div class="actt"><b>Cô Hồng</b>: giao dịch sạch thứ 35</div><div class="acts">1 giờ trước · seller uy tín</div></div><span class="lieml">⭐</span></div>
-          <div class="actfi"><span class="pf" style="background:#C39A2E">P</span><div><div class="actt"><b>Phát</b> đóng hụi đúng kỳ</div><div class="acts">3 giờ trước · dây hụi 12 người</div></div><span class="lieml">🤝</span></div>
+      <!-- ============ CREDIT ============ -->
+      <div class="screen" id="s-credit">
+        <div class="hn" style="margin:6px 2px 4px">Tín dụng</div>
+        <div class="muted" style="margin:0 2px 12px">Uy tín = tài sản tài chính. App <b>không tự cho vay/giữ tiền</b> — kết nối qua đối tác cấp phép + sandbox NĐ94/2025.</div>
+
+        <div class="feat gate" data-lock="2">
+          <div class="inner">
+            <div class="ch"><span class="t">🫶 Vay bạn bè</span><span class="more">sổ ghi nợ</span></div>
+            <div style="display:flex;gap:10px;margin-bottom:4px">
+              <div class="b" style="flex:1;background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:11px"><div class="bl">Bạn đang cho vay</div><div class="bv g" style="font-size:18px">3,2tr</div></div>
+              <div class="b" style="flex:1;background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:11px"><div class="bl">Bạn đang nợ</div><div class="bv r" style="font-size:18px">1,0tr</div></div>
+            </div>
+            <div class="loan"><span class="ico">👤</span><div><div class="ln">Cho Nam vay</div><div class="ls">Hẹn trả 20/06</div></div><div class="la"><div class="am">1,5tr</div><span class="st ok">đúng hạn</span></div></div>
+            <div class="loan"><span class="ico">👤</span><div><div class="ln">Cho Hà vay</div><div class="ls">Hẹn trả 28/06 · còn 3 ngày</div></div><div class="la"><div class="am">1,7tr</div><span class="st due">sắp đến hạn</span></div></div>
+            <div class="loan"><span class="ico">👤</span><div><div class="ln">Bạn nợ Tú</div><div class="ls">Quá hạn 2 ngày</div></div><div class="la"><div class="am">1,0tr</div><span class="st late">trễ hẹn</span></div></div>
+            <div class="scorenote">
+              <div class="sn plus">✓ Trả đúng hẹn: <b>+15 điểm Liêm</b></div>
+              <div class="sn minus">⚠ Trễ hẹn: <b>−40 điểm Liêm</b></div>
+            </div>
+            <button class="btn block" onclick="toast('Tạo khoản vay mới (demo)')">+ Ghi khoản vay mới</button>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv2</span><span class="lsub">Cần cấp Ổn định</span></div>
         </div>
-        <div class="muted" style="font-size:11px;color:var(--mut);margin:-4px 0 12px;padding:0 2px">Chia sẻ <b>hoạt động chứng minh mình Liêm</b> — không phải ảnh tự sướng.</div>
-        <div class="ch" style="padding:0 2px"><span class="t" style="font-size:13px">Nhóm &amp; tiết kiệm chung</span></div>
-        <div class="grouprow">
-          <div class="gcard" onclick="toast('Mở nhóm Mua chung (demo)')"><div class="gi">🛒</div><div class="gt">Mua chung</div><div class="gs">gom đơn · giá sỉ</div></div>
-          <div class="gcard" onclick="toast('Mở Gom đơn (demo)')"><div class="gi">📦</div><div class="gt">Gom đơn ship</div><div class="gs">chia phí ship</div></div>
+
+        <div class="sec">Cổng mở khóa tài chính · endgame</div>
+        <div class="feat gate" data-lock="4">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(67,227,166,.16)">⏩</div><div><div class="ft">Ứng lương (EWA)</div><div class="fs">Rút lương trước kỳ — hạn mức theo Tài chính-Liêm. Giảm vay nóng.</div></div></div>
+            <div class="chipline"><span class="chip on">Hạn mức 8tr</span><span class="chip">Phí 0% 7 ngày đầu</span><span class="chip">qua đối tác</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Ứng lương qua đối tác (demo)')">Ứng ngay</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv4</span><span class="lsub">Cần cấp Liêm Elite</span></div>
         </div>
-        <div class="card">
-          <div class="ch"><span class="t">Mời &amp; giới thiệu</span></div>
-          <div class="q"><span class="qi">👥</span><div><div class="qt">Mời bạn thật</div><div class="qs">cả hai +điểm +token</div></div><button class="qbtn" onclick="toast('Đã tạo link mời (affiliate) qua Zalo')">Mời</button></div>
-          <div class="q"><span class="qi">🛍️</span><div><div class="qt">Affiliate mời mua</div><div class="qs">bạn mua → bạn nhận hoàn tiền</div></div><button class="qbtn" onclick="toast('Đã tạo link affiliate (demo)')">Chia sẻ</button></div>
-          <div class="q"><span class="qi">💼</span><div><div class="qt">Giới thiệu việc làm</div><div class="qs">ref nghề nghiệp · tuyển dụng</div></div><button class="qbtn" onclick="toast('Tạo lời giới thiệu việc làm (demo)')">Giới thiệu</button></div>
+        <div class="feat gate" data-lock="4">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(139,108,255,.16)">🛍️</div><div><div class="ft">BNPL & Trả góp 0đ</div><div class="fs">Mua trước trả sau, trả góp 0% — duyệt nhanh nhờ hộ chiếu Liêm + zkTLS credit-proof.</div></div></div>
+            <div class="chipline"><span class="chip on">Hạn mức 25tr</span><span class="chip">0% tới 6 tháng</span><span class="chip">qua đối tác</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Kích hoạt BNPL (demo)')">Kích hoạt</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv4</span><span class="lsub">Cần cấp Liêm Elite</span></div>
+        </div>
+        <div class="feat gate" data-lock="4">
+          <div class="inner">
+            <div class="fh"><div class="fic" style="background:rgba(224,138,108,.16)">🏦</div><div><div class="ft">Vay tín chấp & Bảo hiểm</div><div class="fs">Vay không tài sản đảm bảo + bảo hiểm vi mô — lãi/phí ưu đãi theo uy tín. Qua đối tác cấp phép.</div></div></div>
+            <div class="chipline"><span class="chip on">Tới 50tr</span><span class="chip">Lãi ưu đãi Elite</span><span class="chip">sandbox NĐ94</span></div>
+            <div class="fb"><button class="btn sm" onclick="toast('Xem gói vay/bảo hiểm (demo)')">Xem gói</button></div>
+          </div>
+          <div class="lockmask"><span class="lk">🔒</span><span class="lvtxt">Mở ở Lv4</span><span class="lsub">Cần cấp Liêm Elite</span></div>
         </div>
       </div>
 
-      <!-- TOKEN -->
-      <div class="screen" id="s-token">
-        <div class="hn" style="margin:4px 0 12px">Ví Liêm</div>
-        <div class="tokbig"><div class="n">1.240</div><div class="u">LIÊM token đã tích lũy</div><div class="lock">🔓 Elite · đủ điều kiện quy đổi — niêm yết khi có giấy phép</div></div>
-        <div class="split">
-          <div class="sp"><div class="l">ĐIỂM LIÊM</div><div class="v">985</div><div class="d">uy tín · không bán được</div></div>
-          <div class="sp"><div class="l">TOKEN LIÊM</div><div class="v" style="color:var(--gold)">1.240</div><div class="d">thưởng · quy đổi sau</div></div>
-        </div>
-        <div class="streak"><span class="f">🔥</span><div><div class="st">Chuỗi 12 ngày</div><div class="ss">Mỗi ngày dùng app + ghi nhận activity → token tăng</div></div></div>
+      <!-- ============ PASSPORT ============ -->
+      <div class="screen" id="s-passport">
+        <div class="hn" style="margin:6px 2px 4px">Hộ chiếu Liêm</div>
+        <div class="muted" style="margin:0 2px 12px">Uy tín đa lĩnh vực, bạn sở hữu & mang đi được. Mỗi lĩnh vực chấm riêng (thang 1000), kèm chất lượng bằng chứng.</div>
+
         <div class="card">
-          <div class="ch"><span class="t">Cách kiếm token (Activity-to-earn)</span></div>
-          <div class="earn"><span class="ei">✅</span><span class="et">Hoàn thành nhiệm vụ hệ thống</span><span class="ea">+10–80</span></div>
-          <div class="earn"><span class="ei">🧾</span><span class="et">Ghi nhận activity thật (bill, giao dịch)</span><span class="ea">+5–20</span></div>
-          <div class="earn"><span class="ei">🔥</span><span class="et">Streak hàng ngày</span><span class="ea">+5</span></div>
-          <div class="earn"><span class="ei">👥</span><span class="et">Mời người thật (đã verify)</span><span class="ea">+50</span></div>
-          <div class="earn"><span class="ei">🔗</span><span class="et">Kết nối &amp; xác minh nguồn data</span><span class="ea">+80</span></div>
+          <div class="ch"><span class="t">Điểm theo lĩnh vực</span><span class="pill ev">A·B·C = nguồn data</span></div>
+          <div id="domFull"></div>
         </div>
-        <div class="note">Token kiếm từ <b>hoạt động thật + nhiệm vụ</b> — không phải tap vô nghĩa. Bot/farmer bị verify lọc; điểm Liêm (uy tín) tách khỏi token nên không mua bán được.</div>
+
+        <div class="card">
+          <div class="ch"><span class="t">Hành trình lên cấp</span></div>
+          <div id="journey"></div>
+        </div>
+
+        <div class="card">
+          <div class="ch"><span class="t">Lịch sử điểm</span><span class="more">7 ngày</span></div>
+          <div class="hist"><span class="hb" style="background:rgba(67,227,166,.16)">🏠</span><div><div class="ht">Trả tiền thuê nhà đúng hạn</div><div class="hsub">Tài chính-Liêm</div></div><span class="hd p">+12</span></div>
+          <div class="hist"><span class="hb" style="background:rgba(67,227,166,.16)">🫶</span><div><div class="ht">Nam trả nợ đúng hẹn</div><div class="hsub">Cộng đồng-Liêm · vay bạn bè</div></div><span class="hd p">+15</span></div>
+          <div class="hist"><span class="hb" style="background:rgba(67,227,166,.16)">🤝</span><div><div class="ht">Được @LinhKOL (uy tín 970) bảo lãnh</div><div class="hsub">Web-of-trust · peer vouch</div></div><span class="hd p">+22</span></div>
+          <div class="hist"><span class="hb" style="background:rgba(255,96,96,.16)">⏰</span><div><div class="ht">Bạn trả nợ Tú trễ 2 ngày</div><div class="hsub">Cộng đồng-Liêm</div></div><span class="hd m">−40</span></div>
+        </div>
+
+        <div class="tokbig">
+          <div class="n" data-token>5.600</div><div class="u">LIÊM token đã tích lũy</div>
+          <div class="lk">🔓 Elite · đủ điều kiện quy đổi — niêm yết khi có giấy phép</div>
+        </div>
+        <div class="muted" style="margin:-4px 2px 14px;text-align:center">Token là <b>điểm thưởng gamified</b> — không bán, không hứa lợi nhuận. Tách khỏi điểm uy tín (soulbound).</div>
+
+        <div class="card">
+          <div class="ch"><span class="t">Người bảo lãnh bạn</span><span class="more">web-of-trust</span></div>
+          <div class="vou"><span class="pf" style="background:var(--violet)">L</span><div><div class="vt"><b>@LinhKOL</b> · uy tín 970</div><div class="vs">"Giao dịch nhiều lần, rất uy tín"</div></div><span style="margin-left:auto">⭐</span></div>
+          <div class="vou"><span class="pf" style="background:var(--sky)">T</span><div><div class="vt"><b>Anh Tuấn</b> · uy tín 880</div><div class="vs">Đồng nghiệp · bảo lãnh nghề nghiệp</div></div><span style="margin-left:auto">✅</span></div>
+        </div>
+
+        <button class="btn block" onclick="toast('Đã tạo thẻ chia sẻ hộ chiếu Liêm (demo)')">📤 Chia sẻ hộ chiếu uy tín</button>
       </div>
 
     </div>
+
     <div class="nav">
       <button class="on" onclick="tab(0,this)"><svg viewBox="0 0 24 24"><path d="M4 11 L12 4 L20 11"/><path d="M6 10v9h12v-9"/></svg><span class="nl">Trang chủ</span></button>
-      <button onclick="tab(1,this)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14.5h2"/></svg><span class="nl">Chi tiêu</span></button>
-      <button onclick="tab(2,this)"><svg viewBox="0 0 24 24"><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></svg><span class="nl">Hành trình</span></button>
-      <button onclick="tab(3,this)"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.3"/><path d="M3 19c0-3 4-4 6-4s6 1 6 4M15.5 19c0-2 2.5-2.7 4-2.7"/></svg><span class="nl">Cộng đồng</span></button>
-      <button onclick="tab(4,this)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3"/><circle cx="16" cy="12" r="2"/></svg><span class="nl">Ví Liêm</span></button>
+      <button onclick="tab(1,this)"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg><span class="nl">Chi tiêu</span></button>
+      <button onclick="tab(2,this)"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 7h7a3 3 0 010 6H8a3 3 0 000 6h8"/></svg><span class="nl">Kiếm thêm</span></button>
+      <button onclick="tab(3,this)"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg><span class="nl">Tín dụng</span></button>
+      <button onclick="tab(4,this)"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><circle cx="12" cy="9" r="2.4"/><path d="M8 16c0-2 2-2.8 4-2.8s4 .8 4 2.8"/></svg><span class="nl">Hộ chiếu</span></button>
     </div>
+
     <div class="modal" id="modal" onclick="if(event.target.id==='modal')cls()">
       <div class="mc"><div class="lk">🔒</div><h3 id="mt">Tính năng đang khóa</h3><p id="mp">Mở khóa khi bạn lên cấp.</p>
-        <div class="cond" id="mcond"></div>
-        <button onclick="tab(2);cls()">Xem hành trình lên cấp</button></div>
+        <button onclick="tab(4);cls()">Xem hành trình lên cấp</button></div>
     </div>
     <div class="toast" id="toast"></div>
   </div>
+
 <script>
-  var ids=['s-home','s-money','s-journey','s-comm','s-token'];
+  var ids=['s-home','s-money','s-earn','s-credit','s-passport'];
   var btns=document.querySelectorAll('.nav button');
-  function tab(i,btn){document.querySelectorAll('.screen').forEach(function(s,k){s.classList.toggle('on',ids[i]===s.id);});btns.forEach(function(b){b.classList.remove('on');});(btn||btns[i]).classList.add('on');document.querySelector('.scrollarea').scrollTop=0;}
-  function locked(name,lv,cond){document.getElementById('mt').textContent=name+' · '+lv;document.getElementById('mp').textContent='Tính năng này mở khi bạn đạt '+lv+'.';
-    document.getElementById('mcond').innerHTML='<div class="ci"><span>Điều kiện</span><span class="ok">'+cond+'</span></div><div class="ci"><span>Hiện tại</span><span>Lv4 · 985đ · Elite</span></div><div class="ci"><span>Trạng thái</span><span class="ok">Đã mở ✓</span></div>';
-    document.getElementById('modal').classList.add('on');}
-  function cls(){document.getElementById('modal').classList.remove('on');}
+  function tab(i,btn){document.querySelectorAll('.screen').forEach(function(s){s.classList.toggle('on',ids[i]===s.id);});btns.forEach(function(b){b.classList.remove('on');});(btn||btns[i]).classList.add('on');document.querySelector('.scrollarea').scrollTop=0;}
   var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on');},2100);}
+  function cls(){document.getElementById('modal').classList.remove('on');}
+  function toggleTheme(){var h=document.documentElement;h.classList.toggle('dark');h.classList.toggle('light');document.getElementById('themebtn').textContent=h.classList.contains('light')?'🌙':'☀';}
+
+  // ---- scoring + tier state ----
+  var DOMAINS=[
+    {key:'fin',name:'Tài chính',ic:'💳',c:'--lime',ev:'A',min:1},
+    {key:'creator',name:'Creator/KOC',ic:'🎬',c:'--violet',ev:'B',min:1},
+    {key:'gig',name:'Gig/Freelance',ic:'🛵',c:'--sky',ev:'B',min:1},
+    {key:'seller',name:'Seller/TMĐT',ic:'🛍️',c:'--coral',ev:'B',min:1},
+    {key:'social',name:'Cộng đồng',ic:'🤝',c:'--gold',ev:'C',min:1},
+    {key:'p2p',name:'Trung gian P2P',ic:'⚖️',c:'--clay',ev:'A',min:3}
+  ];
+  var S={
+    0:{hero:380,name:'Tân binh',streak:3,token:120,fin:430,creator:210,gig:260,seller:180,social:330,p2p:0},
+    2:{hero:720,name:'Ổn định',streak:12,token:1240,fin:710,creator:480,gig:560,seller:520,social:640,p2p:120},
+    4:{hero:985,name:'Liêm Elite',streak:48,token:5600,fin:965,creator:940,gig:905,seller:885,social:955,p2p:825}
+  };
+  var TIERINFO={0:'Lv0 · Tân binh',1:'Lv1 · Đã xác thực',2:'Lv2 · Ổn định',3:'Lv3 · Uy tín cao',4:'Lv4 · Liêm Elite'};
+  var TEASER={
+    0:{t:'Sắp mở: Hộ chiếu + chấm điểm đa lĩnh vực',s:'Xác thực người thật + 1 nguồn để lên Lv1'},
+    2:{t:'Sắp mở: Chủ trì mua chung · Brand-deal · Midman',s:'Lên Lv3 (Uy tín cao) để kiếm thêm mạnh hơn'},
+    4:{t:'Bạn đã mở toàn bộ tính năng',s:'Cấp Elite · full quyền truy cập'}
+  };
+  var state={tier:4};
+  var RING_C=2*Math.PI*46; // ~289
+
+  function fmt(n){return n.toLocaleString('vi-VN');}
+  function cssv(v){return getComputedStyle(document.documentElement).getPropertyValue(v)||'#888';}
+
+  function renderDomains(s){
+    var full='',mini='';
+    DOMAINS.forEach(function(d,idx){
+      var locked=state.tier<d.min;
+      var val=s[d.key];
+      var evcls=d.ev==='A'?'ev':(d.ev==='B'?'evB':'evC');
+      if(locked){
+        full+='<div class="dom"><div class="dr"><span>'+d.ic+'</span><span class="dn">'+d.name+'</span><span class="dlock">🔒 mở ở Lv'+d.min+'</span></div><div class="bar"><i style="width:0%"></i></div></div>';
+      }else{
+        full+='<div class="dom"><div class="dr"><span>'+d.ic+'</span><span class="dn">'+d.name+'</span><span class="pill '+evcls+'">'+d.ev+'</span><span class="dv">'+val+'<small>/1000</small></span></div><div class="bar"><i style="width:'+(val/10)+'%;background:var('+d.c+')"></i></div></div>';
+      }
+      if(idx<3){ // mini = top 3 on home
+        if(locked){mini+='<div class="dom"><div class="dr"><span>'+d.ic+'</span><span class="dn">'+d.name+'</span><span class="dlock">🔒</span></div></div>';}
+        else{mini+='<div class="dom"><div class="dr"><span>'+d.ic+'</span><span class="dn">'+d.name+'</span><span class="dv">'+val+'</span></div><div class="bar"><i style="width:'+(val/10)+'%;background:var('+d.c+')"></i></div></div>';}
+      }
+    });
+    document.getElementById('domFull').innerHTML=full;
+    document.getElementById('domMini').innerHTML=mini;
+  }
+
+  function renderJourney(){
+    var defs=[
+      {lv:0,n:'Lv0 · Tân binh',f:'Lá chắn chống lừa đảo · quản lý chi tiêu + dashboard'},
+      {lv:1,n:'Lv1 · Đã xác thực',f:'Hộ chiếu Liêm · chấm điểm đa lĩnh vực · xác minh 2 chiều'},
+      {lv:2,n:'Lv2 · Ổn định',f:'Vay bạn bè · tham gia mua chung · affiliate · hụi/họ'},
+      {lv:3,n:'Lv3 · Uy tín cao',f:'Chủ trì mua chung · brand-deal · trung gian P2P (midman)'},
+      {lv:4,n:'Lv4 · Liêm Elite',f:'Cổng tài chính: ứng lương · BNPL · trả góp 0đ · vay · bảo hiểm'}
+    ];
+    var h='';
+    defs.forEach(function(d){
+      var cls=d.lv<state.tier?'done':(d.lv===state.tier?'cur':'');
+      var node=d.lv<state.tier?'✓':(d.lv===state.tier?'◉':'🔒');
+      var here=d.lv===state.tier?' <span style="color:var(--violet);font-size:10px">— bạn đang ở đây</span>':'';
+      h+='<div class="lvl '+cls+'"><span class="node">'+node+'</span><div class="lc"><div class="ll">'+d.n+here+'</div><div class="lf">'+d.f+'</div></div></div>';
+    });
+    document.getElementById('journey').innerHTML=h;
+  }
+
+  function setRing(score){
+    var off=RING_C*(1-score/1000);
+    document.getElementById('ring').setAttribute('stroke-dasharray',RING_C.toFixed(1));
+    document.getElementById('ring').setAttribute('stroke-dashoffset',off.toFixed(1));
+  }
+
+  function setTier(t){
+    state.tier=t;var s=S[t];
+    document.querySelectorAll('[data-liem]').forEach(function(e){e.textContent=fmt(s.hero);});
+    document.querySelectorAll('[data-tiername]').forEach(function(e){e.textContent=TIERINFO[t];});
+    document.querySelectorAll('[data-streak]').forEach(function(e){e.textContent=s.streak;});
+    document.querySelectorAll('[data-token]').forEach(function(e){e.textContent=fmt(s.token);});
+    setRing(s.hero);
+    renderDomains(s);
+    renderJourney();
+    // locks
+    document.querySelectorAll('.gate').forEach(function(g){
+      var need=+g.dataset.lock;g.classList.toggle('locked',t<need);
+    });
+    // demo seg
+    document.querySelectorAll('.seg').forEach(function(b){b.classList.toggle('on',+b.dataset.t===t);});
+    // teaser
+    document.getElementById('teaserTitle').textContent=TEASER[t].t;
+    document.getElementById('teaserSub').textContent=TEASER[t].s;
+    var ht=document.getElementById('homeTeaser');
+    ht.style.borderColor=t===4?'var(--lime)':'var(--violet)';
+    ht.style.background=t===4?'rgba(67,227,166,.08)':'rgba(139,108,255,.08)';
+  }
+  setTier(4);
 </script>
 </body>
 </html>
